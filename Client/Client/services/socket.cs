@@ -21,6 +21,8 @@ namespace Client.services {
         public StringBuilder sb = new StringBuilder();
     }
 
+
+
     public class AsynchronousClient {
         // The port number for the remote device.  
         private const int port = 11000;
@@ -42,7 +44,7 @@ namespace Client.services {
                 // Establish the remote endpoint for the socket.  
                 // The name of the   
                 // remote device is "host.contoso.com".  
-                IPHostEntry ipHostInfo = Dns.GetHostEntry("130.243.115.134");
+                IPHostEntry ipHostInfo = Dns.GetHostEntry("169.254.254.173");
                 IPAddress ipAddress = ipHostInfo.AddressList[0];
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 
@@ -64,7 +66,7 @@ namespace Client.services {
                 receiveDone.WaitOne();
 
                 // Write the response to the console.  
-                Console.WriteLine("Response received : {0}", response);
+                Client.MainWindow.changeTitle(string.Format("Response received : {0}", response));
 
                 // Release the socket.  
                 client.Shutdown(SocketShutdown.Both);

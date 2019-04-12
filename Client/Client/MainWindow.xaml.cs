@@ -29,7 +29,12 @@ namespace Client
 
         private void button_Click(object sender, RoutedEventArgs e) {
             AsynchronousClient.StartClient();
-            this.Title = "askdndhfjauishi";
         }
+
+        public static void changeTitle(string text)
+        {
+            MessageBox.Show(text);
+        }
+
     }
 }
