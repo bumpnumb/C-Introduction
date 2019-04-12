@@ -8,11 +8,11 @@ namespace Server.services
 {
     class register
     {
-        public static bool TryRegister(Message msg)
+        public static bool TryRegister(string msg)
         {
             // Register data will look like following:
             // {type: 'judge'; ID: 'Daniel'; PW: 'losen';}
-            string[] data = msg.GetData().Split(';');
+            string[] data = msg.Split(';');
 
             if (!database.UserExists(data[1]))
             {

@@ -34,7 +34,7 @@ namespace Server.services
                 case MessageType.Login:
                     break;
                 case MessageType.Register:
-                    register
+                    register.TryRegister(this.data);
                     break;
                 default:
                     break;

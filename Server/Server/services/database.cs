@@ -21,6 +21,7 @@ namespace Server.services
 
         public static void query(string query)
         {
+            db.Open();
             var cdm = new MySqlCommand(query, db);
 
             using (MySqlDataReader reader = cdm.ExecuteReader())
@@ -33,6 +34,7 @@ namespace Server.services
                     Console.WriteLine(level + ' ' + code + ' ' + message);
                 }
             }
+            db.Close();
         }
 
         public static void TestConnection()
@@ -73,7 +75,11 @@ namespace Server.services
 
         public static bool UserExists(string UID)
         {
-            string query = string.Format("SELECT name FROM DanielUsers WHERE name = {0}.FirstOrDefault();", UID);
+            //INSERT INTO `c5_dt117g_vt19`.`DanielUsers` (`ID`, `Name`, `Salt`, `Password`) VALUES ();
+            //SELECT Name FROM `DanielUsers` WHERE ID=1
+            //string query = string.Format("SELECT Name FROM 'DanielUsers' WHERE Name = {0};", UID);
+            //string query = string.Format("SELECT EXISTS(SELECT * FROM DanielUsers WHERE Name={0});", UID);
+            string query = string.Format("SELECT EXISTS(SELECT * FROM `DanielUsers` WHERE(Name = '{0}'));", UID);
             database.query(query);
             return false;
         }
