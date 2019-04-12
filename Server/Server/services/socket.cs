@@ -116,6 +116,8 @@ namespace Server.services
                 content = state.sb.ToString();
                 if (content.IndexOf("<EOF>") > -1)
                 {
+                    Message msg = new Message(content);
+
                     // All the data has been read from the   
                     // client. Display it on the console.  
                     Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",

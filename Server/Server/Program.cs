@@ -17,8 +17,8 @@ namespace Server
             AsynchronousSocketListener.StartListening();
 
             
-            //MySqlConnection db = database.ExecuteServer();
-            //database.TestConnection(db);
+            //database.ExecuteServer();
+            //database.TestConnection();
 
             Console.ReadLine();
         }

@@ -9,15 +9,33 @@ namespace Server.services
 {
     class database
     {
+        private const string connectionString = "Server=aass.oru.se; database=c5_dt117g_vt19; UID=c5_dt117g_vt19; password=dt117g_vt19";
 
-        public static MySqlConnection ExecuteServer()
+        private static MySqlConnection db = null;
+
+
+        public static void ExecuteServer()
         {
-            string connectionString = string.Format("Server=aass.oru.se; database=c5_dt117g_vt19; UID=c5_dt117g_vt19; password=dt117g_vt19");
-            MySqlConnection con = new MySqlConnection(connectionString);
-            return con;
+            db = new MySqlConnection(connectionString);
         }
 
-        public static void TestConnection(MySqlConnection db)
+        public static void query(string query)
+        {
+            var cdm = new MySqlCommand(query, db);
+
+            using (MySqlDataReader reader = cdm.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    String level = reader["Level"].ToString();
+                    String code = reader["Code"].ToString();
+                    String message = reader["Message"].ToString();
+                    Console.WriteLine(level + ' ' + code + ' ' + message);
+                }
+            }
+        }
+
+        public static void TestConnection()
         {
             try
             {
@@ -46,6 +64,18 @@ namespace Server.services
             {
                 Console.WriteLine(ex);
             }
+        }
+
+
+
+        //Here we put the sql commands
+
+
+        public static bool UserExists(string UID)
+        {
+            string query = string.Format("SELECT name FROM DanielUsers WHERE name = {0}.FirstOrDefault();", UID);
+            database.query(query);
+            return false;
         }
     }
 }
