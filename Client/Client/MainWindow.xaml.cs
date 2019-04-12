@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Client.services;
 
 namespace Client
 {
@@ -23,6 +24,12 @@ namespace Client
         public MainWindow()
         {
             InitializeComponent();
+            
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e) {
+            AsynchronousClient.StartClient();
+            this.Title = "askdndhfjauishi";
         }
     }
 }
