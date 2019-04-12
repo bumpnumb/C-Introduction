@@ -14,11 +14,17 @@ namespace Server
         static void Main(string[] args)
         {
 
-            AsynchronousSocketListener.StartListening();
+            //AsynchronousSocketListener.StartListening();
 
-            
-            MySqlConnection db = database.ExecuteServer();
-            database.TestConnection(db);
+
+            database.ExecuteServer();
+            //database.TestConnection();
+
+            bool a = database.UserExists("Daniel");
+
+
+            string salt = crypto.GenerateSalt();
+            Console.WriteLine(salt);
 
             Console.ReadLine();
         }
