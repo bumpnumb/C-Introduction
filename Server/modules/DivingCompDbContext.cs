@@ -22,6 +22,8 @@ namespace Server.modules
                 entity.Property(e => e.Name).IsRequired();
                 entity.Property(e => e.Salt).IsRequired();
                 entity.Property(e => e.Hash).IsRequired();
+                entity.Property(e => e.Cookie).IsRequired();
+                entity.Property(e => e.CookieTime).IsRequired();
             });
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

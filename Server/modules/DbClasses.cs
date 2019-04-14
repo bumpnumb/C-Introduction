@@ -12,22 +12,24 @@ namespace Server.modules
         public string Name { get; set; }
         public string Salt { get; set; }
         public string Hash { get; set; }
+        public string Cookie { get; set; }
+        public DateTime CookieTime { get; set; }
     }
 
     public class config
     {
-        public string server { get; set; }
-        public string port { get; set; }
-        public string database { get; set; }
-        public string user { get; set; }
-        public string password { get; set; }
+        public string Server { get; set; }
+        public string Port { get; set; }
+        public string Database { get; set; }
+        public string User { get; set; }
+        public string Password { get; set; }
 
         public string Read(string filepath)
         {
             string text = File.ReadAllText(filepath);
             config c = new config();
             JsonConvert.PopulateObject(text, c);
-            return "Server=" + c.server + "; port=" + c.port + "; database=" + c.database + "; user=" + c.user + "; password=" + c.password + ";";
+            return "Server=" + c.Server + "; port=" + c.Port + "; database=" + c.Database + "; user=" + c.User + "; password=" + c.Password + ";";
         }
     }
 }
