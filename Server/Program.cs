@@ -1,4 +1,7 @@
 ﻿using System;
+using Server.modules;
+using Server.services;
+
 
 namespace Server
 {
@@ -6,7 +9,13 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Database db = new Database();
+            db.StartConnection();
+            db.GetUserByID(1);
+
+
+            Console.ReadKey();
+
         }
     }
 }
