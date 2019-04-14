@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{E0B3AC08-2BA2-415F-947C-0CD39DDDAE51}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server - legacy", "Server\Server - legacy.csproj", "{E0B3AC08-2BA2-415F-947C-0CD39DDDAE51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {952C9F05-273B-4B46-97CF-F9C266A9585B}
 	EndGlobalSection
 EndGlobal
