@@ -10,48 +10,44 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Client.services;
-using Client.windows;
 
-namespace Client
+namespace Client.windows
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for SignUp.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SignUp : Window
     {
-        public MainWindow()
+        public SignUp()
         {
-
             InitializeComponent();
-
+        }
+        private void Pw1GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (PwBox1.Password == "Password")
+                PwBox1.Password = "";
+        }
+        private void Pw2GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (PwBox2.Password == "Password")
+                PwBox2.Password = "";
         }
 
-        public void setTitle(string str)
+        private void Pw1LostFocus(object sender, RoutedEventArgs e)
         {
-            this.Title = str;
-        }
-
-        private void PwGotFocus(object sender, RoutedEventArgs e)
-        {
-            if (PwBox.Password == "Password")
-                PwBox.Password = "";
-        }
-
-        private void PwLostFocus(object sender, RoutedEventArgs e)
-        {
-            if (PwBox.Password == "")
+            if (PwBox1.Password == "")
             {
-                PwBox.Password = "Password";
+                PwBox1.Password = "Password";
             }
         }
-
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void Pw2LostFocus(object sender, RoutedEventArgs e)
         {
-            string username = IDBox.Text;
-
+            if (PwBox2.Password == "")
+            {
+                PwBox2.Password = "Password";
+            }
         }
 
         private void IDBox_GotFocus(object sender, RoutedEventArgs e)
@@ -72,7 +68,7 @@ namespace Client
         {
             if (IDBox.Text != "" && IDBox.Text != "Username")
             {
-                if (PwBox.Password != "" && PwBox.Password != "Password")
+                if (PwBox1.Password != "" && PwBox1.Password != "Password" && PwBox2.Password != "" && PwBox2.Password != "Password")
                 {
                     if (e.Key == Key.Enter)
                     {
@@ -83,28 +79,26 @@ namespace Client
             }
         }
 
-        private void signin(object sender, RoutedEventArgs e)
+        private void signup(object sender, RoutedEventArgs e)
         {
             AsynchronousClient.StartClient();
 
         }
 
-        private void signupBtn(object sender, MouseButtonEventArgs e)
+        private void signinBtn(object sender, MouseButtonEventArgs e)
         {
-            SignUp sng = new SignUp();
 
-            sng.Top = this.Top;
-            sng.Left = this.Left;
-            sng.Height = this.Height;
-            sng.Width = this.Width;
+            MainWindow mw = new MainWindow();
 
-            App.Current.MainWindow = sng;
+            mw.Top = this.Top;
+            mw.Left = this.Left;
+            mw.Height = this.Height;
+            mw.Width = this.Width;
+
+            App.Current.MainWindow = mw;
             this.Close();
-            sng.Show();
+            mw.Show();
+
         }
     }
 }
-
-
-//  kod för att starta client
-//this.Title = "askdndhfjauishi";
