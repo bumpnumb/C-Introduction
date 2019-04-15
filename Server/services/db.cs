@@ -14,22 +14,35 @@ namespace Server.services
     {
         public void StartConnection()
         {
+
+
             using (var context = new DivingCompDbContext())
             {
                 context.Database.EnsureCreated();
                 Console.WriteLine("Connection to database has been made");
 
 
-                User u = new User
-                {
-                    Name = "Daniel",
-                    Salt = "salty salt",
-                    Hash = "420",
-                    Cookie = "nomNom",
-                    CookieTime = DateTime.Now
-                };
+                //User u = new User
+                //{
+                //    Name = "Daniel",
+                //    Salt = "salty salt",
+                //    Hash = "420",
+                //    Cookie = "nomNom",
+                //    CookieTime = DateTime.Now
+                //};
 
-                context.Users.Add(u);
+                //context.Users.Add(u);
+
+                //Competition c = new Competition
+                //{
+                //    Name = "Första Tävlingen",
+                //    Start = DateTime.Now.AddHours(3),
+                //    Finished = 0
+                //};
+
+                //context.Competitions.Add(c);
+
+
                 context.SaveChanges();
             }
         }

@@ -7,31 +7,31 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Server.modules;
+using Newtonsoft.Json;
 
 namespace Server.services
 {
 
     public enum MessageType { NoType, Login, Register }
+
+    public class Response
+    {
+        public MessageType Type { get; set; }
+        public string Data { get; set; }
+        public User user { get; set; }
+
+    }
+
     public class Message
     {
         public MessageType Type { get; set; }
         public string Data { get; set; }
         private string Cookie { get; set; }
         private User user { get; set; }
-        public string Response { get; set; }
 
-        public Message(string content)
+        public Response CreateResponse()
         {
-            string[] arr = content.Split("\r\n");
-            this.Type = (MessageType)Int32.Parse(arr[0] + 1); //+1 eftersom vi använder 0 som ett error index
-            this.Data = arr[1];
-            this.Cookie = arr[2];
-
-
-
-
-
-
+            Response rsp = new Response();
             switch (this.Type)
             {
                 case MessageType.NoType:
@@ -40,7 +40,9 @@ namespace Server.services
                 case MessageType.Login:
                     this.VerifyCookie();
                     this.RefreshCookie();
-                    this.Response = this.user.Cookie + "\r\nSucessfull login";
+                    rsp.Type = MessageType.Login;
+                    rsp.Data = "Sucessfull login";
+                    rsp.user = GetUserByCookie();
                     break;
                 case MessageType.Register:
                     break;
@@ -48,12 +50,27 @@ namespace Server.services
                     break;
             }
 
+
+
+            return rsp;
+        }
+
+
+        private User GetUserByCookie()
+        {
+            Database db = new Database();
+            User u = db.GetUserByCookie(this.Cookie);
+            // Add error handling
+            return u;
         }
 
         private bool VerifyCookie()
         {
+            // Connects with db
             Database db = new Database();
+            // Find User by Cookie
             User u = db.GetUserByCookie(this.Cookie);
+            // Checks CookieTime & refresh if valid
             if (u != null && u.CookieTime >= DateTime.Now)
             {
                 this.RefreshCookie();
@@ -65,14 +82,12 @@ namespace Server.services
 
         private void RefreshCookie()
         {
+            // Update Cookie timeout time with 24h
             Database db = new Database();
             db.UpdateCookieTimeByID(this.user.ID, DateTime.Now.AddHours(24));
         }
 
     }
-
-
-
     // State object for reading client data asynchronously  
     public class StateObject
     {
@@ -179,14 +194,15 @@ namespace Server.services
                 content = state.sb.ToString();
                 if (content.IndexOf("<EOF>") > -1)
                 {
-                    Message msg = new Message(content);
+                    Message msg = JsonConvert.DeserializeObject<Message>(content);
+                    Response rsp = msg.CreateResponse();
 
                     // All the data has been read from the   
                     // client. Display it on the console.  
                     Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
                         content.Length, content);
 
-                    Send(handler, msg.Response); //send back
+                    Send(handler, JsonConvert.SerializeObject(rsp)); //send back
                 }
                 else
                 {

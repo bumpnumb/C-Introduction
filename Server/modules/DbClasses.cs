@@ -15,6 +15,27 @@ namespace Server.modules
         public string Cookie { get; set; }
         public DateTime CookieTime { get; set; }
     }
+    public class Results
+    {
+        public int ID { get; set; }
+        public int CID { get; set; }
+        public int UID { get; set; }
+        public int Result { get; set; }
+    }
+    public class Competition
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public DateTime Start { get; set; }
+        public int Finished { get; set; }
+    }
+
+    public class CompetitionUsers
+    {
+        public int ID { get; set; }
+        public int UID { get; set; }
+        public int CID { get; set; }
+    }
 
     public class config
     {
