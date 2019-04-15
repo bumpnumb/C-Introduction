@@ -23,40 +23,73 @@ namespace Client
     {
         public MainWindow()
         {
-            
+
             InitializeComponent();
-            
+
         }
 
-        private void loginPwGotFocus(object sender, RoutedEventArgs e) {
-            if(loginPwBox.Password == "Password")
+        public void setTitle(string str)
+        {
+            this.Title = str;
+        }
+
+        private void loginPwGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (loginPwBox.Password == "Password")
                 loginPwBox.Password = "";
         }
 
-        private void loginPwLostFocus(object sender, RoutedEventArgs e) {
-            if(loginPwBox.Password == "") { 
+        private void loginPwLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (loginPwBox.Password == "")
+            {
                 loginPwBox.Password = "Password";
             }
         }
 
-        private void button_Click(object sender, RoutedEventArgs e) {
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
             string username = loginIDBox.Text;
-            
+
         }
 
-        private void loginIDBox_GotFocus(object sender, RoutedEventArgs e) {
-            if(loginIDBox.Text == "Username")
+        private void loginIDBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (loginIDBox.Text == "Username")
                 loginIDBox.Text = "";
         }
 
-        private void loginIDBox_LostFocus(object sender, RoutedEventArgs e) {
-            if(loginIDBox.Text == "") {
+        private void loginIDBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (loginIDBox.Text == "")
+            {
                 loginIDBox.Text = "Username";
             }
+        }
+
+        private void KeyDownEvent(object sender, KeyEventArgs e)
+        {
+            if (loginIDBox.Text != "" && loginIDBox.Text != "Username")
+            {
+                if (loginPwBox.Password != "" && loginPwBox.Password != "Password")
+                {
+                    if (e.Key == Key.Enter)
+                    {
+                        AsynchronousClient.StartClient();
+                    }
+                }
+
+            }
+        }
+
+        private void login(object sender, RoutedEventArgs e)
+        {
+            AsynchronousClient.StartClient();
+
         }
     }
 }
 
 
-//AsynchronousClient.StartClient();  kod för att starta client
+//  kod för att starta client
 //this.Title = "askdndhfjauishi";

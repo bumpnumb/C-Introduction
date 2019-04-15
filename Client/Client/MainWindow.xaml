@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="250">
+        Title="MainWindow" Height="350" Width="250"
+        KeyDown="KeyDownEvent">
     <Grid>
         <Label x:Name="loginLabel" Content="Login" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontFamily="TechnicBold" FontSize="18" FontWeight="Bold" Background="#01FFFFFF" Foreground="#FF2F8321"/>
         <TextBox x:Name="loginIDBox" HorizontalAlignment="Left" Height="20" Margin="60,107,0,0" Text="Username" VerticalAlignment="Top" Width="120" Background="White" Foreground="#FF766E6E" FontWeight="Bold" FontFamily="Technic" BorderThickness="0,0,0,1" GotFocus="loginIDBox_GotFocus" LostFocus="loginIDBox_LostFocus"/>
         <PasswordBox x:Name="loginPwBox" HorizontalAlignment="Left" Margin="60,145,0,0" VerticalAlignment="Top" Width="120" Foreground="#FF060606" Height="20" GotFocus="loginPwGotFocus" LostFocus="loginPwLostFocus" BorderThickness="0,0,0,1" Password="Password" />
         <Label x:Name="registerText" Content="Register" HorizontalAlignment="Left" Height="26" Margin="34,262,0,0" VerticalAlignment="Top" Width="54"/>
-        <Button x:Name="enterButton" Content="Enter" HorizontalAlignment="Left" Margin="105,203,0,0" VerticalAlignment="Top" Width="75" Background="#01FFFFFF" Click="button_Click"/>
+        <Button x:Name="enterButton" Content="Enter" HorizontalAlignment="Left" Margin="105,203,0,0" VerticalAlignment="Top" Width="75" Background="#01FFFFFF" Click="login"/>
 
     </Grid>
 </Window>

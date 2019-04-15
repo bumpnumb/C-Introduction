@@ -13,9 +13,7 @@ namespace Server
             db.StartConnection();
             db.GetUserByID(1);
 
-
-            Console.ReadKey();
-
+            AsynchronousSocketListener.StartListening();
         }
     }
 }

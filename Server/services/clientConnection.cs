@@ -38,8 +38,12 @@ namespace Server.services
                     Console.WriteLine("Recieved notype message: " + this.Data);
                     break;
                 case MessageType.Login:
-                    this.VerifyCookie();
-                    this.RefreshCookie();
+                    if (!this.VerifyCookie())
+                    {
+                        //Cookie was not accepted so we should prompt a new login request.
+
+
+                    }
                     rsp.Type = MessageType.Login;
                     rsp.Data = "Sucessfull login";
                     rsp.user = GetUserByCookie();

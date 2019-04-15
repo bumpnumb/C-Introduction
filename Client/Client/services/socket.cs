@@ -6,11 +6,40 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
-
+using Newtonsoft.Json;
 
 namespace Client.services {
-    public class StateObject {
+    public enum MessageType { NoType, Login, Register }
+    public class User
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Salt { get; set; }
+        public string Hash { get; set; }
+        public string Cookie { get; set; }
+        public DateTime CookieTime { get; set; }
+    }
+    public class Response
+    {
+        public MessageType Type { get; set; }
+        public string Data { get; set; }
+        public User user { get; set; }
+
+        public void HandleResponse()
+        {
+            //handle response;
+        }
+
+    }
+    public class Message
+    {
+        public MessageType Type { get; set; }
+        public string Data { get; set; }
+        public string Cookie { get; set; }
+    }
+
+
+        public class StateObject {
         // Client socket.  
         public Socket workSocket = null;
         // Size of receive buffer.  
@@ -44,7 +73,7 @@ namespace Client.services {
                 // Establish the remote endpoint for the socket.  
                 // The name of the   
                 // remote device is "host.contoso.com".  
-                IPHostEntry ipHostInfo = Dns.GetHostEntry("169.254.254.173");
+                IPHostEntry ipHostInfo = Dns.GetHostEntry("127.0.0.1");
                 IPAddress ipAddress = ipHostInfo.AddressList[0];
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 
@@ -58,15 +87,33 @@ namespace Client.services {
                 connectDone.WaitOne();
 
                 // Send test data to the remote device.  
-                Send(client, "Ping <EOF>");
-                sendDone.WaitOne();
+                //Send(client, "Ping <EOF>");
+                //sendDone.WaitOne();
 
-                // Receive the response from the remote device.  
+                //// Receive the response from the remote device.  
+                //Receive(client);
+                //receiveDone.WaitOne();
+
+                //// Write the response to the console.  
+                //MainWindow w = new MainWindow();
+                //w.setTitle(string.Format("Response received : {0}", response));
+
+                Message msg = new Message();
+                msg.Type = MessageType.Login;
+                msg.Data = "Hello plis login";
+                msg.Cookie = "nomNom";
+
+
+                Send(client, JsonConvert.SerializeObject(msg));
+
+
                 Receive(client);
                 receiveDone.WaitOne();
 
-                // Write the response to the console.  
-                Client.MainWindow.changeTitle(string.Format("Response received : {0}", response));
+
+                Response rsp = JsonConvert.DeserializeObject<Response>(response);
+                rsp.HandleResponse();
+
 
                 // Release the socket.  
                 client.Shutdown(SocketShutdown.Both);
