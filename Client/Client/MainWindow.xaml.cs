@@ -76,7 +76,7 @@ namespace Client
                 {
                     if (e.Key == Key.Enter)
                     {
-                        AsynchronousClient.StartClient();
+                        //AsynchronousClient.StartClient();
                     }
                 }
 
@@ -85,7 +85,11 @@ namespace Client
 
         private void signin(object sender, RoutedEventArgs e)
         {
-            AsynchronousClient.StartClient();
+            // AsynchronousClient.StartClient();
+            PageHolderWindow mnprg = new PageHolderWindow();
+            App.Current.MainWindow = mnprg;
+            this.Close();
+            mnprg.Show();
 
         }
 
