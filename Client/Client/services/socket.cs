@@ -8,7 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Client.services {
+namespace Client.services
+{
     public enum MessageType { NoType, Login, Register }
     public class User
     {
@@ -39,7 +40,83 @@ namespace Client.services {
     }
 
 
-        public class StateObject {
+
+    class ClientControll
+    {
+        static TcpClient Client;
+        static NetworkStream Stream;
+        static CancellationTokenSource ct;
+
+
+        public ClientControll()
+        {
+            string IP = "localhost";
+            int port = 8787;
+            Client = new TcpClient(IP, port);
+
+            Stream = Client.GetStream();
+
+            ct = new CancellationTokenSource();
+            Thread listenerThread = new Thread(new ParameterizedThreadStart(ClientControll.Listen));
+            listenerThread.Start(ct.Token);
+        }
+
+
+
+        static void Listen(object obj)
+        {
+            CancellationToken ct = (CancellationToken)obj;
+            while (!ct.IsCancellationRequested)
+            {
+                byte[] recievedBuffer = new byte[100];
+                try
+                {
+                    Stream.Read(recievedBuffer, 0, recievedBuffer.Length);
+
+                }
+                catch (System.IO.IOException)
+                {
+                    Console.WriteLine("Can not read. connection is closed!");
+                    break;
+                }
+                string msg = Encoding.ASCII.GetString(recievedBuffer, 0, recievedBuffer.Length);
+                Console.WriteLine("Heard " + msg);
+            }
+        }
+        public static void Send(string msg)
+        {
+            if (msg == "quit")
+            {
+                ct.Cancel();
+                Stream.Close();
+                Client.Close();
+                return;
+            }
+            Console.WriteLine("Sending: " + msg);
+
+            int byteCount = Encoding.ASCII.GetByteCount(msg);
+            byte[] sendData = new byte[byteCount];
+            sendData = Encoding.ASCII.GetBytes(msg);
+
+            Stream.Write(sendData, 0, sendData.Length);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    // below is legacy code. even though its better.
+    // I asked franziska if we could use async but she refused.
+    // sad times
+
+    public class StateObject
+    {
         // Client socket.  
         public Socket workSocket = null;
         // Size of receive buffer.  
@@ -52,7 +129,8 @@ namespace Client.services {
 
 
 
-    public class AsynchronousClient {
+    public class AsynchronousClient
+    {
         // The port number for the remote device.  
         private const int port = 11000;
 
@@ -67,9 +145,11 @@ namespace Client.services {
         // The response from the remote device.  
         private static String response = String.Empty;
 
-        public static void StartClient() {
+        public static void StartClient()
+        {
             // Connect to a remote device.  
-            try {
+            try
+            {
                 // Establish the remote endpoint for the socket.  
                 // The name of the   
                 // remote device is "host.contoso.com".  
@@ -120,13 +200,16 @@ namespace Client.services {
                 client.Close();
 
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e.ToString());
             }
         }
 
-        private static void ConnectCallback(IAsyncResult ar) {
-            try {
+        private static void ConnectCallback(IAsyncResult ar)
+        {
+            try
+            {
                 // Retrieve the socket from the state object.  
                 Socket client = (Socket)ar.AsyncState;
 
@@ -139,13 +222,16 @@ namespace Client.services {
                 // Signal that the connection has been made.  
                 connectDone.Set();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e.ToString());
             }
         }
 
-        private static void Receive(Socket client) {
-            try {
+        private static void Receive(Socket client)
+        {
+            try
+            {
                 // Create the state object.  
                 StateObject state = new StateObject();
                 state.workSocket = client;
@@ -154,13 +240,16 @@ namespace Client.services {
                 client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
                     new AsyncCallback(ReceiveCallback), state);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e.ToString());
             }
         }
 
-        private static void ReceiveCallback(IAsyncResult ar) {
-            try {
+        private static void ReceiveCallback(IAsyncResult ar)
+        {
+            try
+            {
                 // Retrieve the state object and the client socket   
                 // from the asynchronous state object.  
                 StateObject state = (StateObject)ar.AsyncState;
@@ -169,7 +258,8 @@ namespace Client.services {
                 // Read data from the remote device.  
                 int bytesRead = client.EndReceive(ar);
 
-                if (bytesRead > 0) {
+                if (bytesRead > 0)
+                {
                     // There might be more data, so store the data received so far.  
                     state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
 
@@ -177,21 +267,25 @@ namespace Client.services {
                     client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
                         new AsyncCallback(ReceiveCallback), state);
                 }
-                else {
+                else
+                {
                     // All the data has arrived; put it in response.  
-                    if (state.sb.Length > 1) {
+                    if (state.sb.Length > 1)
+                    {
                         response = state.sb.ToString();
                     }
                     // Signal that all bytes have been received.  
                     receiveDone.Set();
                 }
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e.ToString());
             }
         }
 
-        private static void Send(Socket client, String data) {
+        private static void Send(Socket client, String data)
+        {
             // Convert the string data to byte data using ASCII encoding.  
             byte[] byteData = Encoding.ASCII.GetBytes(data);
 
@@ -200,8 +294,10 @@ namespace Client.services {
                 new AsyncCallback(SendCallback), client);
         }
 
-        private static void SendCallback(IAsyncResult ar) {
-            try {
+        private static void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
                 // Retrieve the socket from the state object.  
                 Socket client = (Socket)ar.AsyncState;
 
@@ -212,7 +308,8 @@ namespace Client.services {
                 // Signal that all bytes have been sent.  
                 sendDone.Set();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e.ToString());
             }
         }
