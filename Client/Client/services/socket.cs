@@ -104,7 +104,7 @@ namespace Client.services {
                 msg.Cookie = "nomNom";
 
 
-                Send(client, JsonConvert.SerializeObject(msg));
+                Send(client, JsonConvert.SerializeObject(msg) + "<EOF>");
 
 
                 Receive(client);

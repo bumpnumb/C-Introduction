@@ -198,6 +198,7 @@ namespace Server.services
                 content = state.sb.ToString();
                 if (content.IndexOf("<EOF>") > -1)
                 {
+                    content = content.Remove(content.Length - 5);
                     Message msg = JsonConvert.DeserializeObject<Message>(content);
                     Response rsp = msg.CreateResponse();
 
