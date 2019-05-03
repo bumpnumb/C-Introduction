@@ -1,0 +1,14 @@
+﻿body
+{
+}
+
+.center_holder{
+    height: auto;
+    width: 600px;
+    background-color: black;
+
+    position:fixed;
+    top:15%;
+    left: 50%;
+    margin-left: 300px;
+}
