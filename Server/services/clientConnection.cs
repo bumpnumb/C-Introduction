@@ -53,9 +53,16 @@ namespace Server.services
 
                 case MessageType.Register:
 
+                    /*
+                     * 
+                    User,Pass      -> HandleRespons
+                    GetUserBy User -> DATABAS
+                       DATABAS        -> om USER  -> FAIL
+                       DATABAS        -> om !USER
+                    Register       -> DATABAS
+                    DATABAS        -> ok..
 
-
-
+                    */
 
                     rsp.Type = MessageType.Register;
                     rsp.Data = "New User created";
