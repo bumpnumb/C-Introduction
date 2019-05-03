@@ -84,9 +84,9 @@ namespace Client.services
                 Console.WriteLine("Heard " + msg);
             }
         }
-        public static void Send(string msg)
+        public static void Send(Message msg)
         {
-            if (msg == "quit")
+            if (msg.Data == "quit")
             {
                 ct.Cancel();
                 Stream.Close();
@@ -95,9 +95,9 @@ namespace Client.services
             }
             Console.WriteLine("Sending: " + msg);
 
-            int byteCount = Encoding.ASCII.GetByteCount(msg);
+            int byteCount = Encoding.ASCII.GetByteCount(msg.Data);
             byte[] sendData = new byte[byteCount];
-            sendData = Encoding.ASCII.GetBytes(msg);
+            sendData = Encoding.ASCII.GetBytes(msg.Data);
 
             Stream.Write(sendData, 0, sendData.Length);
         }
