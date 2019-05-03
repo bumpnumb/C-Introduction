@@ -124,8 +124,7 @@ namespace Client
             loginMsg.Type = MessageType.Login;
             loginMsg.Data = id + "=;=" + pw; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
             loginMsg.Cookie = "nomNom";
-            ClientControll newClient = new ClientControll();
-
+            ClientControll.Send(loginMsg);
         }
     }
 }
