@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Client.services;
 using Client.windows;
+using Newtonsoft.Json;
 
 namespace Client
 {
@@ -28,6 +29,7 @@ namespace Client
         {
             
             InitializeComponent();
+            ClientControll newClient = new ClientControll();
 
         }
 
@@ -124,7 +126,7 @@ namespace Client
             loginMsg.Type = MessageType.Login;
             loginMsg.Data = id + "=;=" + pw; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
             loginMsg.Cookie = "nomNom";
-            ClientControll newClient = new ClientControll();
+            ClientControll.Send(loginMsg);
 
         }
     }
