@@ -8,6 +8,8 @@ using System.Net.Sockets;
 using System.IO;
 using System.Net;
 
+using System.Security.Cryptography;
+
 namespace Server.services
 {
     class TcpConnection
@@ -92,11 +94,18 @@ namespace Server.services
                 }
 
                 string msg = Encoding.ASCII.GetString(recievedBuffer, 0, recievedBuffer.Length);
+
+
+
+                //Message msg = JsonConvert.SerializeObject(msg);
+                //msg.CreateResponse();
+
+
+
                 Console.WriteLine(ID.ToString() + " sent: " + msg);
                 //Broadcast(Name + " sent: " + msg);
 
                 Console.WriteLine("Broadcasting: " + msg);
-
 
                 foreach (var c in allClients)
                 {
