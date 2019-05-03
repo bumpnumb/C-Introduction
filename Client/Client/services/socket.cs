@@ -14,7 +14,6 @@ namespace Client.services
     public class User
     {
         public int ID { get; set; }
-        public int ID2 { get; set; }
         public string Name { get; set; }
         public string Salt { get; set; }
         public string Hash { get; set; }
