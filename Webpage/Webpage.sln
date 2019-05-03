@@ -6,19 +6,12 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DB8647EA-4311-4655-B470-734CA27C32D7}"
 	ProjectSection(SolutionItems) = preProject
 		Intex.html = Intex.html
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "css", "css", "{13C8EF3B-308A-49CE-8DAB-AD3A5A7E4AC7}"
-	ProjectSection(SolutionItems) = preProject
-		styles.css = styles.css
+		css\styles.css = css\styles.css
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{13C8EF3B-308A-49CE-8DAB-AD3A5A7E4AC7} = {DB8647EA-4311-4655-B470-734CA27C32D7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C75A6CF5-1081-4EF3-8BB5-0E4D7C2DFA96}
