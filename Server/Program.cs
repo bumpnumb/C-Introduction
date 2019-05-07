@@ -3,7 +3,7 @@ using Server.modules;
 using Server.services;
 using System.Net;
 using System.Net.Sockets;
-
+using WebSocketSharp.Server;
 
 namespace Server
 {
@@ -15,10 +15,11 @@ namespace Server
             //db.StartConnection();
             //db.GetUserByID(1);
 
-            //AsynchronousSocketListener.StartListening();
 
-            TcpConnection con = new TcpConnection();
+            //TcpConnection con = new TcpConnection();
 
+            var wssv = new WebSocketServer(4649);
+            wssv.AddWebSocketService<Echo>("/Echo");
 
             Console.WriteLine("this is debugging in 2019");
 
