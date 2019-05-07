@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DB8647EA-4311-4655-B470-734CA27C32D7}"
 	ProjectSection(SolutionItems) = preProject
 		Intex.html = Intex.html
+		script\main.js = script\main.js
 		css\styles.css = css\styles.css
 	EndProjectSection
 EndProject
