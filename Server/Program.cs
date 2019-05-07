@@ -1,27 +1,69 @@
-﻿using System;
-using Server.modules;
-using Server.services;
-using System.Net;
-using System.Net.Sockets;
+﻿
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using SignalRChat.Hubs;
 
-
-namespace Server
+namespace SignalRChat
 {
-    class Program
+    public class Startup
     {
-        static void Main(string[] args)
+        public Startup(IConfiguration configuration)
         {
-            //Database db = new Database();
-            //db.StartConnection();
-            //db.GetUserByID(1);
+            Configuration = configuration;
+        }
 
-            //AsynchronousSocketListener.StartListening();
+        public IConfiguration Configuration { get; }
 
-            TcpConnection con = new TcpConnection();
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
+            services.AddMvc();
 
-            Console.WriteLine("this is debugging in 2019");
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+            builder =>
+            {
+                builder.AllowAnyMethod().AllowAnyHeader()
+                       .WithOrigins("http://localhost:55830")
+                       .AllowCredentials();
+            }));
 
+            services.AddSignalR();
+        }
+
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseBrowserLink();
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
+            app.UseCors("CorsPolicy");
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chathub");
+            });
+            app.UseMvc();
         }
     }
+
+
+
+}
 }
