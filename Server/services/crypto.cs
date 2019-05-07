@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server.modules;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -7,22 +8,33 @@ namespace Server.services
 {
     static class crypto
     {
-            private static RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
+        private static RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
 
-        public static string GenerateCookie()
+        public static User GenerateSalt(string pw)
         {
-            byte[] cookieBytes = new byte[16];
-            rngCsp.GetBytes(cookieBytes);
+            byte[] saltBytes = new byte[16];
+            rngCsp.GetBytes(saltBytes);
+            var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);
 
-            StringBuilder builder = new StringBuilder();
+            byte[] hashBytes = salted.GetBytes(20);
 
-            for (int i = 0; i < cookieBytes.Length; i++)
+            User u = new User();
+            u.Salt = strBuilder(saltBytes);
+            u.Hash = strBuilder(hashBytes);
+            return u;
+        }
+        private static string strBuilder(byte[] arr)
+        {
+            StringBuilder Builder = new StringBuilder();
+            for (int i = 0; i < arr.Length; i++)
             {
-                builder.Append(cookieBytes[i].ToString("x2"));
+                Builder.Append(arr[i].ToString("x2"));
             }
             rngCsp.Dispose();
-            return builder.ToString();
+
+            return Builder.ToString();
         }
+
     }
 }
-}
+

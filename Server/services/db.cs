@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using MySql.Data.EntityFrameworkCore;
 using Server.modules;
 using System.Globalization;
+using Server.services;
 
 namespace Server.services
 {
@@ -59,51 +60,34 @@ namespace Server.services
                     data.AppendLine($"Name: {user.Name}");
                     data.AppendLine($"Salt: {user.Salt}");
                     data.AppendLine($"Hash: {user.Hash}");
-                    data.AppendLine($"Cookie: {user.Cookie}");
-                    data.AppendLine($"CookieTime: {user.CookieTime.ToString("u", CultureInfo.CreateSpecificCulture("en-US"))}");
                     Console.WriteLine(data.ToString());
                 }
             }
         }
-        public User GetUserByCookie(string Cookie)
+        public User GetUserByName(string name)
         {
             using (var context = new DivingCompDbContext())
             {
-                var u = context.Users.Where(x => x.Cookie == Cookie);
+                var u = context.Users.Where(x => x.Name == name).FirstOrDefault();
 
-                if (u != null)
-                {
-                    User temp = new User();
-                    foreach (var user in u) //should just return one but just in case ;)
-                    {
-                        //add error handling for multiple entries
-                        temp.ID = user.ID;
-                        temp.Name = user.Name;
-                        temp.Salt = user.Salt;
-                        temp.Hash = user.Hash;
-                        temp.Cookie = user.Cookie;
-                        temp.CookieTime = user.CookieTime;
-                    }
-                    return temp; //I guess this is some bootleg error handling
-                }
+                return u;
             }
-            return null;
         }
 
-
-        public void UpdateCookieTimeByID(int ID, DateTime t)
+        public void RegisterUserByIDPW(string name, string salt, string hash)
         {
-            using (var context = new DivingCompDbContext())
-            {
-                User u = context.Users.Where(x => x.ID == ID).FirstOrDefault();
+            var context = new DivingCompDbContext(); //är detta en ny "tabell" i databasen? i detta fall en ny user?
+            context.Database.EnsureCreated();
 
-                if (u != null)
-                {
-                    context.Users.Update(u);
-                    u.CookieTime = t;
-                    context.SaveChanges();
-                }
-            }
+            User u = new User
+            {
+                Name = name,
+                Salt = salt,
+                Hash = hash,
+            };
+
+            context.Users.Add(u);
+            context.SaveChanges();
         }
     }
 }
