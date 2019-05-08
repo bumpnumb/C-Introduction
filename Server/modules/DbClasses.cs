@@ -42,6 +42,11 @@ namespace Server.modules
         public int UID { get; set; }
         public int CID { get; set; }
     }
+    public class CompetitionJudge
+    {
+        public int UID { get; set; }
+        public int CID { get; set; }
+    }
 
     public class config
     {

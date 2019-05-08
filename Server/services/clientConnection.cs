@@ -40,15 +40,15 @@ namespace Server.services
                     break;
 
                 case MessageType.Login:
-                    if (!this.VerifyCookie())
-                    {
-                        //Cookie was not accepted so we should prompt a new login request.
+                    //if (!this.VerifyCookie())
+                    //{
+                    //Cookie was not accepted so we should prompt a new login request.
 
 
-                    }
+                    //}
                     rsp.Type = MessageType.Login;
                     rsp.Data = "Sucessfull login";
-                    rsp.user = GetUserByCookie();
+                    //rsp.user = GetUserByCookie();
                     break;
 
                 case MessageType.Register:
@@ -66,7 +66,6 @@ namespace Server.services
 
                     rsp.Type = MessageType.Register;
                     rsp.Data = "New User created";
-                    rsp.user.Cookie = crypto.GenerateCookie();
                     break;
 
                 default:
@@ -76,36 +75,36 @@ namespace Server.services
             return rsp;
         }
 
-        private User GetUserByCookie()
-        {
-            Database db = new Database();
-            User u = db.GetUserByCookie(this.Cookie);
-            // Add error handling
-            return u;
-        }
+        //private User GetUserByCookie()
+        //{
+        //    //Database db = new Database();
+        //    //User u = db.GetUserByCookie(this.Cookie);
+        //    // Add error handling
+        //    return u;
+        //}
 
-        private bool VerifyCookie()
-        {
-            // Connects with db
-            Database db = new Database();
-            // Find User by Cookie
-            User u = db.GetUserByCookie(this.Cookie);
-            // Checks CookieTime & refresh if valid
-            if (u != null && u.CookieTime >= DateTime.Now)
-            {
-                this.RefreshCookie();
-                this.user = u;
-                return true;
-            }
-            return false;
-        }
+        //private bool VerifyCookie()
+        //{
+        //    // Connects with db
+        //    Database db = new Database();
+        //    // Find User by Cookie
+        //    User u = db.GetUserByCookie(this.Cookie);
+        //    // Checks CookieTime & refresh if valid
+        //    if (u != null && u.CookieTime >= DateTime.Now)
+        //    {
+        //        this.RefreshCookie();
+        //        this.user = u;
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
-        private void RefreshCookie()
-        {
-            // Update Cookie timeout time with 24h
-            Database db = new Database();
-            db.UpdateCookieTimeByID(this.user.ID, DateTime.Now.AddHours(24));
-        }
+        //private void RefreshCookie()
+        //{
+        //    // Update Cookie timeout time with 24h
+        //    Database db = new Database();
+        //    db.UpdateCookieTimeByID(this.user.ID, DateTime.Now.AddHours(24));
+        //}
 
     }
 

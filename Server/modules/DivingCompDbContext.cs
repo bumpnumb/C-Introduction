@@ -13,9 +13,11 @@ namespace Server.modules
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Competition> Competitions { get; set; }
+        public DbSet<CompetitionJudge> CompetitionJudges { get; set; }
         public DbSet<CompetitionUser> CompetitionUsers { get; set; }
         public DbSet<UICJump> UICJumps { get; set; }
         public DbSet<Result> Results { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,6 +45,11 @@ namespace Server.modules
                 entity.Property(e => e.UID).IsRequired();
                 entity.Property(e => e.CID).IsRequired();
             });
+            modelBuilder.Entity<CompetitionJudge>(entity =>
+            {
+                entity.HasKey(e => e.UID);
+                entity.HasKey(e => e.CID);
+            });
             modelBuilder.Entity<UICJump>(entity =>
             {
                 entity.HasKey(e => e.ID);
@@ -53,8 +60,8 @@ namespace Server.modules
             });
             modelBuilder.Entity<Result>(entity =>
             {
-                entity.Property(e => e.UICJID).IsRequired();
-                entity.Property(e => e.Score).IsRequired();
+                entity.HasKey(e => e.UICJID);
+                entity.HasKey(e => e.Score);
             });
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
