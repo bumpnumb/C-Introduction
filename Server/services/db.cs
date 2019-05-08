@@ -57,54 +57,17 @@ namespace Server.services
                     var data = new StringBuilder();
                     data.AppendLine($"ID: {user.ID}");
                     data.AppendLine($"Name: {user.Name}");
+                    data.AppendLine($"Name: {user.Group}");
                     data.AppendLine($"Salt: {user.Salt}");
                     data.AppendLine($"Hash: {user.Hash}");
-                    data.AppendLine($"Cookie: {user.Cookie}");
-                    data.AppendLine($"CookieTime: {user.CookieTime.ToString("u", CultureInfo.CreateSpecificCulture("en-US"))}");
                     Console.WriteLine(data.ToString());
                 }
             }
         }
-        public User GetUserByCookie(string Cookie)
-        {
-            using (var context = new DivingCompDbContext())
-            {
-                var u = context.Users.Where(x => x.Cookie == Cookie);
-
-                if (u != null)
-                {
-                    User temp = new User();
-                    foreach (var user in u) //should just return one but just in case ;)
-                    {
-                        //add error handling for multiple entries
-                        temp.ID = user.ID;
-                        temp.Name = user.Name;
-                        temp.Salt = user.Salt;
-                        temp.Hash = user.Hash;
-                        temp.Cookie = user.Cookie;
-                        temp.CookieTime = user.CookieTime;
-                    }
-                    return temp; //I guess this is some bootleg error handling
-                }
-            }
-            return null;
-        }
 
 
-        public void UpdateCookieTimeByID(int ID, DateTime t)
-        {
-            using (var context = new DivingCompDbContext())
-            {
-                User u = context.Users.Where(x => x.ID == ID).FirstOrDefault();
 
-                if (u != null)
-                {
-                    context.Users.Update(u);
-                    u.CookieTime = t;
-                    context.SaveChanges();
-                }
-            }
-        }
+
     }
 }
 
