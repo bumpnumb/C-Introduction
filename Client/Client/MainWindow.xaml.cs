@@ -130,7 +130,7 @@ namespace Client
 
         }
 
-        private void openMainProgramWindow() {
+        public void openMainProgramWindow() {
             PageHolderWindow mnprg = new PageHolderWindow();
             App.Current.MainWindow = mnprg;
             this.Close();

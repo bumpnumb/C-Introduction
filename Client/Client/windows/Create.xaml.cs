@@ -10,27 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Client.windows.MainProgram;
 
-namespace Client.windows
-{
+namespace Client.windows {
     /// <summary>
-    /// Interaction logic for MainProgram.xaml
+    /// Interaction logic for Create.xaml
     /// </summary>
-    public partial class PageHolderWindow : Window
-    {
-        public PageHolderWindow() {
-            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-
+    public partial class Create : Page {
+        public Create() {
             InitializeComponent();
-            Main.Content = new Edit();
         }
-
-        public void SwitchWindow(string window) {
-            Main.Content = new Edit();
-        }
-
 
     }
 }
