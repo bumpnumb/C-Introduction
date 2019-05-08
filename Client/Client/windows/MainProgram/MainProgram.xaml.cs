@@ -11,38 +11,26 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Client.windows.MainProgram;
 
-namespace Client.windows.MainProgram
+namespace Client.windows
 {
     /// <summary>
     /// Interaction logic for MainProgram.xaml
     /// </summary>
-    public partial class PageHolderWindow : Window {
+    public partial class PageHolderWindow : Window
+    {
         public PageHolderWindow() {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
 
             InitializeComponent();
-            Switcher.pageSwitcher = this;
-            Switcher.Switch(new Edit());
+            Main.Content = new Edit();
         }
 
-        private void InitializeComponent() {
-            throw new NotImplementedException();
+        public void SwitchWindow(string window) {
+            Main.Content = new Edit();
         }
 
-        public void Navigate(UserControl nextPage) {
-            this.Content = nextPage;
-        }
 
-        public void Navigate(UserControl nextPage, object state) {
-            this.Content = nextPage;
-            SwitchInterface s = nextPage as SwitchInterface;
-
-            if (s != null)
-                s.UtilizeState(state);
-            else
-                throw new ArgumentException("NextPage is not ISwitchable! "
-                  + nextPage.Name.ToString());
-        }
     }
 }
