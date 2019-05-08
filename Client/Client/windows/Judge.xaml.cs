@@ -12,21 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Client.windows;
 
-namespace Client.windows.MainProgram
-{
+namespace Client.windows {
     /// <summary>
-    /// Interaction logic for Edit.xaml
+    /// Interaction logic for Judge.xaml
     /// </summary>
-    public partial class Edit : Page
-    {
-        public Edit() {
+    public partial class Judge : Page {
+        public Judge() {
             InitializeComponent();
-        }
-
-        private void Edit_Create_Btn(object sender, RoutedEventArgs e) {
-            PageHolderWindow.Main.Content = new Create();
         }
     }
 }
