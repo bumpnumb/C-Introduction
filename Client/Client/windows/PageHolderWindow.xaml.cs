@@ -11,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Client.windows.MainProgram;
 
 namespace Client.windows
 {
@@ -24,11 +23,12 @@ namespace Client.windows
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
 
             InitializeComponent();
-            //Main.Content = new Edit();
+            Main.Content = new AdminMainPage();
         }
 
-        public void SwitchWindow(string newPage) {
-            Main.Content = new Create();
+        private static void SwitchWindow(string newPage) {
+            if(newPage == "Create")
+                Main.Content = new Create();
         }
 
 
