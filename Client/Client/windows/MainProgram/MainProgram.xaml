@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainProgram" Height="768" Width="1024">
     <Grid Margin="5,0,-4.667,-0.333">
-        
+        <Frame x:Name="Main" />
     </Grid>
 </Window>
