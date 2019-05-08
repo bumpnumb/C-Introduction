@@ -10,27 +10,33 @@ namespace Server.modules
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public string SSN { get; set; }
+        public int Group { get; set; }
         public string Salt { get; set; }
         public string Hash { get; set; }
-        public string Cookie { get; set; }
-        public DateTime CookieTime { get; set; }
     }
-    public class Results
+    public class UICJump
     {
         public int ID { get; set; }
-        public int CID { get; set; }
-        public int UID { get; set; }
-        public int Result { get; set; }
+        public int UICID { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public float Difficulty { get; set; }
+    }
+    public class Result
+    {
+        public int UICJID { get; set; }
+        public float Score { get; set; }
     }
     public class Competition
     {
         public int ID { get; set; }
         public string Name { get; set; }
         public DateTime Start { get; set; }
-        public int Finished { get; set; }
+        public DateTime Finished { get; set; }
     }
 
-    public class CompetitionUsers
+    public class CompetitionUser
     {
         public int ID { get; set; }
         public int UID { get; set; }
