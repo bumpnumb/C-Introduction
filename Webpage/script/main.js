@@ -15,5 +15,11 @@ function sendTextMessage() {
         console.log("Socket is not open for connection.");
         return;
     }
-    socket.send("MDN");
+    socket.send("Hello");
 }
+
+window.onbeforeunload = function () {
+    socket.onclose = function () { }; // disable onclose handler first
+    socket.send("Exit<00>");
+    socket.close();
+};
