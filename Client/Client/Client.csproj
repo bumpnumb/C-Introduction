@@ -70,6 +70,8 @@
     <Compile Include="windows\MainProgram\MainProgram.xaml.cs">
       <DependentUpon>MainProgram.xaml</DependentUpon>
     </Compile>
+    <Compile Include="windows\MainProgram\Switcher.cs" />
+    <Compile Include="windows\MainProgram\SwitchInterface.cs" />
     <Compile Include="windows\SignUp.xaml.cs">
       <DependentUpon>SignUp.xaml</DependentUpon>
     </Compile>
