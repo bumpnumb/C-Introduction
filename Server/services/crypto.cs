@@ -10,7 +10,7 @@ namespace Server.services
     {
         private static RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
 
-        public static User GenerateSalt(string pw)
+        public static User GenerateSaltHash(string pw)
         {
             byte[] saltBytes = new byte[16];
             rngCsp.GetBytes(saltBytes);
@@ -23,6 +23,23 @@ namespace Server.services
             u.Hash = strBuilder(hashBytes);
             return u;
         }
+
+        public static bool AuthenticateLogin(string pw, string salt, string hash)
+        {
+
+            //gör om salt till saltbytes
+            //gör om hash till hashbytes2
+            //
+            //var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);
+
+            //byte[] hashBytes = salted.GetBytes(20);
+
+            //jämför hashBytes med hashbytes2
+
+            return true;
+        }
+
+
         private static string strBuilder(byte[] arr)
         {
             StringBuilder Builder = new StringBuilder();

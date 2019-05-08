@@ -74,7 +74,7 @@ namespace Server.services
             }
         }
 
-        public void RegisterUserByIDPW(string name, string salt, string hash)
+        public void RegisterUser(string name, string salt, string hash)
         {
             var context = new DivingCompDbContext(); //är detta en ny "tabell" i databasen? i detta fall en ny user?
             context.Database.EnsureCreated();
@@ -89,6 +89,24 @@ namespace Server.services
             context.Users.Add(u);
             context.SaveChanges();
         }
+
+        public string GetSaltByID(int ID)
+        {
+            using (var context = new DivingCompDbContext())
+            {
+                User u = context.Users.Where(x => x.ID == ID).FirstOrDefault();
+                return u.Salt;                
+            }
+        }
+        public string GetHashByID(int ID)
+        {
+            using (var context = new DivingCompDbContext())
+            {
+                User u = context.Users.Where(x => x.ID == ID).FirstOrDefault();
+                return u.Hash;
+            }
+        }
+
     }
 }
 

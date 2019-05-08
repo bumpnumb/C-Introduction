@@ -48,6 +48,10 @@ namespace Server.services
                     rsp.user = db.GetUserByName(nameLogin);
                     if (rsp.user != null)
                     {
+                        string salt = db.GetSaltByID(this.user.ID);
+                        string hash = db.GetHashByID(this.user.ID);
+                        crypto.AuthenticateLogin(passwLogin, hash, salt);
+
                         //successfull login!
                         Console.WriteLine("Successfull login!");
                     }
@@ -71,22 +75,12 @@ namespace Server.services
                         //send(thomas eror);
                     }
                     else
-                    {
-                        rsp.user = db.RegisterUserByIDPW(name, passw);
-                        if(rsp.user != null)
-                        {
-                            //success
-                        }
+                    { 
+                        User temp = crypto.GenerateSaltHash(passw);
+                        db.RegisterUser(name, temp.Salt, temp.Hash)
                     }
                     
-                    /*
-                    User,Pass      -> HandleRespons
-                    GetUserBy User -> DATABAS
-                       DATABAS        -> om USER  -> FAIL
-                       DATABAS        -> om !USER
-                    Register       -> DATABAS
-                    DATABAS        -> LOGIN 
-                    */
+                    //DATABAS        -> LOGIN 
                     break;
 
                 default:
