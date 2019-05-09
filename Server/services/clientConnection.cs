@@ -14,7 +14,7 @@ using System.Security.Cryptography;
 namespace Server.services
 {
 
-    public enum MessageType { NoType, Login, Register }
+    public enum MessageType { NoType, Login, Register, Competition }
 
     public class Response
     {
@@ -55,10 +55,12 @@ namespace Server.services
                         {
                             //successfull login!
                             Console.WriteLine("Successfull login!");
+                            rsp.Data = "Sucessfull login";
                         }
                         else
                         {
                             //wrong password
+                            //fail, prompt a new login request.
                             Console.WriteLine("Wrong passsword, try again!");
                         }
                     }
@@ -67,7 +69,6 @@ namespace Server.services
                         //fail, prompt a new login request.
                         Console.WriteLine("There is no user with that name, try again!");
                     }
-                    rsp.Data = "Sucessfull login";
                     break;
 
                 case MessageType.Register:
@@ -85,12 +86,28 @@ namespace Server.services
                         User temp = crypto.GenerateSaltHash(passw);
                         db.RegisterUser(name, temp.Salt, temp.Hash);
                     }
-                    
-                    //DATABAS        -> LOGIN 
+
                     break;
 
-                //case MessageType. :
-                    //break;
+                //Ska vi typ ha, ViewCompetition och CreateCompetition istället? 
+                //där vi har i ViewCompetition -> GetAll, GetActive, osv...,
+                //men i CreateCompetition, bara skicka all information till databasen
+                case MessageType.Competition:   
+                    switch(this.Data)
+                    {
+                        case "GetAll":
+                            rsp.Data = "json...(GetAllCompetitions())";
+                            break;
+
+                        case "GetActive":
+                            rsp.Data = "json...(GetActiveCompetitions())";
+                            break;
+
+                        case "CreateComp":
+                            rsp.Data = "json...(CreateCompetitions())";
+                            break;
+                    }
+                    break;
 
                 default:
                     break;
