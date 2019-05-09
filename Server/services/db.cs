@@ -95,7 +95,7 @@ namespace Server.services
             using (var context = new DivingCompDbContext())
             {
                 User u = context.Users.Where(x => x.ID == ID).FirstOrDefault();
-                return u.Salt;                
+                return u.Salt;
             }
         }
         public string GetHashByID(int ID)
@@ -105,6 +105,13 @@ namespace Server.services
                 User u = context.Users.Where(x => x.ID == ID).FirstOrDefault();
                 return u.Hash;
             }
+        }
+
+        public List<Competition> GetAllCompetitions()
+        {
+            using (var context = new DivingCompDbContext())
+                return context.Competitions.ToList<Competition>();
+
         }
 
     }
