@@ -15,11 +15,12 @@ using System.Windows.Shapes;
 
 namespace Client.windows {
     /// <summary>
-    /// Interaction logic for Judge.xaml
+    /// Interaction logic for Create.xaml
     /// </summary>
-    public partial class Judge : Page {
-        public Judge() {
+    public partial class CreateAndEditPage : Page {
+        public CreateAndEditPage() {
             InitializeComponent();
         }
+
     }
 }

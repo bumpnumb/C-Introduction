@@ -13,6 +13,8 @@ namespace Client
     /// </summary>
     public partial class App : Application
     {
-
+        public static MainWindow MainWindowRef;
     }
+
+    
 }
