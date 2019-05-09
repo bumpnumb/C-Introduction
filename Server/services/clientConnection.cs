@@ -50,17 +50,23 @@ namespace Server.services
                     {
                         string salt = db.GetSaltByID(this.user.ID);
                         string hash = db.GetHashByID(this.user.ID);
-                        crypto.AuthenticateLogin(passwLogin, hash, salt);
 
-                        //successfull login!
-                        Console.WriteLine("Successfull login!");
+                        if(crypto.AuthenticateLogin(passwLogin, hash, salt) == true)
+                        {
+                            //successfull login!
+                            Console.WriteLine("Successfull login!");
+                        }
+                        else
+                        {
+                            //wrong password
+                            Console.WriteLine("Wrong passsword, try again!");
+                        }
                     }
                     else
                     {
                         //fail, prompt a new login request.
-                        //break;?
+                        Console.WriteLine("There is no user with that name, try again!");
                     }
-
                     rsp.Data = "Sucessfull login";
                     break;
 
@@ -82,6 +88,9 @@ namespace Server.services
                     
                     //DATABAS        -> LOGIN 
                     break;
+
+                //case MessageType. :
+                    //break;
 
                 default:
                     break;

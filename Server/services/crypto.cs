@@ -16,6 +16,7 @@ namespace Server.services
             rngCsp.GetBytes(saltBytes);
             var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);
             byte[] hashBytes = salted.GetBytes(20);
+
             User u = new User();
             u.Salt = strBuilder(saltBytes);
             u.Hash = strBuilder(hashBytes);
@@ -24,16 +25,19 @@ namespace Server.services
 
         public static bool AuthenticateLogin(string pw, string salt, string hash)
         {
+            byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
+            var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);
+            byte[] hashBytes = Encoding.ASCII.GetBytes(hash);
 
-            //gör om salt till saltbytes
-            //gör om hash till hashbytes2
-            //
-            //var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);
+            byte[] generatedHashBytes = salted.GetBytes(20);
 
-            //byte[] hashBytes = salted.GetBytes(20);
+            //generera ett nytt hash utifrån det pw och salt som vi har som argument i funktionen
+            //jämför det nya hashet med hashet som vi har som argument i funktionen
 
-            //jämför hashBytes med hashbytes2
-
+            if(hashBytes == generatedHashBytes)
+            {
+                return false;
+            }
             return true;
         }
 
