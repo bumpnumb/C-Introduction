@@ -9,6 +9,7 @@ using System.IO;
 using System.Net;
 
 using System.Security.Cryptography;
+using Newtonsoft.Json;
 
 namespace Server.services
 {
@@ -95,23 +96,20 @@ namespace Server.services
 
                 string msg = Encoding.ASCII.GetString(recievedBuffer, 0, recievedBuffer.Length);
 
-
-
-                //Message msg = JsonConvert.SerializeObject(msg);
-                //msg.CreateResponse();
-
-
+                Message message = JsonConvert.DeserializeObject<Message>(msg);
+                Response re = message.CreateResponse();
 
                 Console.WriteLine(ID.ToString() + " sent: " + msg);
                 //Broadcast(Name + " sent: " + msg);
 
-                Console.WriteLine("Broadcasting: " + msg);
+                Console.WriteLine("replying with: " + JsonConvert.SerializeObject(re));
+                Send(JsonConvert.SerializeObject(re));
 
-                foreach (var c in allClients)
-                {
-                    //if (c != this) //uncomment for multiple client usage
-                    c.Send(msg);
-                }
+                //foreach (var c in allClients)
+                //{
+                //    //if (c != this) //uncomment for multiple client usage
+                //    c.Send(msg);
+                //}
 
             }
         }
