@@ -67,8 +67,8 @@
     <Compile Include="windows\Judge.xaml.cs">
       <DependentUpon>Judge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="windows\MainProgram.xaml.cs">
-      <DependentUpon>MainProgram.xaml</DependentUpon>
+    <Compile Include="windows\PageHolderWindow.xaml.cs">
+      <DependentUpon>PageHolderWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="windows\SignUp.xaml.cs">
       <DependentUpon>SignUp.xaml</DependentUpon>
@@ -98,7 +98,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="windows\MainProgram.xaml">
+    <Page Include="windows\PageHolderWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

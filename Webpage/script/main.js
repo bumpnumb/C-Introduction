@@ -15,7 +15,7 @@ function sendTextMessage() {
         console.log("Socket is not open for connection.");
         return;
     }
-    socket.send("Hello");
+    socket.send("GET ALL TOURNAMENTS");
 }
 
 window.onbeforeunload = function () {

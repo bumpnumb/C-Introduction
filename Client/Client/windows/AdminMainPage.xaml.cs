@@ -24,5 +24,10 @@ namespace Client.windows
         public AdminMainPage() {
             InitializeComponent();
         }
+
+        private void Edit_Create_Btn(object sender, RoutedEventArgs e) {
+
+            PageHolderWindow.SwitchWindow("Create");
+        }
     }
 }

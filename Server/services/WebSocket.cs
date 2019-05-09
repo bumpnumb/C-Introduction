@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Security.Cryptography;
 using System.Collections.Generic;
+using Server.modules;
+using Newtonsoft.Json;
 
 namespace Server.services
 {
@@ -117,9 +119,19 @@ namespace Server.services
                             Disconnect();
                             return;
                         }
-                        else
-                        {
 
+
+                        switch (msg)
+                        {
+                            case "GET ALL TOURNAMENTS":
+                                Database db = new Database();
+                                List<Competition> comp = db.GetAllCompetitions();
+                                Send(JsonConvert.SerializeObject(comp));
+
+
+                                break;
+                            default:
+                                break;
                         }
 
 
