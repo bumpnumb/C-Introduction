@@ -81,6 +81,8 @@ namespace Server.services
                     if (rsp.user != null)
                     {
                         //send(thomas eror);
+                        Console.WriteLine("User already exists!");
+                        rsp.Data = "USER EXISTS!";
                     }
                     else
                     { 
