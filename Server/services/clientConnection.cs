@@ -77,7 +77,7 @@ namespace Server.services
                     else
                     { 
                         User temp = crypto.GenerateSaltHash(passw);
-                        db.RegisterUser(name, temp.Salt, temp.Hash)
+                        db.RegisterUser(name, temp.Salt, temp.Hash);
                     }
                     
                     //DATABAS        -> LOGIN 
