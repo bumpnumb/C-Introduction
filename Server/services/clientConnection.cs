@@ -42,8 +42,8 @@ namespace Server.services
 
                 case MessageType.Login:
                     rsp.Type = MessageType.Login;
-                    string nameLogin = rsp.Data.Split("=;=")[0];
-                    string passwLogin = rsp.Data.Split("=;=")[1];
+                    string nameLogin = this.Data.Split("=;=")[0];
+                    string passwLogin = this.Data.Split("=;=")[1];
 
                     rsp.user = db.GetUserByName(nameLogin);
                     if (rsp.user != null)
@@ -96,20 +96,20 @@ namespace Server.services
                     switch(this.Data)
                     {
                         case "GetAll":
-                            Competition GetAll = GetAllCompetitions();
-                            rsp.Data = JsonConvert.SerializeObject(GetAll);
+                            //Competition GetAll = GetAllCompetitions();
+                            //rsp.Data = JsonConvert.SerializeObject(GetAll);
 
                             break;
 
                         case "GetActive":
-                            Competition GetActive = GetActiveCompetitions();
-                            rsp.Data = JsonConvert.SerializeObject(GetActive);
+                            //Competition GetActive = GetActiveCompetitions();
+                            //rsp.Data = JsonConvert.SerializeObject(GetActive);
 
                             break;
 
                         case "CreateCompetition":
-                            Competition CreateComp = CreateCompetition();
-                            rsp.Data = JsonConvert.SerializeObject(CreateComp);
+                            //Competition CreateComp = CreateCompetition();
+                            //rsp.Data = JsonConvert.SerializeObject(CreateComp);
 
                             break;
                     }
