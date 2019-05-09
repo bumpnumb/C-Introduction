@@ -25,9 +25,6 @@ namespace Client
     {
         public MainWindow()
         {
-            Rect workArea = System.Windows.SystemParameters.WorkArea;
-            this.Left = (workArea.Width - this.Width) / 2 + workArea.Left;
-            this.Top = (workArea.Height - this.Height) / 2 + workArea.Top;
             InitializeComponent();
             
         }
@@ -37,7 +34,15 @@ namespace Client
             this.Main.Navigate(new SignInPage());
         }
 
-        
+        public void CenterWindowOnScreen() {
+            double screenWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
+            double screenHeight = System.Windows.SystemParameters.PrimaryScreenHeight;
+            double windowWidth = this.Width;
+            double windowHeight = this.Height;
+            this.Left = (screenWidth / 2) - (windowWidth / 2);
+            this.Top = (screenHeight / 2) - (windowHeight / 2);
+        }
+
     }
 }
 

@@ -20,6 +20,7 @@ namespace Client.windows {
     public partial class JudgePage : Page {
         public JudgePage() {
             InitializeComponent();
+            App.MainWindowRef.CenterWindowOnScreen();
         }
     }
 }
