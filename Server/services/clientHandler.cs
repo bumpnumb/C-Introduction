@@ -75,7 +75,7 @@ namespace Server.services
             CancellationToken ct = (CancellationToken)obj;
             while (!ct.IsCancellationRequested)
             {
-                byte[] recievedBuffer = new byte[100];
+                byte[] recievedBuffer = new byte[100]; // Dynamic buffer size here (or other fix maybe)
                 try
                 {
                     Stream.Read(recievedBuffer, 0, recievedBuffer.Length);
