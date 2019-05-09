@@ -33,6 +33,9 @@ namespace Server.services
         {
             Database db = new Database();
 
+            string name = this.Data.Split("=;=")[0];
+            string passw = this.Data.Split("=;=")[1];
+
             Response rsp = new Response();
             switch (this.Type)
             {
@@ -42,39 +45,53 @@ namespace Server.services
 
                 case MessageType.Login:
                     rsp.Type = MessageType.Login;
-                    string nameLogin = this.Data.Split("=;=")[0];
-                    string passwLogin = this.Data.Split("=;=")[1];
+                    //string name = this.Data.Split("=;=")[0];      flyttad upp
+                    //string passw = this.Data.Split("=;=")[1];
 
-                    rsp.user = db.GetUserByName(nameLogin);
+                    rsp.user = db.GetUserByName(name);
+                    if (rsp.user != null)
+                    {
+                        //send(thomas eror);
+                    }
+                    else
+                    {
+                        User temp = crypto.GenerateSaltHash(passw);
+                        db.RegisterUser(name, temp.Salt, temp.Hash);
+                    }
+
+
+                    rsp.user = db.GetUserByName(name);
                     if (rsp.user != null)
                     {
                         string salt = db.GetSaltByID(this.user.ID);
                         string hash = db.GetHashByID(this.user.ID);
 
-                        if(crypto.AuthenticateLogin(passwLogin, hash, salt) == true)
+                        if (crypto.AuthenticateLogin(passw, hash, salt) == true)
                         {
                             //successfull login!
                             Console.WriteLine("Successfull login!");
-                            rsp.Data = "Sucessfull login";
+                            rsp.Data = "Sucessfull login!";
                         }
                         else
                         {
                             //wrong password
                             //fail, prompt a new login request.
                             Console.WriteLine("Wrong passsword, try again!");
+                            rsp.Data = "WRONG PASSWORD!";
                         }
                     }
                     else
                     {
                         //fail, prompt a new login request.
                         Console.WriteLine("There is no user with that name, try again!");
+                        rsp.Data = "NO USER!";
                     }
                     break;
 
                 case MessageType.Register:
                     rsp.Type = MessageType.Register;
-                    string name = rsp.Data.Split("=;=")[0];
-                    string passw = rsp.Data.Split("=;=")[1];
+                    //string name = rsp.Data.Split("=;=")[0];       flyttad upp
+                    //string passw = rsp.Data.Split("=;=")[1];
 
                     rsp.user = db.GetUserByName(name);
                     if (rsp.user != null)
