@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,8 @@ namespace Client.windows
     /// </summary>
     public partial class SignUpPage : Page
     {
+        string ID;
+        string PW;
         public SignUpPage() {
             InitializeComponent();
             App.MainWindowRef.CenterWindowOnScreen();
@@ -57,10 +60,13 @@ namespace Client.windows
 
         private void Window_KeyDownEvent(object sender, KeyEventArgs e) {
             if (IDBox.Text != "" && IDBox.Text != "Username") {
-                if (PwBox1.Password != "" && PwBox1.Password != "Password" && PwBox2.Password != "" && PwBox2.Password != "Password") {
+                if (PwBox1.Password != "" && PwBox1.Password != "Password" && PwBox2.Password != "" && PwBox2.Password != "Password" && PwBox1.Password == PwBox2.Password) {
                     if (e.Key == Key.Enter) {
+                        ID = IDBox.Text;
+                        PW = PwBox1.Password;
+                        register(ID, PW);
                         App.MainWindowRef.Main.Navigate(new SignInPage());
-                        //AsynchronousClient.StartClient();
+                        
                     }
                 }
 
@@ -68,7 +74,8 @@ namespace Client.windows
         }
 
         private void signup(object sender, RoutedEventArgs e) {
-            //AsynchronousClient.StartClient();
+            
+            
 
         }
 
@@ -77,6 +84,19 @@ namespace Client.windows
             App.MainWindowRef.Main.Navigate(new SignInPage());
 
             
+
+        }
+
+        private void register(string id, string pw) {
+            Message registerMsg = new Message();
+            registerMsg.Type = MessageType.Register;
+            registerMsg.Data = id + "=;=" + pw; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
+            ClientControll.Send(registerMsg);
+            /*Fixa en snygg json grej här för ID och PW så det går att ha vilket namn som helst
+            "{
+                'ID': id,
+                'PW': pw
+            }"*/
 
         }
     }

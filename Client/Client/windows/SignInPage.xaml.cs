@@ -67,8 +67,8 @@ namespace Client.windows
                         PW = PwBox.Password;
                         login(ID, PW);
                         //listen for positive response
-                        if(listenForResponse())
-                            openMainProgramWindow();
+                        //if(listenForResponse())
+                        openMainProgramWindow();
                     }
                 }
 
@@ -107,14 +107,14 @@ namespace Client.windows
 
         }
 
-        private void listenForResponse() {
-            Response responseMsg = new Response();
-            responseMsg.Type = MessageType.Login;
-            responseMsg.Data = "asdasd";
-            responseMsg.user =
+        //private void listenForResponse() {
+        //    Response responseMsg = new Response();
+        //    responseMsg.Type = MessageType.Login;
+        //    responseMsg.Data = "asdasd";
+        //    responseMsg.user = 
 
-            ClientControll.Listen();
-        }
+        //    //ClientControll.Listen();
+        //}
 
         public void openMainProgramWindow() {
 
