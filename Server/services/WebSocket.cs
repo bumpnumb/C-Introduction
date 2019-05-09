@@ -123,10 +123,27 @@ namespace Server.services
 
                         switch (msg)
                         {
-                            case "GET ALL TOURNAMENTS":
+                            case "GET ALL COMPETITIONS":
                                 Database db = new Database();
                                 List<Competition> comp = db.GetAllCompetitions();
-                                Send(JsonConvert.SerializeObject(comp));
+                                int i = 0;
+                                foreach (Competition c in comp)
+                                {
+                                    i++;
+                                }
+                                string testeriioni = JsonConvert.SerializeObject(comp);
+
+                                string holder = "{\"Competitions\":" + i + ",\"Data\":" + JsonConvert.SerializeObject(comp) + "}";
+                                WebMessage wm = new WebMessage();
+                                wm.Data = comp;
+                                wm.Type = webType.Competitions;
+                                wm.Num = i;
+
+
+
+
+                                Send(JsonConvert.SerializeObject(wm));
+
 
 
                                 break;
@@ -140,14 +157,71 @@ namespace Server.services
                 }
             }
         }
+        private byte[] EncodeOutgoingMessage(string message)
+        {
+            /* this is how and header should be made:
+             *   - first byte  -> FIN + RSV1 + RSV2 + RSV3 + OPCODE
+             *   - second byte -> MASK + payload length (only 7 bits)
+             *   - third, fourth, fifth and sixth bytes -> (optional) XOR encoding key bytes
+             *   - following bytes -> the encoded (if a key has been used) payload
+             *
+             *   FIN    [1 bit]      -> 1 if the whole message is contained in this frame, 0 otherwise
+             *   RSVs   [1 bit each] -> MUST be 0 unless an extension is negotiated that defines meanings for non-zero values
+             *   OPCODE [4 bits]     -> defines the interpretation of the carried payload
+             *
+             *   MASK           [1 bit]  -> 1 if the message is XOR masked with a key, 0 otherwise
+             *   payload length [7 bits] -> can be max 1111111 (127 dec), so, the payload cannot be more than 127 bytes per frame
+             *
+             * valid OPCODES:
+             *   - 0000 [0]             -> continuation frame
+             *   - 0001 [1]             -> text frame
+             *   - 0010 [2]             -> binary frame
+             *   - 0011 [3] to 0111 [7] -> reserved for further non-control frames
+             *   - 1000 [8]             -> connection close
+             *   - 1001 [9]             -> ping
+             *   - 1010 [A]             -> pong
+             *   - 1011 [B] to 1111 [F] -> reserved for further control frames
+             */
+            // in our case the first byte will be 10000001 (129 dec = 81 hex).
+            // the length is going to be (masked)1 << 7 (OR) 0 + payload length.
+            byte[] payload = Encoding.UTF8.GetBytes(message);
+            Console.WriteLine(payload);
 
+            byte[] header = new byte[] { 0x81, (byte)(payload.Length) };
+            // by default the mask array is empty...
+            byte[] maskKey = new byte[4];
+
+            // let's get the bytes of the message to send.
+            // this is going to be the whole frame to send.
+            byte[] frame = new byte[header.Length + payload.Length];
+            // add the header.
+            Array.Copy(header, frame, header.Length);
+            // add the mask if necessary.
+            if (maskKey.Length > 0)
+            {
+                Array.Copy(maskKey, 0, frame, header.Length, maskKey.Length);
+                // let's encode the payload using the mask.
+                for (int i = 0; i < payload.Length; i++)
+                {
+                    payload[i] = (byte)(payload[i] ^ maskKey[i % maskKey.Length]);
+                }
+            }
+
+
+            // add the payload.
+            Array.Copy(payload, 0, frame, header.Length, payload.Length);
+            foreach (char item in frame)
+            {
+                Console.Write(item);
+            }
+            Console.WriteLine();
+
+            return frame;
+        }
         void Send(string msg)
         {
-            int byteCount = Encoding.ASCII.GetByteCount(msg);
-            byte[] sendData = new byte[byteCount];
-            sendData = Encoding.ASCII.GetBytes(msg);
-
-            Stream.Write(sendData, 0, sendData.Length);
+            byte[] m = EncodeOutgoingMessage(msg);
+            Stream.Write(m, 0, m.Length);
         }
 
         public byte[] javaScriptUser(Byte[] data)

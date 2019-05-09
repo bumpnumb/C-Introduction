@@ -10,12 +10,26 @@ socket.onopen = function (openEvent) {
     sendTextMessage();
 };
 
-function sendTextMessage() {
+socket.onmessage = function (e) {
+    console.log("Recieved: " + JSON.parse(e.data));
+    //"[{\"ID\":1,\"Name\":\"Första Tävlingen\",\"Start\":\"2019-04-15T21:51:24\",\"Finished\":\"0001-01-01T00:00:00\""
+
+    var obj = JSON.parse(e.data);
+
+};
+
+function getAllCompetitions() {
+    sendTextMessage("GET ALL COMPETITIONS");
+}
+
+
+function sendTextMessage(message) {
     if (socket.readyState !== WebSocket.OPEN) {
         console.log("Socket is not open for connection.");
         return;
     }
-    socket.send("GET ALL TOURNAMENTS");
+    socket.send(message);
+    console.log("Sent: " + message);
 }
 
 window.onbeforeunload = function () {
