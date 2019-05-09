@@ -80,7 +80,7 @@ namespace Client.services
             CancellationToken ct = (CancellationToken)obj;
             while (!ct.IsCancellationRequested)
             {
-                byte[] recievedBuffer = new byte[100];
+                byte[] recievedBuffer = new byte[400]; // Fixa en bättre buffersize än en specifik siffra (dynamisk vore najs)
                 try
                 {
                     Stream.Read(recievedBuffer, 0, recievedBuffer.Length);

@@ -59,22 +59,6 @@ namespace Client.windows
             }
         }
 
-        private void Window_KeyDownEvent(object sender, KeyEventArgs e) {
-            if (IDBox.Text != "" && IDBox.Text != "Username") {
-                if (PwBox.Password != "" && PwBox.Password != "Password") {
-                    if (e.Key == Key.Enter) {
-                        ID = IDBox.Text;
-                        PW = PwBox.Password;
-                        login(ID, PW);
-                        //listen for positive response
-                        //if(listenForResponse())
-                        openMainProgramWindow();
-                    }
-                }
-
-            }
-        }
-
         private void signin(object sender, RoutedEventArgs e) {
             if (IDBox.Text != "" && IDBox.Text != "Username") {
                 if (PwBox.Password != "" && PwBox.Password != "Password") {
@@ -122,6 +106,26 @@ namespace Client.windows
             App.MainWindowRef.Width = 1028;
             App.MainWindowRef.Main.Navigate(new AdminMainPage());
 
+        }
+
+        private void Key_Down_Event(object sender, KeyEventArgs e)
+        {
+            if (IDBox.Text != "" && IDBox.Text != "Username")
+            {
+                if (PwBox.Password != "" && PwBox.Password != "Password")
+                {
+                    if (e.Key == Key.Enter)
+                    {
+                        ID = IDBox.Text;
+                        PW = PwBox.Password;
+                        login(ID, PW);
+                        //listen for positive response
+                        //if(listenForResponse())
+                        openMainProgramWindow();
+                    }
+                }
+
+            }
         }
     }
 }

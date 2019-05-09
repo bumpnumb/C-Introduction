@@ -58,21 +58,6 @@ namespace Client.windows
             }
         }
 
-        private void Window_KeyDownEvent(object sender, KeyEventArgs e) {
-            if (IDBox.Text != "" && IDBox.Text != "Username") {
-                if (PwBox1.Password != "" && PwBox1.Password != "Password" && PwBox2.Password != "" && PwBox2.Password != "Password" && PwBox1.Password == PwBox2.Password) {
-                    if (e.Key == Key.Enter) {
-                        ID = IDBox.Text;
-                        PW = PwBox1.Password;
-                        register(ID, PW);
-                        App.MainWindowRef.Main.Navigate(new SignInPage());
-                        
-                    }
-                }
-
-            }
-        }
-
         private void signup(object sender, RoutedEventArgs e) {
             if(PwBox1.Password == PwBox2.Password && PwBox1.Password != "" && PwBox1.Password != "Password" && PwBox2.Password != "" && PwBox2.Password != "Password") { 
                 ID = IDBox.Text;
@@ -101,6 +86,25 @@ namespace Client.windows
                 'PW': pw
             }"*/
 
+        }
+
+        private void Key_Down_Event(object sender, KeyEventArgs e)
+        {
+            if (IDBox.Text != "" && IDBox.Text != "Username")
+            {
+                if (PwBox1.Password != "" && PwBox1.Password != "Password" && PwBox2.Password != "" && PwBox2.Password != "Password" && PwBox1.Password == PwBox2.Password)
+                {
+                    if (e.Key == Key.Enter)
+                    {
+                        ID = IDBox.Text;
+                        PW = PwBox1.Password;
+                        register(ID, PW);
+                        App.MainWindowRef.Main.Navigate(new SignInPage());
+
+                    }
+                }
+
+            }
         }
     }
 }
