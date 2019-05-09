@@ -74,9 +74,12 @@ namespace Client.windows
         }
 
         private void signup(object sender, RoutedEventArgs e) {
-            
-            
-
+            if(PwBox1.Password == PwBox2.Password && PwBox1.Password != "" && PwBox1.Password != "Password" && PwBox2.Password != "" && PwBox2.Password != "Password") { 
+                ID = IDBox.Text;
+                PW = PwBox1.Password;
+                register(ID, PW);
+                App.MainWindowRef.Main.Navigate(new SignInPage());
+            }
         }
 
         private void signinBtn(object sender, MouseButtonEventArgs e) {
