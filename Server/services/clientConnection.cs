@@ -96,15 +96,21 @@ namespace Server.services
                     switch(this.Data)
                     {
                         case "GetAll":
-                            rsp.Data = "json...(GetAllCompetitions())";
+                            Competition GetAll = GetAllCompetitions();
+                            rsp.Data = JsonConvert.SerializeObject(GetAll);
+
                             break;
 
                         case "GetActive":
-                            rsp.Data = "json...(GetActiveCompetitions())";
+                            Competition GetActive = GetActiveCompetitions();
+                            rsp.Data = JsonConvert.SerializeObject(GetActive);
+
                             break;
 
-                        case "CreateComp":
-                            rsp.Data = "json...(CreateCompetitions())";
+                        case "CreateCompetition":
+                            Competition CreateComp = CreateCompetition();
+                            rsp.Data = JsonConvert.SerializeObject(CreateComp);
+
                             break;
                     }
                     break;
