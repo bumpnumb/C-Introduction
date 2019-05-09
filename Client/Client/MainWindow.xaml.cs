@@ -83,10 +83,8 @@ namespace Client
                         ID = IDBox.Text;
                         PW = PwBox.Password;
                         login(ID, PW);
-                        PageHolderWindow mnprg = new PageHolderWindow();
-                        App.Current.MainWindow = mnprg;
-                        this.Close();
-                        mnprg.Show();
+                        //listen for positive response
+                        openMainProgramWindow();
                         //AsynchronousClient.StartClient();
                     }
                 }
@@ -98,11 +96,9 @@ namespace Client
         {
             ID = IDBox.Text;
             PW = PwBox.Password;
-            PageHolderWindow mnprg = new PageHolderWindow();
-            App.Current.MainWindow = mnprg;
-            this.Close();
-            mnprg.Show();
             login(ID, PW);
+            //listen for positive response
+            openMainProgramWindow();
             // AsynchronousClient.StartClient();
         }
 
@@ -125,9 +121,20 @@ namespace Client
             Message loginMsg = new Message();
             loginMsg.Type = MessageType.Login;
             loginMsg.Data = id + "=;=" + pw; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
-            loginMsg.Cookie = "nomNom";
             ClientControll.Send(loginMsg);
+            /*Fixa en snygg json grej här för ID och PW så det går att ha vilket namn som helst
+            "{
+                'ID': id,
+                'PW': pw
+            }"*/
 
+        }
+
+        public void openMainProgramWindow() {
+            PageHolderWindow mnprg = new PageHolderWindow();
+            App.Current.MainWindow = mnprg;
+            this.Close();
+            mnprg.Show();
         }
     }
 }

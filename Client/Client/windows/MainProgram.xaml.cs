@@ -11,15 +11,26 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Client.windows.MainProgram;
 
-namespace Client.windows {
+namespace Client.windows
+{
     /// <summary>
     /// Interaction logic for MainProgram.xaml
     /// </summary>
-    public partial class PageHolderWindow : Window {
+    public partial class PageHolderWindow : Window
+    {
         public PageHolderWindow() {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+
             InitializeComponent();
+            //Main.Content = new Edit();
         }
+
+        public void SwitchWindow(string newPage) {
+            Main.Content = new Create();
+        }
+
+
     }
 }

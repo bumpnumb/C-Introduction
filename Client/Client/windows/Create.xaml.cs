@@ -13,13 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client.windows.MainProgram {
+namespace Client.windows {
     /// <summary>
-    /// Interaction logic for Edit.xaml
+    /// Interaction logic for Create.xaml
     /// </summary>
-    public partial class Edit : Page {
-        public Edit() {
+    public partial class Create : Page {
+        public Create() {
             InitializeComponent();
         }
+
     }
 }

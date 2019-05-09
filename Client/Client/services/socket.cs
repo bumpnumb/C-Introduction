@@ -28,7 +28,19 @@ namespace Client.services
 
         public void HandleResponse()
         {
-            //handle response;
+            //handle response; do the thiung
+
+            switch (this.Type)
+            {
+                case MessageType.NoType:
+                    break;
+                case MessageType.Login:
+                    break;
+                case MessageType.Register:
+                    break;
+                default:
+                    break;
+            }
         }
 
     }
@@ -80,6 +92,12 @@ namespace Client.services
                     break;
                 }
                 string msg = Encoding.ASCII.GetString(recievedBuffer, 0, recievedBuffer.Length);
+
+                Response rsp = JsonConvert.DeserializeObject<Response>(msg);
+
+                rsp.HandleResponse();
+
+
                 Console.WriteLine("Heard " + msg);
             }
         }
@@ -94,9 +112,11 @@ namespace Client.services
             }
             Console.WriteLine("Sending: " + msg);
 
-            int byteCount = Encoding.ASCII.GetByteCount(msg.Data);
+            //Fixa det här json.seroalisedickus
+
+            int byteCount = Encoding.ASCII.GetByteCount(JsonConvert.SerializeObject(msg)); // Ta ut längden i bytes på meddelandet
             byte[] sendData = new byte[byteCount];
-            sendData = Encoding.ASCII.GetBytes(msg.Data);
+            sendData = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(msg));
 
             Stream.Write(sendData, 0, sendData.Length);
         }

@@ -13,14 +13,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client.windows.MainProgram {
+namespace Client.windows {
     /// <summary>
-    /// Interaction logic for Create.xaml
+    /// Interaction logic for Judge.xaml
     /// </summary>
-    public partial class Create : Page {
-        public Create() {
+    public partial class Judge : Page {
+        public Judge() {
             InitializeComponent();
         }
-
     }
 }

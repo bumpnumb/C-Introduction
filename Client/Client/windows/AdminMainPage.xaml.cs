@@ -12,13 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Client.windows;
 
-namespace Client.windows.MainProgram {
+namespace Client.windows
+{
     /// <summary>
-    /// Interaction logic for Judge.xaml
+    /// Interaction logic for Edit.xaml
     /// </summary>
-    public partial class Judge : Page {
-        public Judge() {
+    public partial class AdminMainPage : Page
+    {
+        public AdminMainPage() {
             InitializeComponent();
         }
     }

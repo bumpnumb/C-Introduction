@@ -58,16 +58,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="windows\MainProgram\Create.xaml.cs">
+    <Compile Include="windows\Create.xaml.cs">
       <DependentUpon>Create.xaml</DependentUpon>
     </Compile>
-    <Compile Include="windows\MainProgram\Edit.xaml.cs">
-      <DependentUpon>Edit.xaml</DependentUpon>
+    <Compile Include="windows\AdminMainPage.xaml.cs">
+      <DependentUpon>AdminMainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="windows\MainProgram\Judge.xaml.cs">
+    <Compile Include="windows\Judge.xaml.cs">
       <DependentUpon>Judge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="windows\MainProgram\MainProgram.xaml.cs">
+    <Compile Include="windows\MainProgram.xaml.cs">
       <DependentUpon>MainProgram.xaml</DependentUpon>
     </Compile>
     <Compile Include="windows\SignUp.xaml.cs">
@@ -86,19 +86,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="windows\MainProgram\Create.xaml">
+    <Page Include="windows\Create.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="windows\MainProgram\Edit.xaml">
+    <Page Include="windows\AdminMainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="windows\MainProgram\Judge.xaml">
+    <Page Include="windows\Judge.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="windows\MainProgram\MainProgram.xaml">
+    <Page Include="windows\MainProgram.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -134,9 +134,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="windows\CompetitionView.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
