@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using MySql.Data.EntityFrameworkCore;
 using Server.modules;
 using System.Globalization;
+using Server.services;
 
 namespace Server.services
 {
@@ -57,22 +58,61 @@ namespace Server.services
                     var data = new StringBuilder();
                     data.AppendLine($"ID: {user.ID}");
                     data.AppendLine($"Name: {user.Name}");
-                    data.AppendLine($"Name: {user.Group}");
                     data.AppendLine($"Salt: {user.Salt}");
                     data.AppendLine($"Hash: {user.Hash}");
                     Console.WriteLine(data.ToString());
                 }
             }
         }
-        public List<Competition> GetAllCompetitions()
+        public User GetUserByName(string name)
         {
             using (var context = new DivingCompDbContext())
             {
-                return context.Competitions.ToList<Competition>();
+                var u = context.Users.Where(x => x.Name == name).FirstOrDefault();
+
+                return u;
             }
         }
 
+        public void RegisterUser(string name, string salt, string hash)
+        {
+            var context = new DivingCompDbContext(); //är detta en ny "tabell" i databasen? i detta fall en ny user?
+            context.Database.EnsureCreated();
 
+            User u = new User
+            {
+                Name = name,
+                Salt = salt,
+                Hash = hash,
+            };
+
+            context.Users.Add(u);
+            context.SaveChanges();
+        }
+
+        public string GetSaltByID(int ID)
+        {
+            using (var context = new DivingCompDbContext())
+            {
+                User u = context.Users.Where(x => x.ID == ID).FirstOrDefault();
+                return u.Salt;
+            }
+        }
+        public string GetHashByID(int ID)
+        {
+            using (var context = new DivingCompDbContext())
+            {
+                User u = context.Users.Where(x => x.ID == ID).FirstOrDefault();
+                return u.Hash;
+            }
+        }
+
+        public List<Competition> GetAllCompetitions()
+        {
+            using (var context = new DivingCompDbContext())
+                return context.Competitions.ToList<Competition>();
+
+        }
 
     }
 }

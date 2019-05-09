@@ -14,7 +14,7 @@ using System.Security.Cryptography;
 namespace Server.services
 {
 
-    public enum MessageType { NoType, Login, Register }
+    public enum MessageType { NoType, Login, Register, Competition }
 
     public class Response
     {
@@ -27,11 +27,12 @@ namespace Server.services
     {
         public MessageType Type { get; set; }
         public string Data { get; set; }
-        private string Cookie { get; set; }
         private User user { get; set; }
 
         public Response CreateResponse()
         {
+            Database db = new Database();
+
             Response rsp = new Response();
             switch (this.Type)
             {
@@ -40,32 +41,72 @@ namespace Server.services
                     break;
 
                 case MessageType.Login:
-                    //if (!this.VerifyCookie())
-                    //{
-                    //Cookie was not accepted so we should prompt a new login request.
-
-
-                    //}
                     rsp.Type = MessageType.Login;
-                    rsp.Data = "Sucessfull login";
-                    //rsp.user = GetUserByCookie();
+                    string nameLogin = rsp.Data.Split("=;=")[0];
+                    string passwLogin = rsp.Data.Split("=;=")[1];
+
+                    rsp.user = db.GetUserByName(nameLogin);
+                    if (rsp.user != null)
+                    {
+                        string salt = db.GetSaltByID(this.user.ID);
+                        string hash = db.GetHashByID(this.user.ID);
+
+                        if(crypto.AuthenticateLogin(passwLogin, hash, salt) == true)
+                        {
+                            //successfull login!
+                            Console.WriteLine("Successfull login!");
+                            rsp.Data = "Sucessfull login";
+                        }
+                        else
+                        {
+                            //wrong password
+                            //fail, prompt a new login request.
+                            Console.WriteLine("Wrong passsword, try again!");
+                        }
+                    }
+                    else
+                    {
+                        //fail, prompt a new login request.
+                        Console.WriteLine("There is no user with that name, try again!");
+                    }
                     break;
 
                 case MessageType.Register:
-
-                    /*
-                     * 
-                    User,Pass      -> HandleRespons
-                    GetUserBy User -> DATABAS
-                       DATABAS        -> om USER  -> FAIL
-                       DATABAS        -> om !USER
-                    Register       -> DATABAS
-                    DATABAS        -> ok..
-
-                    */
-
                     rsp.Type = MessageType.Register;
-                    rsp.Data = "New User created";
+                    string name = rsp.Data.Split("=;=")[0];
+                    string passw = rsp.Data.Split("=;=")[1];
+
+                    rsp.user = db.GetUserByName(name);
+                    if (rsp.user != null)
+                    {
+                        //send(thomas eror);
+                    }
+                    else
+                    { 
+                        User temp = crypto.GenerateSaltHash(passw);
+                        db.RegisterUser(name, temp.Salt, temp.Hash);
+                    }
+
+                    break;
+
+                //Ska vi typ ha, ViewCompetition och CreateCompetition istället? 
+                //där vi har i ViewCompetition -> GetAll, GetActive, osv...,
+                //men i CreateCompetition, bara skicka all information till databasen
+                case MessageType.Competition:   
+                    switch(this.Data)
+                    {
+                        case "GetAll":
+                            rsp.Data = "json...(GetAllCompetitions())";
+                            break;
+
+                        case "GetActive":
+                            rsp.Data = "json...(GetActiveCompetitions())";
+                            break;
+
+                        case "CreateComp":
+                            rsp.Data = "json...(CreateCompetitions())";
+                            break;
+                    }
                     break;
 
                 default:
@@ -74,37 +115,6 @@ namespace Server.services
 
             return rsp;
         }
-
-        //private User GetUserByCookie()
-        //{
-        //    //Database db = new Database();
-        //    //User u = db.GetUserByCookie(this.Cookie);
-        //    // Add error handling
-        //    return u;
-        //}
-
-        //private bool VerifyCookie()
-        //{
-        //    // Connects with db
-        //    Database db = new Database();
-        //    // Find User by Cookie
-        //    User u = db.GetUserByCookie(this.Cookie);
-        //    // Checks CookieTime & refresh if valid
-        //    if (u != null && u.CookieTime >= DateTime.Now)
-        //    {
-        //        this.RefreshCookie();
-        //        this.user = u;
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
-        //private void RefreshCookie()
-        //{
-        //    // Update Cookie timeout time with 24h
-        //    Database db = new Database();
-        //    db.UpdateCookieTimeByID(this.user.ID, DateTime.Now.AddHours(24));
-        //}
 
     }
 

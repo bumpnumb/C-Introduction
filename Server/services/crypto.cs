@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server.modules;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,19 +10,47 @@ namespace Server.services
     {
         private static RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
 
-        public static string GenerateCookie()
+        public static User GenerateSaltHash(string pw)
         {
-            byte[] cookieBytes = new byte[16];
-            rngCsp.GetBytes(cookieBytes);
+            byte[] saltBytes = new byte[16];
+            rngCsp.GetBytes(saltBytes);
+            var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);
+            byte[] hashBytes = salted.GetBytes(20);
 
-            StringBuilder builder = new StringBuilder();
+            User u = new User();
+            u.Salt = strBuilder(saltBytes);
+            u.Hash = strBuilder(hashBytes);
+            return u;
+        }
 
-            for (int i = 0; i < cookieBytes.Length; i++)
+        public static bool AuthenticateLogin(string pw, string salt, string hash)
+        {
+            byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
+            var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);
+            byte[] hashBytes = Encoding.ASCII.GetBytes(hash);
+
+            byte[] generatedHashBytes = salted.GetBytes(20);
+
+            //generera ett nytt hash utifrån det pw och salt som vi har som argument i funktionen
+            //jämför det nya hashet med hashet som vi har som argument i funktionen
+
+            if(hashBytes == generatedHashBytes)
             {
-                builder.Append(cookieBytes[i].ToString("x2"));
+                return false;
+            }
+            return true;
+        }
+
+
+        private static string strBuilder(byte[] arr)
+        {
+            StringBuilder Builder = new StringBuilder();
+            for (int i = 0; i < arr.Length; i++)
+            {
+                Builder.Append(arr[i].ToString("x2"));
             }
             rngCsp.Dispose();
-            return builder.ToString();
+            return Builder.ToString();
         }
     }
 }
