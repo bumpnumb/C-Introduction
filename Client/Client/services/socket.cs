@@ -75,7 +75,7 @@ namespace Client.services
 
 
 
-        static void Listen(object obj)
+        public static void Listen(object obj)
         {
             CancellationToken ct = (CancellationToken)obj;
             while (!ct.IsCancellationRequested)
@@ -135,7 +135,7 @@ namespace Client.services
     // I asked franziska if we could use async but she refused.
     // sad times
 
-    public class StateObject
+    /*public class StateObject
     {
         // Client socket.  
         public Socket workSocket = null;
@@ -333,5 +333,5 @@ namespace Client.services
                 Console.WriteLine(e.ToString());
             }
         }
-    }
+    }*/
 }

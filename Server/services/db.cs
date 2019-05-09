@@ -84,6 +84,9 @@ namespace Server.services
                 Name = name,
                 Salt = salt,
                 Hash = hash,
+                //detta ska komma som ett argument!
+                SSN = "temporary",
+                Group = 0
             };
 
             context.Users.Add(u);

@@ -14,7 +14,7 @@ using System.Security.Cryptography;
 namespace Server.services
 {
 
-    public enum MessageType { NoType, Login, Register }
+    public enum MessageType { NoType, Login, Register, Competition }
 
     public class Response
     {
@@ -42,45 +42,80 @@ namespace Server.services
 
                 case MessageType.Login:
                     rsp.Type = MessageType.Login;
-                    string nameLogin = rsp.Data.Split("=;=")[0];
-                    string passwLogin = rsp.Data.Split("=;=")[1];
+                    string nameLogin = this.Data.Split("=;=")[0];
+                    string passwLogin = this.Data.Split("=;=")[1];
 
-                    rsp.user = db.GetUserByName(nameLogin);
                     if (rsp.user != null)
                     {
                         string salt = db.GetSaltByID(this.user.ID);
                         string hash = db.GetHashByID(this.user.ID);
-                        crypto.AuthenticateLogin(passwLogin, hash, salt);
 
-                        //successfull login!
-                        Console.WriteLine("Successfull login!");
+                        if (crypto.AuthenticateLogin(passwLogin, hash, salt) == true)
+                        {
+                            //successfull login!
+                            Console.WriteLine("Successfull login!");
+                            rsp.Data = "Sucessfull login!";
+                        }
+                        else
+                        {
+                            //wrong password
+                            //fail, prompt a new login request.
+                            Console.WriteLine("Wrong passsword, try again!");
+                            rsp.Data = "WRONG PASSWORD!";
+                        }
                     }
                     else
                     {
                         //fail, prompt a new login request.
-                        //break;?
+                        Console.WriteLine("There is no user with that name, try again!");
+                        rsp.Data = "NO USER!";
                     }
-
-                    rsp.Data = "Sucessfull login";
                     break;
 
                 case MessageType.Register:
                     rsp.Type = MessageType.Register;
-                    string name = rsp.Data.Split("=;=")[0];
-                    string passw = rsp.Data.Split("=;=")[1];
+                    string name = this.Data.Split("=;=")[0];
+                    string passw = this.Data.Split("=;=")[1];
 
                     rsp.user = db.GetUserByName(name);
                     if (rsp.user != null)
                     {
                         //send(thomas eror);
+                        Console.WriteLine("User already exists!");
+                        rsp.Data = "USER EXISTS!";
                     }
                     else
                     { 
                         User temp = crypto.GenerateSaltHash(passw);
                         db.RegisterUser(name, temp.Salt, temp.Hash);
                     }
-                    
-                    //DATABAS        -> LOGIN 
+
+                    break;
+
+                //Ska vi typ ha, ViewCompetition och CreateCompetition istället? 
+                //där vi har i ViewCompetition -> GetAll, GetActive, osv...,
+                //men i CreateCompetition, bara skicka all information till databasen
+                case MessageType.Competition:   
+                    switch(this.Data)
+                    {
+                        case "GetAll":
+                            //Competition GetAll = GetAllCompetitions();
+                            //rsp.Data = JsonConvert.SerializeObject(GetAll);
+
+                            break;
+
+                        case "GetActive":
+                            //Competition GetActive = GetActiveCompetitions();
+                            //rsp.Data = JsonConvert.SerializeObject(GetActive);
+
+                            break;
+
+                        case "CreateCompetition":
+                            //Competition CreateComp = CreateCompetition();
+                            //rsp.Data = JsonConvert.SerializeObject(CreateComp);
+
+                            break;
+                    }
                     break;
 
                 default:

@@ -17,8 +17,8 @@ namespace Client.windows {
     /// <summary>
     /// Interaction logic for Create.xaml
     /// </summary>
-    public partial class Create : Page {
-        public Create() {
+    public partial class CreateAndEditPage : Page {
+        public CreateAndEditPage() {
             InitializeComponent();
         }
 

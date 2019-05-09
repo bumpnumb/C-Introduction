@@ -58,20 +58,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="windows\Create.xaml.cs">
-      <DependentUpon>Create.xaml</DependentUpon>
+    <Compile Include="windows\CreateAndEditPage.xaml.cs">
+      <DependentUpon>CreateAndEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="windows\AdminMainPage.xaml.cs">
       <DependentUpon>AdminMainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="windows\Judge.xaml.cs">
-      <DependentUpon>Judge.xaml</DependentUpon>
+    <Compile Include="windows\JudgePage.xaml.cs">
+      <DependentUpon>JudgePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="windows\PageHolderWindow.xaml.cs">
-      <DependentUpon>PageHolderWindow.xaml</DependentUpon>
+    <Compile Include="windows\SignInPage.xaml.cs">
+      <DependentUpon>SignInPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="windows\SignUp.xaml.cs">
-      <DependentUpon>SignUp.xaml</DependentUpon>
+    <Compile Include="windows\SignUpPage.xaml.cs">
+      <DependentUpon>SignUpPage.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -86,7 +86,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="windows\Create.xaml">
+    <Page Include="windows\CreateAndEditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -94,15 +94,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="windows\Judge.xaml">
+    <Page Include="windows\JudgePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="windows\PageHolderWindow.xaml">
+    <Page Include="windows\SignInPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="windows\SignUp.xaml">
+    <Page Include="windows\SignUpPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

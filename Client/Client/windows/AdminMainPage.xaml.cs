@@ -22,12 +22,14 @@ namespace Client.windows
     public partial class AdminMainPage : Page
     {
         public AdminMainPage() {
+            
             InitializeComponent();
+            App.MainWindowRef.CenterWindowOnScreen();
         }
 
         private void Edit_Create_Btn(object sender, RoutedEventArgs e) {
 
-            PageHolderWindow.SwitchWindow("Create");
+            App.MainWindowRef.Main.Navigate(new CreateAndEditPage());
         }
     }
 }

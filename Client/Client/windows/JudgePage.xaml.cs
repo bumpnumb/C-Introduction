@@ -17,9 +17,10 @@ namespace Client.windows {
     /// <summary>
     /// Interaction logic for Judge.xaml
     /// </summary>
-    public partial class Judge : Page {
-        public Judge() {
+    public partial class JudgePage : Page {
+        public JudgePage() {
             InitializeComponent();
+            App.MainWindowRef.CenterWindowOnScreen();
         }
     }
 }
