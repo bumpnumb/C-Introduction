@@ -24,7 +24,7 @@ namespace Client.windows
         public AdminMainPage() {
             
             InitializeComponent();
-            
+            App.MainWindowRef.CenterWindowOnScreen();
         }
 
         private void Edit_Create_Btn(object sender, RoutedEventArgs e) {

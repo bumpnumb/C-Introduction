@@ -22,6 +22,7 @@ namespace Client.windows
     {
         public SignUpPage() {
             InitializeComponent();
+            App.MainWindowRef.CenterWindowOnScreen();
         }
         private void Pw1GotFocus(object sender, RoutedEventArgs e) {
             if (PwBox1.Password == "Password")

@@ -75,7 +75,7 @@ namespace Client.services
 
 
 
-        static void Listen(object obj)
+        public static void Listen(object obj)
         {
             CancellationToken ct = (CancellationToken)obj;
             while (!ct.IsCancellationRequested)

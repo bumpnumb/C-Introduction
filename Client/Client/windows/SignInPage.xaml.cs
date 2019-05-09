@@ -25,6 +25,7 @@ namespace Client.windows
         string PW;
         public SignInPage() {
             InitializeComponent();
+            App.MainWindowRef.CenterWindowOnScreen();
             ClientControll newClient = new ClientControll();
         }
         public void setTitle(string str) {
@@ -66,7 +67,8 @@ namespace Client.windows
                         PW = PwBox.Password;
                         login(ID, PW);
                         //listen for positive response
-                        openMainProgramWindow();
+                        if(listenForResponse())
+                            openMainProgramWindow();
                     }
                 }
 
@@ -74,25 +76,22 @@ namespace Client.windows
         }
 
         private void signin(object sender, RoutedEventArgs e) {
-            ID = IDBox.Text;
-            PW = PwBox.Password;
-            login(ID, PW);
-            //listen for positive response
-            openMainProgramWindow();
+            if (IDBox.Text != "" && IDBox.Text != "Username") {
+                if (PwBox.Password != "" && PwBox.Password != "Password") {
+                    ID = IDBox.Text;
+                    PW = PwBox.Password;
+                    login(ID, PW);
+                    //listen for positive response
+
+                    openMainProgramWindow();
+                }
+
+            }
         }
 
         private void signupBtn(object sender, MouseButtonEventArgs e) {
             App.MainWindowRef.Main.Navigate(new SignUpPage());
-            App.MainWindowRef.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            //sng.Top = this.Top;
-            //sng.Left = this.Left;
-            //sng.Height = this.Height;
-            //sng.Width = this.Width;
-
-            //App.Current.MainWindow = sng;
-            //this.Close();
-            //sng.Show();
         }
 
         private void login(string id, string pw) {
@@ -108,17 +107,21 @@ namespace Client.windows
 
         }
 
+        private void listenForResponse() {
+            Response responseMsg = new Response();
+            responseMsg.Type = MessageType.Login;
+            responseMsg.Data = "asdasd";
+            responseMsg.user =
+
+            ClientControll.Listen();
+        }
+
         public void openMainProgramWindow() {
 
             App.MainWindowRef.Height = 768;
             App.MainWindowRef.Width = 1028;
             App.MainWindowRef.Main.Navigate(new AdminMainPage());
-            App.MainWindowRef.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            //PageHolderWindow mnprg = new PageHolderWindow();
-            //App.Current.MainWindow = mnprg;
-            //this.Close();
-            //mnprg.Show();
         }
     }
 }
