@@ -113,7 +113,9 @@ namespace Server.services
         public List<Competition> GetAllCompetitions()
         {
             using (var context = new DivingCompDbContext())
+            {
                 return context.Competitions.ToList<Competition>();
+            }
 
         }
 

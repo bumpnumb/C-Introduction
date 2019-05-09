@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace Server.modules
 {
+    public enum webType { Competitions }
     public class User
     {
         public int ID { get; set; }
@@ -48,6 +49,13 @@ namespace Server.modules
         public int CID { get; set; }
     }
 
+    public class WebMessage
+    {
+        public webType Type { get; set; }
+        public int Num { get; set; }
+        public List<Competition> Data { get; set; }
+    }
+
     public class config
     {
         public string Server { get; set; }
@@ -55,13 +63,17 @@ namespace Server.modules
         public string Database { get; set; }
         public string User { get; set; }
         public string Password { get; set; }
+        public bool AllowZeroDatetime { get; set; }
+        public bool ConvertZeroDatetime { get; set; }
+
+
 
         public string Read(string filepath)
         {
             string text = File.ReadAllText(filepath);
             config c = new config();
             JsonConvert.PopulateObject(text, c);
-            return "Server=" + c.Server + "; port=" + c.Port + "; database=" + c.Database + "; user=" + c.User + "; password=" + c.Password + ";";
+            return "Server=" + c.Server + "; port=" + c.Port + "; database=" + c.Database + "; user=" + c.User + "; password=" + c.Password + "; Allow Zero Datetime=" + c.AllowZeroDatetime + "; Convert Zero Datetime=" + c.ConvertZeroDatetime + ";";
         }
     }
 }
