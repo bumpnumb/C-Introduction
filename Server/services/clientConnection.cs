@@ -45,10 +45,11 @@ namespace Server.services
                     string nameLogin = this.Data.Split("=;=")[0];
                     string passwLogin = this.Data.Split("=;=")[1];
 
+                    rsp.user = db.GetUserByName(nameLogin);
                     if (rsp.user != null)
                     {
-                        string salt = db.GetSaltByID(this.user.ID);
-                        string hash = db.GetHashByID(this.user.ID);
+                        string salt = db.GetSaltByID(rsp.user.ID);
+                        string hash = db.GetHashByID(rsp.user.ID);
 
                         if (crypto.AuthenticateLogin(passwLogin, hash, salt) == true)
                         {

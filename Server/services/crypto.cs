@@ -34,11 +34,14 @@ namespace Server.services
             //generera ett nytt hash utifrån det pw och salt som vi har som argument i funktionen
             //jämför det nya hashet med hashet som vi har som argument i funktionen
 
-            if(hashBytes == generatedHashBytes)
+            if (hashBytes == generatedHashBytes)
             {
                 return false;
             }
-            return true;
+            else
+            {
+                return true;
+            }
         }
 
 
