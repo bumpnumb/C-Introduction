@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace Client.services
 {
@@ -58,6 +59,7 @@ namespace Client.services
         static TcpClient Client;
         static NetworkStream Stream;
         static CancellationTokenSource ct;
+        static MemoryStream memStrm = new MemoryStream(); //Might want to delete this later
 
 
         public ClientControll()
@@ -78,28 +80,41 @@ namespace Client.services
         public static void Listen(object obj)
         {
             CancellationToken ct = (CancellationToken)obj;
+            byte[] recievedBuffer = new byte[100]; // Fixa en bättre buffersize än en specifik siffra (dynamisk vore najs)
+            int bytesRead = 101;
+            string msg = "";
             while (!ct.IsCancellationRequested)
             {
-                byte[] recievedBuffer = new byte[400]; // Fixa en bättre buffersize än en specifik siffra (dynamisk vore najs)
-                try
+                if (Stream.CanRead)
                 {
-                    Stream.Read(recievedBuffer, 0, recievedBuffer.Length);
+                    if (bytesRead == 0)
+                        break;
+                    try
+                    {
+                        if (bytesRead < 100)
+                        {
+                            //msg += Encoding.ASCII.GetString(recievedBuffer, 0, bytesRead);
+                            break;
+                        }
+                        else
+                        {
+                            bytesRead = Stream.Read(recievedBuffer, 0, recievedBuffer.Length);
+                            msg += Encoding.ASCII.GetString(recievedBuffer, 0, bytesRead);
+                        }
+                    }
+                    catch (NotSupportedException)
+                    {
+
+                        Console.WriteLine("BIG ERRORRSBOII");
+                        throw;
+                    }
 
                 }
-                catch (System.IO.IOException)
-                {
-                    Console.WriteLine("Can not read. connection is closed!");
-                    break;
-                }
-                string msg = Encoding.ASCII.GetString(recievedBuffer, 0, recievedBuffer.Length);
-
-                Response rsp = JsonConvert.DeserializeObject<Response>(msg);
-
-                rsp.HandleResponse();
-
-
-                Console.WriteLine("Heard " + msg);
             }
+
+            Response rsp = JsonConvert.DeserializeObject<Response>(msg);
+            rsp.HandleResponse();
+            Console.WriteLine("Heard " + msg);
         }
         public static void Send(Message msg)
         {
@@ -120,6 +135,8 @@ namespace Client.services
 
             Stream.Write(sendData, 0, sendData.Length);
         }
+
+
     }
 
 
