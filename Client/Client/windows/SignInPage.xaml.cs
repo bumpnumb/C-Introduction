@@ -23,62 +23,76 @@ namespace Client.windows
     {
         string ID;
         string PW;
-        public SignInPage() {
+        public SignInPage()
+        {
             InitializeComponent();
             App.MainWindowRef.CenterWindowOnScreen();
             ClientControll newClient = new ClientControll();
         }
-        public void setTitle(string str) {
+        public void setTitle(string str)
+        {
             this.Title = str;
         }
 
-        private void PwGotFocus(object sender, RoutedEventArgs e) {
+        private void PwGotFocus(object sender, RoutedEventArgs e)
+        {
             if (PwBox.Password == "Password")
                 PwBox.Password = "";
         }
 
-        private void PwLostFocus(object sender, RoutedEventArgs e) {
-            if (PwBox.Password == "") {
+        private void PwLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (PwBox.Password == "")
+            {
                 PwBox.Password = "Password";
             }
         }
 
-        private void button_Click(object sender, RoutedEventArgs e) {
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
             string username = IDBox.Text;
 
         }
 
-        private void IDBox_GotFocus(object sender, RoutedEventArgs e) {
+        private void IDBox_GotFocus(object sender, RoutedEventArgs e)
+        {
             if (IDBox.Text == "Username")
                 IDBox.Text = "";
         }
 
-        private void IDBox_LostFocus(object sender, RoutedEventArgs e) {
-            if (IDBox.Text == "") {
+        private void IDBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (IDBox.Text == "")
+            {
                 IDBox.Text = "Username";
             }
         }
 
-        private void signin(object sender, RoutedEventArgs e) {
-            if (IDBox.Text != "" && IDBox.Text != "Username") {
-                if (PwBox.Password != "" && PwBox.Password != "Password") {
+        private void signin(object sender, RoutedEventArgs e)
+        {
+            if (IDBox.Text != "" && IDBox.Text != "Username")
+            {
+                if (PwBox.Password != "" && PwBox.Password != "Password")
+                {
                     ID = IDBox.Text;
                     PW = PwBox.Password;
                     login(ID, PW);
                     //listen for positive response
-
-                    openMainProgramWindow();
+                    //if ()
+                        openMainProgramWindow();
                 }
 
             }
         }
 
-        private void signupBtn(object sender, MouseButtonEventArgs e) {
+        private void signupBtn(object sender, MouseButtonEventArgs e)
+        {
             App.MainWindowRef.Main.Navigate(new SignUpPage());
 
         }
 
-        private void login(string id, string pw) {
+        private void login(string id, string pw)
+        {
             Message loginMsg = new Message();
             loginMsg.Type = MessageType.Login;
             loginMsg.Data = id + "=;=" + pw; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
@@ -100,7 +114,8 @@ namespace Client.windows
         //    //ClientControll.Listen();
         //}
 
-        public void openMainProgramWindow() {
+        public void openMainProgramWindow()
+        {
 
             App.MainWindowRef.Height = 768;
             App.MainWindowRef.Width = 1028;
@@ -121,6 +136,7 @@ namespace Client.windows
                         login(ID, PW);
                         //listen for positive response
                         //if(listenForResponse())
+                        //App.ResponseRef.HandleResponse(); fixa den här handlern;;;;; ATT GÖRA OVER HERE <-----------------------------------------------------
                         openMainProgramWindow();
                     }
                 }
