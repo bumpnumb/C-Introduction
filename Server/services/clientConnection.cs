@@ -54,6 +54,7 @@ namespace Server.services
                         if (crypto.AuthenticateLogin(passwLogin, hash, salt) == true)
                         {
                             //successfull login!
+                            //utifrån skickad data skall saker i client hända?
                             Console.WriteLine("Successfull login!");
                             rsp.Data = "Sucessfull login!";
                         }

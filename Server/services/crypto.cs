@@ -25,22 +25,30 @@ namespace Server.services
 
         public static bool AuthenticateLogin(string pw, string salt, string hash)
         {
-            byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
+            //byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
+            byte[] saltBytes = System.Text.Encoding.UTF8.GetBytes(salt);
             var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);
-            byte[] hashBytes = Encoding.ASCII.GetBytes(hash);
+            byte[] generatedHashBytes = salted.GetBytes(32);
 
-            byte[] generatedHashBytes = salted.GetBytes(20);
+            //byte[] hashBytes = Encoding.ASCII.GetBytes(hash);
+            byte[] hashBytes = System.Text.Encoding.UTF8.GetBytes(hash);
+
+            //string salt = record.Salt;
+            //byte[] passwordAndSaltBytes = System.Text.Encoding.UTF8.GetBytes(password + salt);
+            //byte[] hashBytes = new System.Security.Cryptography.SHA256Managed().ComputeHash(passwordAndSaltBytes);
+            //string hashString = Convert.ToBase64String(hashBytes);
 
             //generera ett nytt hash utifrån det pw och salt som vi har som argument i funktionen
             //jämför det nya hashet med hashet som vi har som argument i funktionen
 
+            //får ej rätt bytes här
             if (hashBytes == generatedHashBytes)
             {
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
