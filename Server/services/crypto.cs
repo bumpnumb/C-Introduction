@@ -14,12 +14,22 @@ namespace Server.services
         {
             byte[] saltBytes = new byte[16];
             rngCsp.GetBytes(saltBytes);
-            var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);
-            byte[] hashBytes = salted.GetBytes(20);
+
+            string salt = Convert.ToBase64String(saltBytes);
+            byte[] hashBytes = System.Text.Encoding.UTF8.GetBytes(pw + saltBytes);
+            System.Security.Cryptography.SHA256Managed passwHash = new System.Security.Cryptography.SHA256Managed();
+            byte[] hashed = passwHash.ComputeHash(hashBytes);
+            string hash = Convert.ToBase64String(hashed);
+
+
+            //var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);
+            //byte[] hashBytes = salted.GetBytes(20);
 
             User u = new User();
-            u.Salt = strBuilder(saltBytes);
-            u.Hash = strBuilder(hashBytes);
+            u.Salt = salt;
+            u.Hash = hash;
+            //u.Salt = strBuilder(saltBytes);
+            //u.Hash = strBuilder(hashBytes);
             return u;
         }
 
@@ -27,7 +37,7 @@ namespace Server.services
         {
             //byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
             byte[] saltBytes = System.Text.Encoding.UTF8.GetBytes(salt);
-            var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);      //<--
+            var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);      
             byte[] generatedHashBytes = salted.GetBytes(32);
 
             //byte[] hashBytes = Encoding.ASCII.GetBytes(hash);
