@@ -36,6 +36,10 @@ namespace Client.services
                 case MessageType.NoType:
                     break;
                 case MessageType.Login:
+                    if (this.Data == "successfull login") // thomas och nedim bestämmer
+                    {
+                        //LoginSucessFunction();
+                    }
                     break;
                 case MessageType.Register:
                     break;
