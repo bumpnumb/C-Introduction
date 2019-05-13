@@ -17,9 +17,9 @@ namespace Server
 
             //AsynchronousSocketListener.StartListening();
 
-            TcpConnection con = new TcpConnection();
+            //TcpConnection con = new TcpConnection();
 
-            //WebServer ws = new WebServer();
+            WebServer ws = new WebServer();
 
             Console.WriteLine("this is debugging in 2019");
 

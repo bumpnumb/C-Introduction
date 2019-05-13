@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Collections.Generic;
 using Server.modules;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace Server.services
 {
@@ -20,7 +21,7 @@ namespace Server.services
             try
             {
                 server.Start();
-                Console.WriteLine("Server started...");
+                Console.WriteLine("WebServer started...");
             }
             catch (Exception ex)
             {
@@ -135,10 +136,16 @@ namespace Server.services
 
                                 WebMessage wm = new WebMessage();
                                 wm.Data = JsonConvert.SerializeObject(comp);
+
                                 wm.Type = webType.Competitions;
                                 wm.Num = i;
 
+
+
+
                                 Send(JsonConvert.SerializeObject(wm));
+                                break;
+                            case "GET COMPETITION:":
                                 break;
                             default:
                                 break;
@@ -150,6 +157,7 @@ namespace Server.services
                 }
             }
         }
+
         void Send(string msg)
         {
             try
@@ -160,7 +168,9 @@ namespace Server.services
                 bool flagStart = false;
                 int size;
 
-                while (msg.Length > _maxLengthMessage)
+
+
+                while (aux.Length > _maxLengthMessage)
                 {
                     lb = new List<byte>();
                     // I cut the mesasge in smaller pieces to send
