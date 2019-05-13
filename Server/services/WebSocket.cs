@@ -187,7 +187,7 @@ namespace Server.services
             byte[] payload = Encoding.UTF8.GetBytes(message);
             Console.WriteLine(payload);
 
-            byte[] header = new byte[] { 0x81, (byte)(payload.Length) };
+            byte[] header = new byte[] { 1, (byte)(payload.Length) }; //0x81
             // by default the mask array is empty...
             byte[] maskKey = new byte[4];
 
