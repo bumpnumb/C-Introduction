@@ -14,7 +14,7 @@ socket.onmessage = function (e) {
     //console.log("Recieved: " + JSON.parse(e.data));
     //"[{\"ID\":1,\"Name\":\"Första Tävlingen\",\"Start\":\"2019-04-15T21:51:24\",\"Finished\":\"0001-01-01T00:00:00\""
 
-    Console.log(e.data);
+    console.log(e.data);
 
     //var obj = JSON.parse(e.data);
 

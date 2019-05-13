@@ -110,6 +110,7 @@ namespace Server.services
                             ) + Environment.NewLine
                             + Environment.NewLine);
                         Stream.Write(response, 0, response.Length);
+                        Console.WriteLine("Do the thing");
                     }
                     else
                     {
@@ -131,21 +132,13 @@ namespace Server.services
                                 {
                                     i++;
                                 }
-                                string testeriioni = JsonConvert.SerializeObject(comp);
 
-                                string holder = "{\"Competitions\":" + i + ",\"Data\":" + JsonConvert.SerializeObject(comp) + "}";
                                 WebMessage wm = new WebMessage();
-                                wm.Data = comp;
+                                wm.Data = JsonConvert.SerializeObject(comp);
                                 wm.Type = webType.Competitions;
                                 wm.Num = i;
 
-
-
-
                                 Send(JsonConvert.SerializeObject(wm));
-
-
-
                                 break;
                             default:
                                 break;
@@ -157,71 +150,68 @@ namespace Server.services
                 }
             }
         }
-        private byte[] EncodeOutgoingMessage(string message)
-        {
-            /* this is how and header should be made:
-             *   - first byte  -> FIN + RSV1 + RSV2 + RSV3 + OPCODE
-             *   - second byte -> MASK + payload length (only 7 bits)
-             *   - third, fourth, fifth and sixth bytes -> (optional) XOR encoding key bytes
-             *   - following bytes -> the encoded (if a key has been used) payload
-             *
-             *   FIN    [1 bit]      -> 1 if the whole message is contained in this frame, 0 otherwise
-             *   RSVs   [1 bit each] -> MUST be 0 unless an extension is negotiated that defines meanings for non-zero values
-             *   OPCODE [4 bits]     -> defines the interpretation of the carried payload
-             *
-             *   MASK           [1 bit]  -> 1 if the message is XOR masked with a key, 0 otherwise
-             *   payload length [7 bits] -> can be max 1111111 (127 dec), so, the payload cannot be more than 127 bytes per frame
-             *
-             * valid OPCODES:
-             *   - 0000 [0]             -> continuation frame
-             *   - 0001 [1]             -> text frame
-             *   - 0010 [2]             -> binary frame
-             *   - 0011 [3] to 0111 [7] -> reserved for further non-control frames
-             *   - 1000 [8]             -> connection close
-             *   - 1001 [9]             -> ping
-             *   - 1010 [A]             -> pong
-             *   - 1011 [B] to 1111 [F] -> reserved for further control frames
-             */
-            // in our case the first byte will be 10000001 (129 dec = 81 hex).
-            // the length is going to be (masked)1 << 7 (OR) 0 + payload length.
-            byte[] payload = Encoding.UTF8.GetBytes(message);
-            Console.WriteLine(payload);
-
-            byte[] header = new byte[] { 1, (byte)(payload.Length) }; //0x81
-            // by default the mask array is empty...
-            byte[] maskKey = new byte[4];
-
-            // let's get the bytes of the message to send.
-            // this is going to be the whole frame to send.
-            byte[] frame = new byte[header.Length + payload.Length];
-            // add the header.
-            Array.Copy(header, frame, header.Length);
-            // add the mask if necessary.
-            if (maskKey.Length > 0)
-            {
-                Array.Copy(maskKey, 0, frame, header.Length, maskKey.Length);
-                // let's encode the payload using the mask.
-                for (int i = 0; i < payload.Length; i++)
-                {
-                    payload[i] = (byte)(payload[i] ^ maskKey[i % maskKey.Length]);
-                }
-            }
-
-
-            // add the payload.
-            Array.Copy(payload, 0, frame, header.Length, payload.Length);
-            foreach (char item in frame)
-            {
-                Console.Write(item);
-            }
-            Console.WriteLine();
-
-            return frame;
-        }
         void Send(string msg)
         {
-            byte[] m = EncodeOutgoingMessage(msg);
-            Stream.Write(m, 0, m.Length);
+            try
+            {
+                List<byte> lb = new List<byte>();
+                int _maxLengthMessage = 125;
+                string aux = msg;
+                bool flagStart = false;
+                int size;
+
+                while (msg.Length > _maxLengthMessage)
+                {
+                    lb = new List<byte>();
+                    // I cut the mesasge in smaller pieces to send
+                    msg = aux.Substring(0, _maxLengthMessage);
+                    aux = aux.Substring(_maxLengthMessage);
+                    if (!flagStart)
+                    {
+                        // In doc of Websockets i sign this piece: not the end, text
+                        lb.Add(0x01);
+                        flagStart = !flagStart;
+                        Console.WriteLine("Sent beginning of message + : " + msg);
+
+                    }
+                    else
+                    {
+                        // In doc of Websockets i sign this piece: not the end, continuation
+                        lb.Add(0x00);
+                        Console.WriteLine("Sent part of message + : " + msg);
+
+                    }
+                    size = msg.Length;
+
+                    lb.Add((byte)size);
+                    lb.AddRange(Encoding.UTF8.GetBytes(msg));
+                    Stream.Write(lb.ToArray(), 0, size + 2);
+                }
+                lb = new List<byte>();
+                if (!flagStart)
+                {
+                    // If is this the only message we mark with: end of message, text
+                    lb.Add(0x81);
+                    flagStart = !flagStart;
+                }
+                else
+                {
+                    //else Is the end of the message but is the continuation frame
+                    lb.Add(0x80);
+                }
+                size = aux.Length;
+
+                lb.Add((byte)size);
+                lb.AddRange(Encoding.UTF8.GetBytes(aux));
+                //lb.AddRange(Encoding.UTF8.GetBytes(i.ToString()));
+                Stream.Write(lb.ToArray(), 0, size + 2);
+                Console.WriteLine("Sent end of message + " + aux);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public byte[] javaScriptUser(Byte[] data)

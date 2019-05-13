@@ -53,7 +53,7 @@ namespace Server.modules
     {
         public webType Type { get; set; }
         public int Num { get; set; }
-        public List<Competition> Data { get; set; }
+        public string Data { get; set; }
     }
 
     public class config
