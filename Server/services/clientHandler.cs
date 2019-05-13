@@ -75,12 +75,46 @@ namespace Server.services
             CancellationToken ct = (CancellationToken)obj;
             while (!ct.IsCancellationRequested)
             {
-                byte[] recievedBuffer = new byte[100]; // Dynamic buffer size here (or other fix maybe)
-                try
+                byte[] recievedBuffer = new byte[1024]; // Fixa en bättre buffersize än en specifik siffra (dynamisk vore najs)
+                int bytesRead = 0;
+                StringBuilder msg = new StringBuilder();
+
+                do
                 {
-                    Stream.Read(recievedBuffer, 0, recievedBuffer.Length);
+                    try
+                    {
+                        bytesRead = Stream.Read(recievedBuffer, 0, recievedBuffer.Length);
+                        msg.AppendFormat("{0}", Encoding.ASCII.GetString(recievedBuffer, 0, bytesRead));
+                    }
+                    catch (System.IO.IOException)
+                    {
+                        Console.WriteLine("Client: " + this.ID.ToString() + " has disconnected");
+
+                        Stream.Close();
+                        Client.Close();
+
+                        allClients.Remove(this);
+                        allTokens.Remove(this.TokenSource);
+                        break;
+                    }
                 }
-                catch (System.IO.IOException)
+
+
+                while (Stream.DataAvailable);
+
+
+                string readMsg = msg.ToString();
+                if (readMsg != "")
+                {
+                    Message objMessage = JsonConvert.DeserializeObject<Message>(readMsg);
+
+                    Response rsp = objMessage.CreateResponse();
+
+
+                    Console.WriteLine("replying with: " + JsonConvert.SerializeObject(rsp));
+                    Send(JsonConvert.SerializeObject(rsp));
+                }
+                else
                 {
                     Console.WriteLine("Client: " + this.ID.ToString() + " has disconnected");
 
@@ -89,30 +123,21 @@ namespace Server.services
 
                     allClients.Remove(this);
                     allTokens.Remove(this.TokenSource);
-
-
                     break;
                 }
 
-                string msg = Encoding.ASCII.GetString(recievedBuffer, 0, recievedBuffer.Length);
-
-                Message message = JsonConvert.DeserializeObject<Message>(msg);
-                Response re = message.CreateResponse();
-
-                Console.WriteLine(ID.ToString() + " sent: " + msg);
-                //Broadcast(Name + " sent: " + msg);
-
-                Console.WriteLine("replying with: " + JsonConvert.SerializeObject(re));
-                Send(JsonConvert.SerializeObject(re));
-
-                //foreach (var c in allClients)
-                //{
-                //    //if (c != this) //uncomment for multiple client usage
-                //    c.Send(msg);
-                //}
-
             }
+
         }
+
+
+        //foreach (var c in allClients)
+        //{
+        //    //if (c != this) //uncomment for multiple client usage
+        //    c.Send(msg);
+        //}
+
+
         void Send(string msg)
         {
             int byteCount = Encoding.ASCII.GetByteCount(msg);

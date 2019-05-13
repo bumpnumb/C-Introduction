@@ -17,7 +17,7 @@ namespace Server
 
             //AsynchronousSocketListener.StartListening();
 
-            TcpConnection con = new TcpConnection();
+            //TcpConnection con = new TcpConnection();
 
             WebServer ws = new WebServer();
 
