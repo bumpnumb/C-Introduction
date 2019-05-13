@@ -8,18 +8,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
+using Client.windows;
 
 namespace Client.services
 {
     public enum MessageType { NoType, Login, Register }
+    public enum GroupType { User, Judge, Admin }
+
     public class User
     {
         public int ID { get; set; }
         public string Name { get; set; }
         public string Salt { get; set; }
         public string Hash { get; set; }
-        public string Cookie { get; set; }
-        public DateTime CookieTime { get; set; }
+        public GroupType Group { get; set; }
+        public string SSN { get; set; }
+
     }
     public class Response
     {
@@ -27,17 +31,29 @@ namespace Client.services
         public string Data { get; set; }
         public User user { get; set; }
 
-        public void HandleResponse()
-        {
+        public void HandleResponse() {
             //handle response; do the thiung
 
-            switch (this.Type)
-            {
+            switch (this.Type) {
                 case MessageType.NoType:
                     break;
                 case MessageType.Login:
                     if (this.Data == "successfull login") // thomas och nedim bestämmer
                     {
+                        switch (this.user.Group) {
+                            case GroupType.Admin:
+                                SignInPage.openMainProgramWindow();
+                                break;
+                            case GroupType.Judge:
+
+                                break;
+                            case GroupType.User:
+
+                                break;
+                            default:
+                                Console.WriteLine("Error");
+                                break;
+                        }
                         //LoginSucessFunction();
                     }
                     break;
@@ -64,8 +80,7 @@ namespace Client.services
         static CancellationTokenSource ct;
         static MemoryStream memStrm = new MemoryStream(); //Might want to delete this later
 
-        public ClientControll()
-        {
+        public ClientControll() {
             string IP = "localhost";
             int port = 8787;
             Client = new TcpClient(IP, port);
@@ -77,17 +92,14 @@ namespace Client.services
             listenerThread.Start(ct.Token);
         }
 
-        public static void Listen(object obj)
-        {
+        public static void Listen(object obj) {
             CancellationToken ct = (CancellationToken)obj;
             byte[] recievedBuffer = new byte[1024]; // Fixa en bättre buffersize än en specifik siffra (dynamisk vore najs)
             int bytesRead = 0;
             StringBuilder msg = new StringBuilder();
-            while (!ct.IsCancellationRequested)
-            {
+            while (!ct.IsCancellationRequested) {
 
-                do
-                {
+                do {
                     bytesRead = Stream.Read(recievedBuffer, 0, recievedBuffer.Length);
                     msg.AppendFormat("{0}", Encoding.ASCII.GetString(recievedBuffer, 0, bytesRead));
                 }
@@ -100,10 +112,8 @@ namespace Client.services
             }
         }
 
-        public static void Send(Message msg)
-        {
-            if (msg.Data == "quit")
-            {
+        public static void Send(Message msg) {
+            if (msg.Data == "quit") {
                 ct.Cancel();
                 Stream.Close();
                 Client.Close();

@@ -77,9 +77,6 @@ namespace Client.windows
                     ID = IDBox.Text;
                     PW = PwBox.Password;
                     login(ID, PW);
-                    //listen for positive response
-                    //if ()
-                        openMainProgramWindow();
                 }
 
             }
@@ -114,7 +111,7 @@ namespace Client.windows
         //    //ClientControll.Listen();
         //}
 
-        public void openMainProgramWindow()
+        public static void openMainProgramWindow()
         {
 
             App.MainWindowRef.Height = 768;
@@ -134,10 +131,7 @@ namespace Client.windows
                         ID = IDBox.Text;
                         PW = PwBox.Password;
                         login(ID, PW);
-                        //listen for positive response
-                        //if(listenForResponse())
-                        //App.ResponseRef.HandleResponse(); fixa den här handlern;;;;; ATT GÖRA OVER HERE <-----------------------------------------------------
-                        openMainProgramWindow();
+                        
                     }
                 }
 
