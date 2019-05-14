@@ -110,6 +110,7 @@ namespace Server.services
 //                               rsp.Data = "success competitions";
 //                            else
 //                               send error
+
                             break;
 
                         case "GetActive":
