@@ -40,7 +40,8 @@ namespace Server.services
 
         public static Competition getActiveCompetitions()
         {
-            return true;
+            Competition c = new Competition();
+            return c;
         }
     }
 }

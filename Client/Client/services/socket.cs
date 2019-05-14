@@ -31,25 +31,40 @@ namespace Client.services
         public string Data { get; set; }
         public User user { get; set; }
 
-        public void HandleResponse() {
+        public void HandleResponse()
+        {
             //handle response; do the thiung
-            
-            switch (this.Type) {
+
+            switch (this.Type)
+            {
                 case MessageType.NoType:
                     break;
                 case MessageType.Login:
                     if (this.Data == "success") // thomas och nedim bestämmer // Successfull login!
                     {
-                        switch (this.user.Group) {
+                        switch (this.user.Group)
+                        {
                             case GroupType.Admin:
-                                AdminMainPage admn;
-                                App.MainWindowRef.pageSwitcher(admn = new AdminMainPage());
+                                App.Current.Dispatcher.Invoke((Action)delegate
+                                {
+                                    AdminMainPage admn;
+                                    App.MainWindowRef.pageSwitcher(admn = new AdminMainPage());
+                                });
                                 break;
                             case GroupType.Judge:
-                                
+                                App.Current.Dispatcher.Invoke((Action)delegate
+                                {
+                                    JudgePage jdg;
+                                    App.MainWindowRef.pageSwitcher(jdg = new JudgePage());
+                                });
                                 break;
                             case GroupType.User:
-                                UserLoginPopUpWindow tempWin = new UserLoginPopUpWindow();
+                                App.Current.Dispatcher.Invoke((Action)delegate
+                                {
+                                    UserLoginPopUpWindow tempWin = new UserLoginPopUpWindow();
+                                    tempWin.Show();
+                                });
+                                
                                 break;
                             default:
                                 Console.WriteLine("Error");
@@ -90,7 +105,8 @@ namespace Client.services
         static CancellationTokenSource ct;
         static MemoryStream memStrm = new MemoryStream(); //Might want to delete this later
 
-        public ClientControll() {
+        public ClientControll()
+        {
             string IP = "localhost";
             int port = 8787;
             Client = new TcpClient(IP, port);
@@ -102,14 +118,17 @@ namespace Client.services
             listenerThread.Start(ct.Token);
         }
 
-        public static void Listen(object obj) {
+        public static void Listen(object obj)
+        {
             CancellationToken ct = (CancellationToken)obj;
             byte[] recievedBuffer = new byte[1024]; // Fixa en bättre buffersize än en specifik siffra (dynamisk vore najs)
             int bytesRead = 0;
             StringBuilder msg = new StringBuilder();
-            while (!ct.IsCancellationRequested) {
+            while (!ct.IsCancellationRequested)
+            {
 
-                do {
+                do
+                {
                     bytesRead = Stream.Read(recievedBuffer, 0, recievedBuffer.Length);
                     msg.AppendFormat("{0}", Encoding.ASCII.GetString(recievedBuffer, 0, bytesRead));
                 }
@@ -123,8 +142,10 @@ namespace Client.services
             }
         }
 
-        public static void Send(Message msg) {
-            if (msg.Data == "quit") {
+        public static void Send(Message msg)
+        {
+            if (msg.Data == "quit")
+            {
                 ct.Cancel();
                 Stream.Close();
                 Client.Close();
