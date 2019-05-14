@@ -49,6 +49,9 @@ namespace Client.services
                                 {
                                     AdminMainPage admn;
                                     App.MainWindowRef.pageSwitcher(admn = new AdminMainPage());
+                                    App.MainWindowRef.loggedInLabel.Content = "Logout";
+                                    App.MainWindowRef.usernameLabel.Content = this.user.Name;
+
                                 });
                                 break;
                             case GroupType.Judge:
@@ -56,6 +59,8 @@ namespace Client.services
                                 {
                                     JudgePage jdg;
                                     App.MainWindowRef.pageSwitcher(jdg = new JudgePage());
+                                    App.MainWindowRef.loggedInLabel.Content = "Logout";
+                                    App.MainWindowRef.usernameLabel.Content = this.user.Name;
                                 });
                                 break;
                             case GroupType.User:
