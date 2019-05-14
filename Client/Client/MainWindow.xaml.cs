@@ -32,6 +32,7 @@ namespace Client
         private void Window_Loaded(object sender, RoutedEventArgs e) {
             App.MainWindowRef = this;
             this.Main.Navigate(new SignInPage());
+            CenterWindowOnScreen();
         }
 
         public void CenterWindowOnScreen() {
@@ -43,6 +44,15 @@ namespace Client
             this.Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
+        public void pageSwitcher(Page pg)
+        {
+
+            App.MainWindowRef.Height = 768;
+            App.MainWindowRef.Width = 1028;
+            App.MainWindowRef.Main.Navigate(pg);
+            App.MainWindowRef.CenterWindowOnScreen();
+
+        }
     }
 }
 

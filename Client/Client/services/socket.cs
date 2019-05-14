@@ -33,28 +33,33 @@ namespace Client.services
 
         public void HandleResponse() {
             //handle response; do the thiung
-
+            
             switch (this.Type) {
                 case MessageType.NoType:
                     break;
                 case MessageType.Login:
-                    if (this.Data == "successfull login") // thomas och nedim bestämmer
+                    if (this.Data == "WRONG PASSWORD!") // thomas och nedim bestämmer //WRONG PASSWORD!  Successfull login!
                     {
                         switch (this.user.Group) {
                             case GroupType.Admin:
-                                SignInPage.openMainProgramWindow();
+                                AdminMainPage admn;
+                                App.MainWindowRef.pageSwitcher(admn = new AdminMainPage());
                                 break;
                             case GroupType.Judge:
-
+                                
                                 break;
                             case GroupType.User:
-
+                                UserLoginPopUpWindow tempWin = new UserLoginPopUpWindow();
                                 break;
                             default:
                                 Console.WriteLine("Error");
                                 break;
                         }
                         //LoginSucessFunction();
+                    }
+                    else
+                    {
+
                     }
                     break;
                 case MessageType.Register:

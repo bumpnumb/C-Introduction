@@ -111,15 +111,6 @@ namespace Client.windows
         //    //ClientControll.Listen();
         //}
 
-        public static void openMainProgramWindow()
-        {
-
-            App.MainWindowRef.Height = 768;
-            App.MainWindowRef.Width = 1028;
-            App.MainWindowRef.Main.Navigate(new AdminMainPage());
-
-        }
-
         private void Key_Down_Event(object sender, KeyEventArgs e)
         {
             if (IDBox.Text != "" && IDBox.Text != "Username")

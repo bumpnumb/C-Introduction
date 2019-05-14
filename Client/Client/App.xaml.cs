@@ -15,7 +15,7 @@ namespace Client
     public partial class App : Application
     {
         public static MainWindow MainWindowRef;
-        public static Response ResponseRef;
+        //public static Response ResponseRef;
     }
 
     

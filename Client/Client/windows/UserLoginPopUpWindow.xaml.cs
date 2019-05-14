@@ -21,6 +21,7 @@ namespace Client.windows
     {
         public UserLoginPopUpWindow() {
             InitializeComponent();
+            App.MainWindowRef.CenterWindowOnScreen();
         }
     }
 }
