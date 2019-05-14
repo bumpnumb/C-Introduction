@@ -56,21 +56,21 @@ namespace Server.services
                             //successfull login!
                             //utifrån skickad data skall saker i client hända?
                             Console.WriteLine("Successfull login!");
-                            rsp.Data = "Sucessfull login!";
+                            rsp.Data = "success";
                         }
                         else
                         {
                             //wrong password
                             //fail, prompt a new login request.
                             Console.WriteLine("Wrong passsword, try again!");
-                            rsp.Data = "WRONG PASSWORD!";
+                            rsp.Data = "password";
                         }
                     }
                     else
                     {
                         //fail, prompt a new login request.
                         Console.WriteLine("There is no user with that name, try again!");
-                        rsp.Data = "NO USER!";
+                        rsp.Data = "no user";
                     }
                     break;
 
@@ -94,7 +94,7 @@ namespace Server.services
 
                     break;
 
-                //Ska vi typ ha, ViewCompetition och CreateCompetition istället? 
+                //Ska vi typ ha, ViewCompetition och CreateCompetition istället?
                 //där vi har i ViewCompetition -> GetAll, GetActive, osv...,
                 //men i CreateCompetition, bara skicka all information till databasen
                 case MessageType.Competition:   
@@ -103,12 +103,19 @@ namespace Server.services
                         case "GetAll":
                             //Competition GetAll = GetAllCompetitions();
                             //rsp.Data = JsonConvert.SerializeObject(GetAll);
+                            rsp.Type = MessageType.Competition;
 
+//                            if(competitions != null){ alltså att vi har en eller flera competitions
+//                               getAllCompetitions();
+//                               rsp.Data = "success competitions";
+//                            else
+//                               send error
                             break;
 
                         case "GetActive":
                             //Competition GetActive = GetActiveCompetitions();
                             //rsp.Data = JsonConvert.SerializeObject(GetActive);
+                            rsp.Type = MessageType.Competition;
 
                             break;
 
@@ -116,6 +123,21 @@ namespace Server.services
                             //Competition CreateComp = CreateCompetition();
                             //rsp.Data = JsonConvert.SerializeObject(CreateComp);
 
+                            rsp.Type = MessageType.Competition;
+
+                            //ha detta som en array med string istället för en string
+                            string Judges = this.Data.Split("=;=")[0];    //Hur blir detta om vi har olika många för vaje comp.
+                            string Divers = this.Data.Split("=;=")[1];    //samma sak här
+                            string NåttMer = this.Data.Split("=;=")[2];
+
+                            if (competitions.createCompetition(Judges, Divers) == true) //== something
+                            {
+                                //yes, send done
+                            }
+                            else
+                            {
+                                //no, send didnt go through
+                            }
                             break;
                     }
                     break;
