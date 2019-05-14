@@ -129,21 +129,32 @@ namespace Server.services
                                 Database db = new Database();
                                 List<Competition> comp = db.GetAllCompetitions();
                                 int i = 0;
-                                foreach (Competition c in comp)
+
+
+                                List<Competition> test = new List<Competition>();
+                                test.Add(comp[0]);
+                                test.Add(comp[1]);
+                                test.Add(comp[2]);
+                                test.Add(comp[1]);
+                                test.Add(comp[0]);
+                                test.Add(comp[0]);
+                                test.Add(comp[1]);
+                                test.Add(comp[2]);
+                                test.Add(comp[1]);
+                                test.Add(comp[0]);
+                                test.Add(comp[0]);
+                                test.Add(comp[1]);
+                                test.Add(comp[2]);
+                                test.Add(comp[1]);
+                                test.Add(comp[0]);
+                                foreach (Competition c in test)
                                 {
                                     i++;
                                 }
 
-                                WebMessage wm = new WebMessage();
-                                wm.Data = JsonConvert.SerializeObject(comp);
+                                string json = JsonConvert.SerializeObject(test);
+                                Send("{\"Type\":0,\"Num\":" + i + ",\"Data\":" + json + '}');
 
-                                wm.Type = webType.Competitions;
-                                wm.Num = i;
-
-
-
-
-                                Send(JsonConvert.SerializeObject(wm));
                                 break;
                             case "GET COMPETITION:":
                                 break;
@@ -157,66 +168,63 @@ namespace Server.services
                 }
             }
         }
-
+        public static byte[] Decode(string s)
+        {
+            byte[] bytes = Encoding.Unicode.GetBytes(s);
+            var hexString = BitConverter.ToString(bytes);
+            hexString = hexString.Replace("-", "");
+            return Encoding.Unicode.GetBytes(hexString);
+        }
         void Send(string msg)
         {
             try
             {
-                List<byte> lb = new List<byte>();
+                byte[] byteMsg = Decode(msg);
+                byte[] sendMsg = new byte[0];
                 int _maxLengthMessage = 125;
-                string aux = msg;
                 bool flagStart = false;
-                int size;
-
-
-
-                while (aux.Length > _maxLengthMessage)
+                int sourceIndex = 0;
+                while (byteMsg.Length - sourceIndex > _maxLengthMessage)
                 {
-                    lb = new List<byte>();
+                    sendMsg = new byte[127];
                     // I cut the mesasge in smaller pieces to send
-                    msg = aux.Substring(0, _maxLengthMessage);
-                    aux = aux.Substring(_maxLengthMessage);
                     if (!flagStart)
                     {
                         // In doc of Websockets i sign this piece: not the end, text
-                        lb.Add(0x01);
+                        //*  % x1 denotes a text frame
+                        sendMsg[0] = (byte)1;
                         flagStart = !flagStart;
-                        Console.WriteLine("Sent beginning of message + : " + msg);
-
                     }
                     else
                     {
                         // In doc of Websockets i sign this piece: not the end, continuation
-                        lb.Add(0x00);
-                        Console.WriteLine("Sent part of message + : " + msg);
-
+                        //*  % x0 denotes a continuation frame
+                        sendMsg[0] = (byte)0;
                     }
-                    size = msg.Length;
+                    sendMsg[1] = (byte)_maxLengthMessage;
+                    //Copy (Array sourceArray, long sourceIndex, Array destinationArray, long destinationIndex, long length);
+                    Array.Copy(byteMsg, sourceIndex, sendMsg, 2, _maxLengthMessage);
+                    sourceIndex += _maxLengthMessage;
 
-                    lb.Add((byte)size);
-                    lb.AddRange(Encoding.UTF8.GetBytes(msg));
-                    Stream.Write(lb.ToArray(), 0, size + 2);
+                    Stream.Write(sendMsg, 0, _maxLengthMessage + 2);
                 }
-                lb = new List<byte>();
+                sendMsg = new byte[(byteMsg.Length - sourceIndex) + 2];
                 if (!flagStart)
                 {
                     // If is this the only message we mark with: end of message, text
-                    lb.Add(0x81);
+                    sendMsg[0] = (byte)(0x81);
                     flagStart = !flagStart;
                 }
                 else
                 {
                     //else Is the end of the message but is the continuation frame
-                    lb.Add(0x80);
+                    sendMsg[0] = (byte)(0x80);
                 }
-                size = aux.Length;
 
-                lb.Add((byte)size);
-                lb.AddRange(Encoding.UTF8.GetBytes(aux));
-                //lb.AddRange(Encoding.UTF8.GetBytes(i.ToString()));
-                Stream.Write(lb.ToArray(), 0, size + 2);
-                Console.WriteLine("Sent end of message + " + aux);
-
+                sendMsg[1] = (byte)(byteMsg.Length - sourceIndex);
+                Array.Copy(byteMsg, sourceIndex, sendMsg, 2, (byteMsg.Length - sourceIndex));
+                Stream.Write(sendMsg, 0, (byteMsg.Length - sourceIndex) + 2);
+                sourceIndex += _maxLengthMessage;
             }
             catch (Exception ex)
             {

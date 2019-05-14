@@ -41,13 +41,22 @@ socket.onopen = function (openEvent) {
 socket.onmessage = function (e) {
     //console.log("Recieved: " + JSON.parse(e.data));
     //"[{\"ID\":1,\"Name\":\"Första Tävlingen\",\"Start\":\"2019-04-15T21:51:24\",\"Finished\":\"0001-01-01T00:00:00\""
+
     console.log(e.data);
-    var parsed = e.data.replace(/\\"/g, '"');
-    parsed = parsed.replace('"[', '[');
-    //parsed = parsed.replace(']"', ']');
-    //parsed += '}';
-    console.log(parsed);
-    var obj = JSON.parse(parsed);
+    str = "";
+    for (var i = 0; i < e.data.length; i += 8) {
+        val = e.data[i + 4] + e.data[i + 6] + e.data[i] + e.data[i + 2] + "";
+        console.log(val);
+        // ff 1b
+
+        console.log(i + "  " + parseInt(val, 16));
+        str += String.fromCharCode(parseInt(val, 16));
+    }
+    console.log(str);
+
+
+
+    var obj = JSON.parse(str);
     console.log(obj);
 
 
@@ -68,6 +77,38 @@ function generateCompetitions(num, data) {
 
         dest.appendChild(clone);
     }
+}
+
+function hexDecode(hex) {
+    var j;
+    var hexes = hex.match(/.{1,8}/g) || [];
+    var back = "";
+    for (j = 0; j < hexes.length; j++) {
+        back += String.fromCharCode(parseInt(hexes[j], 16));
+    }
+
+    return back;
+}
+
+function unicodeToChar(text) {
+    return text.replace(/[\dA-F]{4}/gi,
+        function (match) {
+            return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+        });
+}
+
+function hexToAscii(hexx) {
+    var hex = hexx.toString();//force conversion
+    var str = '';
+    for (var i = 0; (i < hex.length && hex.substr(i, 2) !== '00'); i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
+}
+
+function retardToHex(msg) {
+    msg = msg.replace(/(..)/g, '$1-').slice(0, -1);
+    return msg;
+    //(0011000) (ff) (a)
 }
 
 function decodeMessage(messageObj) {
