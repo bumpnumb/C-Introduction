@@ -18,7 +18,7 @@ namespace Server.services
         {
             Competition c = new Competition();
             //exempel
-            if(Judge == "hej")
+            if(Judge == "hello" && Divers == "world")
             {
                 return true;
             }
@@ -32,10 +32,17 @@ namespace Server.services
         {
             Competition c = new Competition();
             return c;
-            //if(competitions != null)
-                //send it all back baby
-            //else
-                //send error back baby
+
+            //something like dis...
+
+//          if(competitions != null)
+//              send it all back baby, typ:
+//              foreach (string in Judges){
+//                  c = db.getEachCompetition
+//              }
+//              else{
+//                  send error back baby
+//              }
         }
 
         public static Competition getActiveCompetitions()
