@@ -38,7 +38,7 @@ namespace Client.services
                 case MessageType.NoType:
                     break;
                 case MessageType.Login:
-                    if (this.Data == "WRONG PASSWORD!") // thomas och nedim bestämmer //WRONG PASSWORD!  Successfull login!
+                    if (this.Data == "success") // thomas och nedim bestämmer // Successfull login!
                     {
                         switch (this.user.Group) {
                             case GroupType.Admin:
@@ -59,7 +59,12 @@ namespace Client.services
                     }
                     else
                     {
-
+                        App.Current.Dispatcher.Invoke((Action)delegate
+                        {
+                            WrongUnameAndPword tempErrorWin = new WrongUnameAndPword();
+                            tempErrorWin.Show();
+                            App.MainWindowRef.CenterWindowOnScreen();
+                        });
                     }
                     break;
                 case MessageType.Register:
@@ -114,6 +119,7 @@ namespace Client.services
                 Response resp = JsonConvert.DeserializeObject<Response>(readMsg);
 
                 resp.HandleResponse();
+                msg.Clear();
             }
         }
 
