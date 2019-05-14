@@ -53,6 +53,21 @@ namespace Client
             App.MainWindowRef.CenterWindowOnScreen();
 
         }
+
+        private void LoggedInLabel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            //highlight text funktion here
+        }
+
+        private void LoggedInLabel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            //stop highlighting text funktion here
+        }
+
+        private void LoggedInLabel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Add logout function here
+        }
     }
 }
 
