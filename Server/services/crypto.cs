@@ -18,29 +18,21 @@ namespace Server.services
             byte[] hashBytes = salted.GetBytes(20);
 
             User u = new User();
-            u.Salt = strBuilder(saltBytes);
-            u.Hash = strBuilder(hashBytes);
+            //u.Salt = strBuilder(saltBytes);
+            u.Salt = Convert.ToBase64String(saltBytes);
+            u.Hash = Convert.ToBase64String(hashBytes);
             return u;
         }
 
         public static bool AuthenticateLogin(string pw, string hash, string salt)
         {
-            //byte[] saltBytes = System.Text.Encoding.UTF8.GetBytes(salt);
-            byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
-
-            //byte[] hashBytes = System.Text.Encoding.UTF8.GetBytes(hash);
-            byte[] hashBytes = Encoding.ASCII.GetBytes(hash);
-                int byteLength = Buffer.ByteLength(hashBytes);
+            byte[] saltBytes = Convert.FromBase64String(salt);
 
             var salted = new Rfc2898DeriveBytes(pw, saltBytes, 10000);
-            byte[] generatedHashBytes = salted.GetBytes(byteLength);
+            byte[] generatedHashBytes = salted.GetBytes(20);
+            string generatedHash = Convert.ToBase64String(generatedHashBytes);
 
-            //byte[] passwordAndSaltBytes = System.Text.Encoding.UTF8.GetBytes(pw + salt);
-            //byte[] hashBytes = new System.Security.Cryptography.SHA256Managed().ComputeHash(passwordAndSaltBytes);
-            //string hashString = Convert.ToBase64String(hashBytes);
-
-            //får ej rätt bytes här
-            if (hashBytes == generatedHashBytes)    //hashBytes == generatedHashBytes
+            if (hash == generatedHash)
             {
                 return true;
             }
@@ -48,18 +40,6 @@ namespace Server.services
             {
                 return false;
             }
-        }
-
-
-        private static string strBuilder(byte[] arr)
-        {
-            StringBuilder Builder = new StringBuilder();
-            for (int i = 0; i < arr.Length; i++)
-            {
-                Builder.Append(arr[i].ToString("x2"));
-            }
-            rngCsp.Dispose();
-            return Builder.ToString();
         }
     }
 }

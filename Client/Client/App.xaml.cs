@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Client.services;
+using Client.windows;
 
 namespace Client
 {
@@ -15,7 +16,8 @@ namespace Client
     public partial class App : Application
     {
         public static MainWindow MainWindowRef;
-        public static Response ResponseRef;
+        //public static Response ResponseRef;
+        
     }
 
     

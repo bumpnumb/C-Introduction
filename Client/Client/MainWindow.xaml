@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="Simmmmmhopp" Height="350" Width="250" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+        Title="Simmhopp" Height="350" Width="250" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
     <Grid>
         <Frame x:Name="Main" NavigationUIVisibility="Hidden"/>
+        <StackPanel x:Name="doelenContentPanel" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <Label x:Name="usernameLabel" Content="" HorizontalAlignment="Right"  VerticalAlignment="Top"/>
+            <Label x:Name="loggedInLabel" Content="" HorizontalAlignment="Right"  VerticalAlignment="Top" MouseEnter="LoggedInLabel_MouseEnter" MouseLeave="LoggedInLabel_MouseLeave" MouseDown="LoggedInLabel_MouseDown"/> 
+        </StackPanel>
+
     </Grid>
 </Window>

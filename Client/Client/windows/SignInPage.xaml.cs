@@ -77,9 +77,6 @@ namespace Client.windows
                     ID = IDBox.Text;
                     PW = PwBox.Password;
                     login(ID, PW);
-                    //listen for positive response
-                    //if ()
-                        openMainProgramWindow();
                 }
 
             }
@@ -114,15 +111,6 @@ namespace Client.windows
         //    //ClientControll.Listen();
         //}
 
-        public void openMainProgramWindow()
-        {
-
-            App.MainWindowRef.Height = 768;
-            App.MainWindowRef.Width = 1028;
-            App.MainWindowRef.Main.Navigate(new AdminMainPage());
-
-        }
-
         private void Key_Down_Event(object sender, KeyEventArgs e)
         {
             if (IDBox.Text != "" && IDBox.Text != "Username")
@@ -134,10 +122,7 @@ namespace Client.windows
                         ID = IDBox.Text;
                         PW = PwBox.Password;
                         login(ID, PW);
-                        //listen for positive response
-                        //if(listenForResponse())
-                        //App.ResponseRef.HandleResponse(); fixa den här handlern;;;;; ATT GÖRA OVER HERE <-----------------------------------------------------
-                        openMainProgramWindow();
+                        
                     }
                 }
 
