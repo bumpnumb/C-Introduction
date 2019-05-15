@@ -18,6 +18,9 @@ namespace Server.services
         static IPAddress ip = Dns.GetHostEntry("localhost").AddressList[0];
         static TcpListener server = new TcpListener(ip, 8787);
         static TcpClient client = default(TcpClient);
+        CancellationTokenSource TokenSource;
+
+
 
         public TcpConnection()
         {
@@ -25,19 +28,30 @@ namespace Server.services
             {
                 server.Start();
                 Console.WriteLine("Server started...");
+                this.TokenSource = new CancellationTokenSource();
+                Thread acceptThread = new Thread(new ParameterizedThreadStart(acceptClient));
+                acceptThread.Start(TokenSource.Token);
+
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 Console.Read();
-
             }
+
+        }
+
+        public void acceptClient(object obj)
+        {
             while (true)
             {
                 client = server.AcceptTcpClient();
                 ClientHandler handle = new ClientHandler(client);
             }
         }
+
+
     }
     class ClientHandler
     {
