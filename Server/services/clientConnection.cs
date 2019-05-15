@@ -81,15 +81,15 @@ namespace Server.services
                         rsp.Data = "USER EXISTS!";
                     }
                     else
-                    { 
+                    {
                         User temp = crypto.GenerateSaltHash(passw);
                         db.RegisterUser(name, temp.Salt, temp.Hash);
                     }
 
                     break;
 
-                case MessageType.Competition:   
-                    switch(this.Data)
+                case MessageType.Competition:
+                    switch (this.Data)
                     {
                         case "GetAll":
                             //Competition GetAll = GetAllCompetitions();
@@ -97,11 +97,24 @@ namespace Server.services
 
                             rsp.Type = MessageType.Competition;
 
-//                            if(competitions != null){ alltså att vi har en eller flera competitions
-//                               getAllCompetitions();
-//                               rsp.Data = "success competitions";    overwrite data från switch?
-//                            else
-//                               send error
+                            //                            if(competitions != null){ alltså att vi har en eller flera competitions
+                            //                               getAllCompetitions();
+                            //                               rsp.Data = "success competitions";    overwrite data från switch?
+                            //                            else
+                            //                               send error
+
+                            List<Competition> comp = db.GetAllCompetitions();
+                            int i = 0;
+                            foreach (Competition c in comp)
+                            {
+                                i++;
+                            }
+
+                            string json = JsonConvert.SerializeObject(comp);
+                            rsp.Data = "{\"Type\":Competition,\"Num\":" + i + ",\"Data\":" + json + '}';
+
+
+
 
                             break;
 
