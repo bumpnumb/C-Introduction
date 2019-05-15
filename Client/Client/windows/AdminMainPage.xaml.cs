@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Client.services;
 using Client.windows;
 
 namespace Client.windows
@@ -22,7 +23,7 @@ namespace Client.windows
     public partial class AdminMainPage : Page
     {
         public AdminMainPage() {
-            
+
             InitializeComponent();
             App.MainWindowRef.CenterWindowOnScreen();
         }
@@ -31,5 +32,20 @@ namespace Client.windows
 
             App.MainWindowRef.Main.Navigate(new CreateAndEditPage());
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Message loginMsg = new Message();
+            loginMsg.Type = MessageType.Competition;
+            loginMsg.Data = "GetAll"; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
+            ClientControll.Send(loginMsg);
+        }
     }
 }
+//            /*Fixa en snygg json grej här för ID och PW så det går att ha vilket namn som helst
+//            "{
+//                'ID': id,
+//                'PW': pw
+//        }
+//    }
+//}
