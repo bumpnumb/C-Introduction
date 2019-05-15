@@ -51,6 +51,21 @@ namespace Client.windows
 
             });
         }
+
+        public static void FillCompetitionListBox(List<Competition> competitions)
+        {
+            
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
+
+
+                currentPage.competitionListBox.ItemsSource = competitions;
+                
+                   
+                
+            });
+        }
     }
 }
 //            /*Fixa en snygg json grej här för ID och PW så det går att ha vilket namn som helst

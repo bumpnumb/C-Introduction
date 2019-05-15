@@ -15,6 +15,13 @@ namespace Client.services
     public enum MessageType { NoType, Login, Register, Competition }
     public enum GroupType { User, Judge, Admin }
 
+    public class Competition
+    {
+        public string Name { get; set; }
+        public string Started { get; set; }
+        public string Ended { get; set; }
+    }
+
     public class User
     {
         public int ID { get; set; }
@@ -84,6 +91,17 @@ namespace Client.services
                 case MessageType.Register:
                     break;
                 case MessageType.Competition:
+                    string[] competitionsString = this.Data.Split('\"');
+                    List<Competition> competitions = new List<Competition>();
+                    for (int i = 0; i < competitionsString.Length; i++)
+                    {
+                        if(competitionsString[i] == "Name")
+                        { 
+                        competitions.Add(new Competition() { Name = competitionsString[i + 2], Started = "Started: " + competitionsString[i + 6], Ended = "Ended: " + competitionsString[i + 10] }); //{ Name = competitionsString[i + 2], Started = competitionsString[i + 6], Ended = competitionsString[i + 10] }
+                        }
+                        Console.WriteLine(competitions);
+                    }
+                    AdminMainPage.FillCompetitionListBox(competitions);
                     AdminMainPage.FillCompetitionDataBox(this.Data);
                     break;
                 default:
