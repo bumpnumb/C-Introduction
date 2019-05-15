@@ -12,7 +12,7 @@ using Client.windows;
 
 namespace Client.services
 {
-    public enum MessageType { NoType, Login, Register }
+    public enum MessageType { NoType, Login, Register, Competition }
     public enum GroupType { User, Judge, Admin }
 
     public class User
@@ -49,8 +49,7 @@ namespace Client.services
                                 {
                                     AdminMainPage admn;
                                     App.MainWindowRef.pageSwitcher(admn = new AdminMainPage());
-                                    App.MainWindowRef.loggedInLabel.Content = "Logout";
-                                    App.MainWindowRef.usernameLabel.Content = this.user.Name;
+                                    App.MainWindowRef.setActiveUser(this);
 
                                 });
                                 break;
@@ -59,8 +58,7 @@ namespace Client.services
                                 {
                                     JudgePage jdg;
                                     App.MainWindowRef.pageSwitcher(jdg = new JudgePage());
-                                    App.MainWindowRef.loggedInLabel.Content = "Logout";
-                                    App.MainWindowRef.usernameLabel.Content = this.user.Name;
+                                    App.MainWindowRef.setActiveUser(this);
                                 });
                                 break;
                             case GroupType.User:
@@ -89,6 +87,8 @@ namespace Client.services
                     break;
                 case MessageType.Register:
                     break;
+                case MessageType.Competition:
+
                 default:
                     break;
             }
@@ -108,7 +108,6 @@ namespace Client.services
         static TcpClient Client;
         static NetworkStream Stream;
         static CancellationTokenSource ct;
-        static MemoryStream memStrm = new MemoryStream(); //Might want to delete this later
 
         public ClientControll()
         {

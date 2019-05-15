@@ -54,14 +54,23 @@ namespace Client
 
         }
 
+        public void setActiveUser(Response activeUser)
+        {
+            this.activeAs.Content = "Active as: ";
+            this.loggedInLabel.Content = "Logout";
+            this.usernameLabel.Content = activeUser.user.Name;
+        }
+
         private void LoggedInLabel_MouseEnter(object sender, MouseEventArgs e)
         {
             //highlight text funktion here
+            loggedInLabel.Foreground = new SolidColorBrush(Colors.Gray);
         }
 
         private void LoggedInLabel_MouseLeave(object sender, MouseEventArgs e)
         {
             //stop highlighting text funktion here
+            loggedInLabel.Foreground = new SolidColorBrush(Colors.Black);
         }
 
         private void LoggedInLabel_MouseDown(object sender, MouseButtonEventArgs e)
