@@ -93,7 +93,7 @@ namespace Server.services
                     {
                         case "GetAll":
                             //Competition GetAll = GetAllCompetitions();
-                            //rsp.Data = JsonConvert.SerializeObject(GetAll);
+                            //rsp.Data = JsonConvert.SerializeObject(GetAll;
 
                             rsp.Type = MessageType.Competition;
 
