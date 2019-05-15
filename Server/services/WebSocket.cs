@@ -16,25 +16,39 @@ namespace Server.services
     {
         static TcpListener server = new TcpListener(IPAddress.Parse("127.0.0.1"), 80);
         static TcpClient client = default(TcpClient);
+        CancellationTokenSource TokenSource;
         public WebServer()
         {
             try
             {
                 server.Start();
                 Console.WriteLine("WebServer started...");
+                this.TokenSource = new CancellationTokenSource();
+                Thread acceptThread = new Thread(new ParameterizedThreadStart(acceptClient));
+                acceptThread.Start(TokenSource.Token);
+
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 Console.Read();
-
             }
+        }
+
+        public void acceptClient(object obj)
+        {
             while (true)
             {
                 client = server.AcceptTcpClient();
                 WebClientHandler handle = new WebClientHandler(client);
             }
         }
+
+        //cancel()
+        //token set cancel
+
+
     }
     class WebClientHandler
     {
