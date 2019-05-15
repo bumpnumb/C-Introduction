@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Client.services;
 using Client.windows;
 
 namespace Client.windows
@@ -25,11 +26,26 @@ namespace Client.windows
             
             InitializeComponent();
             App.MainWindowRef.CenterWindowOnScreen();
+            GetAllCompetitions();
         }
 
         private void Edit_Create_Btn(object sender, RoutedEventArgs e) {
 
             App.MainWindowRef.Main.Navigate(new CreateAndEditPage());
+        }
+
+        private void GetAllCompetitions()
+        {
+            Message getComp = new Message();
+            getComp.Type = MessageType.Competition;
+            getComp.Data = "GetAll"; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
+            ClientControll.Send(getComp);
+            /*Fixa en snygg json grej här för ID och PW så det går att ha vilket namn som helst
+            "{
+                'ID': id,
+                'PW': pw
+            }"*/
+
         }
     }
 }
