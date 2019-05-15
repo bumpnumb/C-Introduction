@@ -85,7 +85,7 @@ namespace Client.windows
         private void signupBtn(object sender, MouseButtonEventArgs e)
         {
             App.MainWindowRef.Main.Navigate(new SignUpPage());
-
+           
         }
 
         private void login(string id, string pw)

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 using Client.windows;
+using System.Windows.Navigation;
 
 namespace Client.services
 {
@@ -34,7 +35,7 @@ namespace Client.services
         public void HandleResponse()
         {
             //handle response; do the thiung
-            string dataHolder;
+            
 
             switch (this.Type)
             {
@@ -49,7 +50,7 @@ namespace Client.services
                                 App.Current.Dispatcher.Invoke((Action)delegate
                                 {
                                     App.MainWindowRef.pageSwitcher(new AdminMainPage());
-                                    App.MainWindowRef.setActiveUser(this);
+                                    App.MainWindowRef.setActiveUser(this); //this.user borde det va här
 
                                 });
                                 break;
@@ -87,8 +88,8 @@ namespace Client.services
                 case MessageType.Register:
                     break;
                 case MessageType.Competition:
-                    dataHolder = this.Data;
-                    App.AdminMainPageRef.competitionDataBox.Text = (dataHolder);
+                    
+                    
                     break;
                 default:
                     break;

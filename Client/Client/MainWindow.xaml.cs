@@ -51,7 +51,7 @@ namespace Client
             App.MainWindowRef.Width = 1028;
             App.MainWindowRef.Main.Navigate(pg);
             App.MainWindowRef.CenterWindowOnScreen();
-
+         
         }
 
         public void setActiveUser(Response activeUser)

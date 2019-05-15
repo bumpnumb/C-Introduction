@@ -44,6 +44,7 @@ namespace Client.windows
         public void FillCompetitionDataBox(string rsp)
         {
             this.competitionDataBox.Text = rsp;
+            
         }
     }
 }
