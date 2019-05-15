@@ -9,8 +9,9 @@
     <Grid>
         <Frame x:Name="Main" NavigationUIVisibility="Hidden"/>
         <StackPanel x:Name="doelenContentPanel" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <Label x:Name="activeAs" Content="" HorizontalAlignment="Right"  VerticalAlignment="Top"/>
             <Label x:Name="usernameLabel" Content="" HorizontalAlignment="Right"  VerticalAlignment="Top"/>
-            <Label x:Name="loggedInLabel" Content="" HorizontalAlignment="Right"  VerticalAlignment="Top" MouseEnter="LoggedInLabel_MouseEnter" MouseLeave="LoggedInLabel_MouseLeave" MouseDown="LoggedInLabel_MouseDown"/> 
+            <Label x:Name="loggedInLabel" Content="" HorizontalAlignment="Right"  VerticalAlignment="Top" MouseEnter="LoggedInLabel_MouseEnter" MouseLeave="LoggedInLabel_MouseLeave" MouseDown="LoggedInLabel_MouseDown" Foreground="#FF4D4D4D"/> 
         </StackPanel>
 
     </Grid>

@@ -102,15 +102,6 @@ namespace Client.windows
 
         }
 
-        //private void listenForResponse() {
-        //    Response responseMsg = new Response();
-        //    responseMsg.Type = MessageType.Login;
-        //    responseMsg.Data = "asdasd";
-        //    responseMsg.user = 
-
-        //    //ClientControll.Listen();
-        //}
-
         private void Key_Down_Event(object sender, KeyEventArgs e)
         {
             if (IDBox.Text != "" && IDBox.Text != "Username")
