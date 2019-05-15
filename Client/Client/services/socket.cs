@@ -34,6 +34,7 @@ namespace Client.services
         public void HandleResponse()
         {
             //handle response; do the thiung
+            string dataHolder;
 
             switch (this.Type)
             {
@@ -47,8 +48,7 @@ namespace Client.services
                             case GroupType.Admin:
                                 App.Current.Dispatcher.Invoke((Action)delegate
                                 {
-                                    AdminMainPage admn;
-                                    App.MainWindowRef.pageSwitcher(admn = new AdminMainPage());
+                                    App.MainWindowRef.pageSwitcher(new AdminMainPage());
                                     App.MainWindowRef.setActiveUser(this);
 
                                 });
@@ -56,8 +56,7 @@ namespace Client.services
                             case GroupType.Judge:
                                 App.Current.Dispatcher.Invoke((Action)delegate
                                 {
-                                    JudgePage jdg;
-                                    App.MainWindowRef.pageSwitcher(jdg = new JudgePage());
+                                    App.MainWindowRef.pageSwitcher(new JudgePage());
                                     App.MainWindowRef.setActiveUser(this);
                                 });
                                 break;
@@ -88,7 +87,10 @@ namespace Client.services
                 case MessageType.Register:
                     break;
                 case MessageType.Competition:
-
+                    dataHolder = this.Data;
+                    App.AdminMainPageRef.competitionDataBox.Text = (dataHolder);
+                    App.MainWindowRef.Main.
+                    break;
                 default:
                     break;
             }

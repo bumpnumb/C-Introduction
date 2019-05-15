@@ -40,6 +40,11 @@ namespace Client.windows
             loginMsg.Data = "GetAll"; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
             ClientControll.Send(loginMsg);
         }
+
+        public void FillCompetitionDataBox(string rsp)
+        {
+            this.competitionDataBox.Text = rsp;
+        }
     }
 }
 //            /*Fixa en snygg json grej här för ID och PW så det går att ha vilket namn som helst
