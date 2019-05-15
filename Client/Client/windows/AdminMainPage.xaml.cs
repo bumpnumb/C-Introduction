@@ -41,10 +41,15 @@ namespace Client.windows
             ClientControll.Send(loginMsg);
         }
 
-        public void FillCompetitionDataBox(string rsp)
+        public static void FillCompetitionDataBox(string data)
         {
-            this.competitionDataBox.Text = rsp;
-            
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
+
+                currentPage.competitionDataBox.Text = data;
+
+            });
         }
     }
 }

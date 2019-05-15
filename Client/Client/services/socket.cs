@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 using Client.windows;
-using System.Windows.Navigation;
 
 namespace Client.services
 {
@@ -34,9 +33,6 @@ namespace Client.services
 
         public void HandleResponse()
         {
-            //handle response; do the thiung
-            
-
             switch (this.Type)
             {
                 case MessageType.NoType:
@@ -50,7 +46,7 @@ namespace Client.services
                                 App.Current.Dispatcher.Invoke((Action)delegate
                                 {
                                     App.MainWindowRef.pageSwitcher(new AdminMainPage());
-                                    App.MainWindowRef.setActiveUser(this); //this.user borde det va här
+                                    App.MainWindowRef.setActiveUser(this);
 
                                 });
                                 break;
@@ -67,7 +63,7 @@ namespace Client.services
                                     UserLoginPopUpWindow tempWin = new UserLoginPopUpWindow();
                                     tempWin.Show();
                                 });
-                                
+
                                 break;
                             default:
                                 Console.WriteLine("Error");
@@ -88,8 +84,7 @@ namespace Client.services
                 case MessageType.Register:
                     break;
                 case MessageType.Competition:
-                    
-                    
+                    AdminMainPage.FillCompetitionDataBox(this.Data);
                     break;
                 default:
                     break;
