@@ -89,41 +89,23 @@ namespace Server.services
                     break;
 
                 case MessageType.Competition:
-                    switch (this.Data)
+
+                    string[] part = this.Data.Split("\r\n");
+                    List<Competition> comp;
+
+                    switch (part[0])
                     {
                         case "GetAll":
-                            //Competition GetAll = GetAllCompetitions();
-                            //rsp.Data = JsonConvert.SerializeObject(GetAll;
-
                             rsp.Type = MessageType.Competition;
+                            comp = db.GetAllCompetitions();
 
-                            //                            if(competitions != null){ alltså att vi har en eller flera competitions
-                            //                               getAllCompetitions();
-                            //                               rsp.Data = "success competitions";    overwrite data från switch?
-                            //                            else
-                            //                               send error
-
-                            List<Competition> comp = db.GetAllCompetitions();
-                            int i = 0;
-                            foreach (Competition c in comp)
-                            {
-                                i++;
-                            }
-
-                            string json = JsonConvert.SerializeObject(comp);
-                            rsp.Data = json;
-
-
-
-
+                            rsp.Data = JsonConvert.SerializeObject(comp);
                             break;
 
                         case "GetActive":
-                            //Competition GetActive = GetActiveCompetitions();
-                            //rsp.Data = JsonConvert.SerializeObject(GetActive);
-
                             rsp.Type = MessageType.Competition;
-
+                            comp = db.GetActiveCompetitions();
+                            rsp.Data = JsonConvert.SerializeObject(comp);
                             break;
 
                         case "CreateCompetition":
