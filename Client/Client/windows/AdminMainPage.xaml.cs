@@ -37,7 +37,7 @@ namespace Client.windows
         {
             Message loginMsg = new Message();
             loginMsg.Type = MessageType.Competition;
-            loginMsg.Data = "GetAll"; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
+            loginMsg.Data = "GetActive"; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
             ClientControll.Send(loginMsg);
         }
 

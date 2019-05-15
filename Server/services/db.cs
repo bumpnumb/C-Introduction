@@ -121,6 +121,15 @@ namespace Server.services
             context.SaveChanges();
         }
 
+
+        public List<Competition> GetActiveCompetitions()
+        {
+            using (var context = new DivingCompDbContext())
+            {
+                return context.Competitions.Where(x => x.Start <= DateTime.Now && !helper.IsFinished(x.Finished)).ToList<Competition>();
+            }
+        }
+
         public List<Competition> GetAllCompetitions()
         {
             using (var context = new DivingCompDbContext())
