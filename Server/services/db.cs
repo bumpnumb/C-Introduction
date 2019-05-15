@@ -15,8 +15,6 @@ namespace Server.services
     {
         public void StartConnection()
         {
-
-
             using (var context = new DivingCompDbContext())
             {
                 context.Database.EnsureCreated();
@@ -69,7 +67,6 @@ namespace Server.services
             using (var context = new DivingCompDbContext())
             {
                 var u = context.Users.Where(x => x.Name == name).FirstOrDefault();
-
                 return u;
             }
         }
@@ -92,7 +89,6 @@ namespace Server.services
             context.Users.Add(u);
             context.SaveChanges();
         }
-
         public string GetSaltByID(int ID)
         {
             using (var context = new DivingCompDbContext())
@@ -109,7 +105,6 @@ namespace Server.services
                 return u.Hash;
             }
         }
-
         public void CreateCompetitions(/*argument*/)
         {
             var context = new DivingCompDbContext();
@@ -126,16 +121,13 @@ namespace Server.services
             context.SaveChanges();
         }
 
-
         public List<Competition> GetAllCompetitions()
         {
             using (var context = new DivingCompDbContext())
             {
                 return context.Competitions.ToList<Competition>();
             }
-
         }
-
     }
 }
 
