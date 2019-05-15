@@ -143,31 +143,13 @@ namespace Server.services
                                 Database db = new Database();
                                 List<Competition> comp = db.GetAllCompetitions();
                                 int i = 0;
-
-
-                                List<Competition> test = new List<Competition>();
-                                test.Add(comp[0]);
-                                test.Add(comp[1]);
-                                test.Add(comp[2]);
-                                test.Add(comp[1]);
-                                test.Add(comp[0]);
-                                test.Add(comp[0]);
-                                test.Add(comp[1]);
-                                test.Add(comp[2]);
-                                test.Add(comp[1]);
-                                test.Add(comp[0]);
-                                test.Add(comp[0]);
-                                test.Add(comp[1]);
-                                test.Add(comp[2]);
-                                test.Add(comp[1]);
-                                test.Add(comp[0]);
-                                foreach (Competition c in test)
+                                foreach (Competition c in comp)
                                 {
                                     i++;
                                 }
 
-                                string json = JsonConvert.SerializeObject(test);
-                                Send("{\"Type\":0,\"Num\":" + i + ",\"Data\":" + json + '}');
+                                string json = JsonConvert.SerializeObject(comp);
+                                Send("{\"Type\":Competition,\"Num\":" + i + ",\"Data\":" + json + '}');
 
                                 break;
                             case "GET COMPETITION:":
