@@ -33,9 +33,6 @@ namespace Client.services
 
         public void HandleResponse()
         {
-            //handle response; do the thiung
-            string dataHolder;
-
             switch (this.Type)
             {
                 case MessageType.NoType:
@@ -66,7 +63,7 @@ namespace Client.services
                                     UserLoginPopUpWindow tempWin = new UserLoginPopUpWindow();
                                     tempWin.Show();
                                 });
-                                
+
                                 break;
                             default:
                                 Console.WriteLine("Error");
@@ -87,8 +84,7 @@ namespace Client.services
                 case MessageType.Register:
                     break;
                 case MessageType.Competition:
-                    dataHolder = this.Data;
-                    App.AdminMainPageRef.competitionDataBox.Text = (dataHolder);
+                    AdminMainPage.FillCompetitionDataBox(this.Data);
                     break;
                 default:
                     break;
