@@ -89,7 +89,6 @@ namespace Client.services
                 case MessageType.Competition:
                     dataHolder = this.Data;
                     App.AdminMainPageRef.competitionDataBox.Text = (dataHolder);
-                    App.MainWindowRef.Main.
                     break;
                 default:
                     break;
