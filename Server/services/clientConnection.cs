@@ -111,7 +111,7 @@ namespace Server.services
                             }
 
                             string json = JsonConvert.SerializeObject(comp);
-                            rsp.Data = "{\"Type\":Competition,\"Num\":" + i + ",\"Data\":" + json + '}';
+                            rsp.Data = json;
 
 
 

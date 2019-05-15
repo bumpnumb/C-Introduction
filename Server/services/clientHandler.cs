@@ -98,7 +98,7 @@ namespace Server.services
                     try
                     {
                         bytesRead = Stream.Read(recievedBuffer, 0, recievedBuffer.Length);
-                        msg.AppendFormat("{0}", Encoding.ASCII.GetString(recievedBuffer, 0, bytesRead));
+                        msg.AppendFormat("{0}", Encoding.Unicode.GetString(recievedBuffer, 0, bytesRead));
                     }
                     catch (System.IO.IOException)
                     {
@@ -154,9 +154,9 @@ namespace Server.services
 
         void Send(string msg)
         {
-            int byteCount = Encoding.ASCII.GetByteCount(msg);
+            int byteCount = Encoding.Unicode.GetByteCount(msg);
             byte[] sendData = new byte[byteCount];
-            sendData = Encoding.ASCII.GetBytes(msg);
+            sendData = Encoding.Unicode.GetBytes(msg);
 
             Stream.Write(sendData, 0, sendData.Length);
         }
