@@ -134,7 +134,7 @@ namespace Client.services
                 do
                 {
                     bytesRead = Stream.Read(recievedBuffer, 0, recievedBuffer.Length);
-                    msg.AppendFormat("{0}", Encoding.ASCII.GetString(recievedBuffer, 0, bytesRead));
+                    msg.AppendFormat("{0}", Encoding.Unicode.GetString(recievedBuffer, 0, bytesRead));
                 }
                 while (Stream.DataAvailable);
 
@@ -159,9 +159,9 @@ namespace Client.services
 
             //Fixa det här json.seroalisedickus
 
-            int byteCount = Encoding.ASCII.GetByteCount(JsonConvert.SerializeObject(msg)); // Ta ut längden i bytes på meddelandet
+            int byteCount = Encoding.Unicode.GetByteCount(JsonConvert.SerializeObject(msg)); // Ta ut längden i bytes på meddelandet
             byte[] sendData = new byte[byteCount];
-            sendData = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(msg));
+            sendData = Encoding.Unicode.GetBytes(JsonConvert.SerializeObject(msg));
 
             Stream.Write(sendData, 0, sendData.Length);
         }
