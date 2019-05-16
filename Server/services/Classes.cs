@@ -42,6 +42,8 @@ namespace Server.modules
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public string[] Judges { get; set; }
+        public string[] Divers { get; set; }
         public DateTime Start { get; set; }
         public DateTime Finished { get; set; }
     }

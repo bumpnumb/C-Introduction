@@ -110,13 +110,21 @@ namespace Server.services
             var context = new DivingCompDbContext();
             context.Database.EnsureCreated();
 
-            Competition c = new Competition
+            int cID = 1;
+            int uID = 2;
+
+            string[] testJudge = { "J1", "J2", "J3" };
+            foreach (string value in testJudge)
             {
-                //ID = ID,              //
-                //Name = name,          //kanske ska vara listor... eller hur funkar det här?
-                //Start = time,         //var ska vi lagra Divers, och Judges som är knutna till denna competition? 
-                //Finished = time       //Ska judges och Divers ha på sin class, vilka competitions de hör till?
-            };
+
+                //CompetitionJudge yes = new CompetitionJudge
+                //{
+                //    UID = uID;
+                //    CID = cID;
+                //};
+            }
+
+            Competition c = new Competition();      //detta skall obv. bort sen
             context.Competitions.Add(c);
             context.SaveChanges();
         }

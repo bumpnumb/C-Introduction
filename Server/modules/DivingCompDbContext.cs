@@ -38,6 +38,8 @@ namespace Server.modules
             {
                 entity.HasKey(e => e.ID);
                 entity.Property(e => e.Name).IsRequired();
+                entity.Property(e => e.Judges).IsRequired();
+                entity.Property(e => e.Divers).IsRequired();
                 entity.Property(e => e.Start).IsRequired();
                 entity.Property(e => e.Finished).IsRequired();
             });
