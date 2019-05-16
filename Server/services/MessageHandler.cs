@@ -104,7 +104,7 @@ namespace Server.services
                 case MessageType.Competition:
                     //split string in case we want to know more
                     string[] part = this.Data.Split("\r\n"); //correct separator use!
-                    List<Competition> comp;
+                    List<CompetitionWithUser> comp;
 
 
                     //Competition messagetypes will be as following:
