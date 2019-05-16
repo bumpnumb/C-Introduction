@@ -54,8 +54,9 @@ namespace Server.services
                     //Set the response type for parsing on other end.
                     rsp.Type = MessageType.Login;
 
+                    string[] userByName = this.Data.Split("\r\n"); //will this
                     //Try to find a user with same name
-                    rsp.user = db.GetUserByName(this.Data.Split("=;=")[0]); //change separator please!
+                    rsp.user = db.GetUserByName(userByName[0]); //and this work? for "change separator please!"
                     if (rsp.user != null) //this could be made into a one-liner, kept apart for ease of readability
                     {
                         //user was found, fetch salt and hash
@@ -71,13 +72,10 @@ namespace Server.services
                         }
                         else
                         {
-                            //this is bad!
                             //don't tell the client it has a correct username but wrong password.
                             //this makes bruteforcing easier!
-
-                            //instead send "Failure" or similar
-                            rsp.Data = "password";
-                            //or send "no user" since that is already a built in function.
+                            rsp.Data = "no user";
+                            //we use "no user" on both wrong username and wrong password
                         }
                     }
                     else
@@ -89,8 +87,9 @@ namespace Server.services
                 case MessageType.Register:
                     rsp.Type = MessageType.Register;
 
+                    string[] registerByName = this.Data.Split("\r\n"); 
                     //try fo fetch user
-                    rsp.user = db.GetUserByName(this.Data.Split("=;=")[0]); //split on other separator!!
+                    rsp.user = db.GetUserByName(registerByName[0]);//does this work?, "split on other separator!!"
                     if (rsp.user != null)
                     {
                         rsp.Data = "USER EXISTS!";
@@ -105,6 +104,22 @@ namespace Server.services
                         //from here, do a login atempt, and return thee user.
                         //Why should I register then login?
                         //process could be streamlined!
+
+                        //this should always be true,
+                        //but we do it so that the client can use its function for rsp.data
+                        //I guess that the client side will do the login if the client gets back .data = "success"?
+                        if (crypto.AuthenticateLogin(this.Data.Split("=;=")[1], tempUser.Hash, tempUser.Salt) == true)
+                        {
+                            //return some message for client to continue
+                            rsp.Data = "success";
+                        }
+                        else
+                        {
+                            //don't tell the client it has a correct username but wrong password.
+                            //this makes bruteforcing easier!
+                            rsp.Data = "no user";
+                            //we use "no user" on both wrong username and wrong password
+                        }
                     }
                     break;
 
