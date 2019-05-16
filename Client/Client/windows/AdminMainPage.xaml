@@ -20,13 +20,13 @@
                 <DataTemplate>
                     <Grid Margin="2,3">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="240" />
+                            <ColumnDefinition Width="120" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Name}" />
-                        <TextBlock Grid.Column="1" Text="{Binding Started}" />
-                        <TextBlock Grid.Column="2" Text="{Binding Ended}" />
+                        <TextBlock Grid.Column="1" Text="{Binding Start}" TextAlignment="Center" />
+                        <TextBlock Grid.Column="2" Text="{Binding Finished}" TextAlignment="Center" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
