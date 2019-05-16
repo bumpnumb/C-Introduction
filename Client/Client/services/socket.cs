@@ -91,8 +91,9 @@ namespace Client.services
                 case MessageType.Register:
                     break;
                 case MessageType.Competition:
+                    CompetitionWithUser objMessage = JsonConvert.DeserializeObject<CompetitionWithUser>(this.Data);
                     string[] competitionsString = this.Data.Split('\"');
-                    List<Competition> competitions = new List<Competition>();
+                    List<CompetitionWithUser> competitions = JsonConvert.DeserializeObject<CompetitionWithUser>(this.Data);
                     for (int i = 0; i < competitionsString.Length; i++)
                     {
                         if(competitionsString[i] == "Name")

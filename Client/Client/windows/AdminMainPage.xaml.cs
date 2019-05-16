@@ -35,10 +35,10 @@ namespace Client.windows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Message loginMsg = new Message();
-            loginMsg.Type = MessageType.Competition;
-            loginMsg.Data = "GetActive"; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
-            ClientControll.Send(loginMsg);
+            Message getCompetitions = new Message();
+            getCompetitions.Type = MessageType.Competition;
+            getCompetitions.Data = "GetAll"; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
+            ClientControll.Send(getCompetitions);
         }
 
         //public static void FillCompetitionDataBox(string data)
