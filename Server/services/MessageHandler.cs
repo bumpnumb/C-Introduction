@@ -135,6 +135,7 @@ namespace Server.services
 
                         case "CreateCompetition":
                             rsp.Type = MessageType.Competition;
+                            //CreateCompetitions();
 
                             //this needs a lot of work.
 
@@ -153,27 +154,7 @@ namespace Server.services
                             //send object to function
                             //function loops thhrough divers and judges pushing querry to db.
 
-                            string[] competitionString = this.Data.Split("\r\n");
-                            //ska vi kanske använda oss utav string[][]...?
-                            //då kan vi loopa t.ex. compString[3] = judgesString[antal j];
-                            //och                   compString[4] = diversString[antal d];
-
-                            string Name = competitionString[0];    
-                            string start_time = competitionString[1];
-                            string finish_time = competitionString[2];
-                            string Judges = competitionString[3];
-                            string Divers = competitionString[4];
-
-                            //here will the iterations be made for judges and dviers
-                            //to store them in db.
-                            if (competitions.createCompetition(Judges, Divers) == true)
-                            {
-                                //yes, send done
-                            }
-                            else
-                            {
-                                //no, send didnt go through
-                            }
+                            db.CreateCompetitions(/*listan på competition från client*/);
                             break;
                     }
                     break;
