@@ -89,6 +89,10 @@ namespace Client.services
                     }
                     break;
                 case MessageType.Register:
+                    //Här skulle man kunna copy-pasta nästan allt under login för att logga in direkt efter register
+                    //men det blir problem eftersom att man sätts i en group efter att man har registrerats.
+
+                    //här kanske man kan slänga upp en window i clienten som säger att man har lyckats skapa en user.
                     break;
                 case MessageType.Competition:
                     string[] competitionsString = this.Data.Split('\"');
