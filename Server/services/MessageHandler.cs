@@ -88,8 +88,8 @@ namespace Server.services
                     else
                     {
                         //Generate some salt and hash
-                        User tempUser = crypto.GenerateSaltHash(this.Data.Split("=;=")[1]); //split on other separator!!
-                        db.RegisterUser(this.Data.Split("=;=")[0], tempUser.Salt, tempUser.Hash);
+                        User tempUser = crypto.GenerateSaltHash(this.Data.Split("\r\n")[1]); //split on other separator!!
+                        db.RegisterUser(this.Data.Split("\r\n")[0], tempUser.Salt, tempUser.Hash);
 
                         //lets not be done here. as is now, we return nothing.
                         //from here, do a login atempt, and return thee user.
@@ -99,7 +99,7 @@ namespace Server.services
                         //this should always be true,
                         //but we do it so that the client can use its function for rsp.data
                         //I guess that the client side will do the login if the client gets back .data = "success"?
-                        if (crypto.AuthenticateLogin(this.Data.Split("=;=")[1], tempUser.Hash, tempUser.Salt) == true)
+                        if (crypto.AuthenticateLogin(this.Data.Split("\r\n")[1], tempUser.Hash, tempUser.Salt) == true)
                         {
                             //return some message for client to continue
                             rsp.Data = "success";
