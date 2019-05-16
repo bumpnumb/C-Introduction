@@ -141,9 +141,10 @@ namespace Server.services
                         case "GetActive":
                             //Fetch all competitions which are started but not ended
                             rsp.Type = MessageType.Competition;
-                            //comp = db.GetActiveCompetitions();
+                            comp = db.GetActiveCompetitions();
 
-                            //rsp.Data = JsonConvert.SerializeObject(comp);
+                            //Newtonsoft.Json is used to turn objects to nice looking strings
+                            rsp.Data = JsonConvert.SerializeObject(comp);
                             break;
 
                         case "CreateCompetition":
