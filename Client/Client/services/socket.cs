@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
+using System.Windows.Documents;
 using Client.windows;
 
 namespace Client.services
@@ -91,19 +92,23 @@ namespace Client.services
                 case MessageType.Register:
                     break;
                 case MessageType.Competition:
-                    CompetitionWithUser objMessage = JsonConvert.DeserializeObject<CompetitionWithUser>(this.Data);
-                    string[] competitionsString = this.Data.Split('\"');
                     List<CompetitionWithUser> competitions = JsonConvert.DeserializeObject<List<CompetitionWithUser>>(this.Data);
-                    for (int i = 0; i < competitionsString.Length; i++)
-                    {
-                        if(competitionsString[i] == "Name")
-                        { 
-                        competitions.Add(new Competition() { Name = competitionsString[i + 2], Started = "Started: " + competitionsString[i + 6], Ended = "Ended: " + competitionsString[i + 10] }); //{ Name = competitionsString[i + 2], Started = competitionsString[i + 6], Ended = competitionsString[i + 10] }
-                        }
-                        Console.WriteLine(competitions);
-                    }
+
+                    //foreach (CompetitionWithUser comp in competitions)
+                    //{
+                    //    int id = comp.ID;
+                    //    string name = comp.Name;
+                    //    DateTime stat = comp.Start;
+                    //    List<User> users = comp.Users;
+                    //    List<User> judges = comp.Judges;
+                    //}
+
+
                     AdminMainPage.FillCompetitionListBox(competitions);
-                    
+
+
+
+                    //AdminMainPage.FillCompetitionDataBox(this.Data); //Removed this textbox
                     break;
                 default:
                     break;
@@ -169,7 +174,7 @@ namespace Client.services
                 ct.Cancel();
                 Stream.Close();
                 Client.Close();
-                
+
                 return;
             }
             Console.WriteLine("Sending: " + msg);
