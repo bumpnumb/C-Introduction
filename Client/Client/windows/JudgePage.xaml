@@ -5,14 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Client.windows"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="768" d:DesignWidth="1024"
       Title="JudgePage">
 
-    <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="109,10,0,0" TextWrapping="Wrap" Text="JUDGEPAGE" VerticalAlignment="Top"/>
-        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="99,38,0,0" TextWrapping="Wrap" Text="Stina Storm" VerticalAlignment="Top" FontSize="18"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="61,77,0,0" TextWrapping="Wrap" Text="Hopp #3 - 5 1 1 3 - DIFFICULT #" VerticalAlignment="Top" Width="179"/>
-        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="75" Margin="61,167,0,58" TextWrapping="Wrap" Text="    7.5" VerticalAlignment="Center" Width="179" RenderTransformOrigin="0.5,0.5" FontSize="48">
+    <Grid MinWidth="1024" MinHeight="768">
+        <TextBlock x:Name="textBlock1" Margin="0,60,0,0" TextAlignment="Center" TextWrapping="Wrap" Text="Stina Storm" VerticalAlignment="Top" FontSize="35"/>
+        <TextBlock x:Name="textBox" Margin="0,120,0,0" TextAlignment="Center" TextWrapping="Wrap" Text="Hopp #3 - 5 1 1 3 - DIFFICULT #" VerticalAlignment="Top" FontSize="20"/>
+        <TextBox x:Name="textBox1" HorizontalAlignment="Center" Height="75" Margin="0,0,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="179" RenderTransformOrigin="0.5,0.5" FontSize="48">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -22,7 +21,7 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-        <Button x:Name="button" Content="SUBMIT" HorizontalAlignment="Left" Margin="215,270,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="button" Content="SUBMIT" HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Center" Width="75"/>
 
 
     </Grid>

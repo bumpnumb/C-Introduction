@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
+using System.Windows.Documents;
 using Client.windows;
 
 namespace Client.services
@@ -95,17 +96,22 @@ namespace Client.services
                     //här kanske man kan slänga upp en window i clienten som säger att man har lyckats skapa en user.
                     break;
                 case MessageType.Competition:
-                    string[] competitionsString = this.Data.Split('\"');
-                    List<Competition> competitions = new List<Competition>();
-                    for (int i = 0; i < competitionsString.Length; i++)
-                    {
-                        if(competitionsString[i] == "Name")
-                        { 
-                        competitions.Add(new Competition() { Name = competitionsString[i + 2], Started = "Started: " + competitionsString[i + 6], Ended = "Ended: " + competitionsString[i + 10] }); //{ Name = competitionsString[i + 2], Started = competitionsString[i + 6], Ended = competitionsString[i + 10] }
-                        }
-                        Console.WriteLine(competitions);
-                    }
+                    List<CompetitionWithUser> competitions = JsonConvert.DeserializeObject<List<CompetitionWithUser>>(this.Data);
+
+                    //foreach (CompetitionWithUser comp in competitions)
+                    //{
+                    //    int id = comp.ID;
+                    //    string name = comp.Name;
+                    //    DateTime stat = comp.Start;
+                    //    List<User> users = comp.Users;
+                    //    List<User> judges = comp.Judges;
+                    //}
+
+
                     AdminMainPage.FillCompetitionListBox(competitions);
+
+
+
                     //AdminMainPage.FillCompetitionDataBox(this.Data); //Removed this textbox
                     break;
                 default:
@@ -172,6 +178,7 @@ namespace Client.services
                 ct.Cancel();
                 Stream.Close();
                 Client.Close();
+
                 return;
             }
             Console.WriteLine("Sending: " + msg);

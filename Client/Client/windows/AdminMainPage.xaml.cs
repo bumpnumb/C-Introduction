@@ -22,23 +22,25 @@ namespace Client.windows
     /// </summary>
     public partial class AdminMainPage : Page
     {
-        public AdminMainPage() {
+        public AdminMainPage()
+        {
 
             InitializeComponent();
             App.MainWindowRef.CenterWindowOnScreen();
         }
 
-        private void Edit_Create_Btn(object sender, RoutedEventArgs e) {
+        private void Edit_Create_Btn(object sender, RoutedEventArgs e)
+        {
 
             App.MainWindowRef.Main.Navigate(new CreateAndEditPage());
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Message loginMsg = new Message();
-            loginMsg.Type = MessageType.Competition;
-            loginMsg.Data = "GetActive"; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
-            ClientControll.Send(loginMsg);
+            Message getCompetitions = new Message();
+            getCompetitions.Type = MessageType.Competition;
+            getCompetitions.Data = "GetActive"; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
+            ClientControll.Send(getCompetitions);
         }
 
         //public static void FillCompetitionDataBox(string data)
@@ -52,20 +54,17 @@ namespace Client.windows
         //    });
         //}
 
-        public static void FillCompetitionListBox(List<Competition> competitions)
+        public static void FillCompetitionListBox(List<CompetitionWithUser> competitions)
         {
-            
+
             App.Current.Dispatcher.Invoke((Action)delegate
             {
                 AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
-
-
                 currentPage.competitionListBox.ItemsSource = competitions;
-                
-                   
-                
             });
         }
+
+
     }
 }
 //            /*Fixa en snygg json grej här för ID och PW så det går att ha vilket namn som helst

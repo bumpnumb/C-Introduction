@@ -49,9 +49,11 @@ namespace Client
         public void pageSwitcher(Page pg)
         {
 
-            App.MainWindowRef.Height = 768;
-            App.MainWindowRef.Width = 1028;
+            App.MainWindowRef.Height = 850;
+            App.MainWindowRef.Width = 1050;
             App.MainWindowRef.Main.Navigate(pg);
+            App.MainWindowRef.MinHeight = 850;
+            App.MainWindowRef.MinWidth = 1050;
             App.MainWindowRef.CenterWindowOnScreen();
          
         }
@@ -78,6 +80,9 @@ namespace Client
         private void LoggedInLabel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             //Add logout function here
+            Message quit = new Message();
+            quit.Data = "quit";
+            ClientControll.Send(quit);
         }
     }
 }
