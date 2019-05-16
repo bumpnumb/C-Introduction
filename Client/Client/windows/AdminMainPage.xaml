@@ -5,14 +5,17 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Client.windows"
       mc:Ignorable="d" 
-      d:DesignHeight="768" d:DesignWidth="1024"
+      d:DesignHeight="850" d:DesignWidth="1050"
       Title="AdminMainPage">
 
-    <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="ADMIN FIRST PAGE" VerticalAlignment="Top" Height="15"/>
+    <Grid MinWidth="1024" MinHeight="768">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="461,10,460,0" TextWrapping="Wrap" Text="ADMIN FIRST PAGE" VerticalAlignment="Top" Height="15"/>
         <Button x:Name="button" Content="Refresh" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="50" Click="Button_Click"/>
-        <Button x:Name="EditCreateBtn" Content="EDIT/CREATE" HorizontalAlignment="Right" Margin="0,0,20,10" VerticalAlignment="Bottom" Width="75" Click="Edit_Create_Btn"/>
-        <ListBox x:Name="competitionListBox" HorizontalAlignment="Left" Height="715" Margin="10,43,0,10" VerticalAlignment="Center" Width="498">
+        <Button x:Name="create" Content="New" HorizontalAlignment="Left" Margin="520,0,0,10" VerticalAlignment="Bottom" Width="75" Click="Edit_Create_Btn"/>
+        <ListBox x:Name="competitionListBox" Margin="10,43,0,10" HorizontalAlignment="Left" Width="500">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="2,3">
@@ -28,8 +31,20 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox x:Name="listBox" HorizontalAlignment="Right" Margin="0,43,10,0" Width="501" Height="159" VerticalAlignment="Top"/>
-        <ListBox x:Name="listBox1" HorizontalAlignment="Right" Height="509" Margin="0,0,10,40" VerticalAlignment="Bottom" Width="500"/>
+        <ListBox x:Name="usersListBox" Margin="520,43,10,35">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Text="{Binding Name}">
+
+                        </TextBlock>
+                        <Line Stroke="Red" DockPanel.Dock="Top" StrokeThickness="4"></Line>
+
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button x:Name="edit" Content="Edit" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75"/>
 
     </Grid>
 </Page>

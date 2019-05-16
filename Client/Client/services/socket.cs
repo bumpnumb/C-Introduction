@@ -168,6 +168,7 @@ namespace Client.services
                 ct.Cancel();
                 Stream.Close();
                 Client.Close();
+                
                 return;
             }
             Console.WriteLine("Sending: " + msg);

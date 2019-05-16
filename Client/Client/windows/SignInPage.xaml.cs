@@ -92,7 +92,7 @@ namespace Client.windows
         {
             Message loginMsg = new Message();
             loginMsg.Type = MessageType.Login;
-            loginMsg.Data = id + "=;=" + pw; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
+            loginMsg.Data = id + "\r\n" + pw; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
             ClientControll.Send(loginMsg);
             /*Fixa en snygg json grej här för ID och PW så det går att ha vilket namn som helst
             "{

@@ -56,7 +56,7 @@ namespace Server.services
 
 
                         //Authenticate user with salt & hash
-                        if (crypto.AuthenticateLogin(this.Data.Split("=;=")[1], hash, salt) == true)
+                        if (crypto.AuthenticateLogin(this.Data.Split("\r\n")[1], hash, salt) == true)
                         {
                             //return some message for client to continue
                             rsp.Data = "success";
