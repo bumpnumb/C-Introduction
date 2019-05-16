@@ -6,24 +6,18 @@ namespace Server.services
 {
     class helper
     {
-        public static byte[] intToBytes(int n)
+        ///<summary>
+        ///Returns a Boolean indicating if a DateTime is not '0001-01-01:000'
+        ///</summary>
+        public static bool IsFinished(DateTime time) 
         {
-            byte[] intBytes = BitConverter.GetBytes(n);
-            if (BitConverter.IsLittleEndian)
-                Array.Reverse(intBytes);
-            return intBytes;
-        }
-
-
-        public static bool IsFinished(DateTime time)
-        {
-            //to avoid bad casting, time in db is defaulted to 0000000000,
-            // if a time is set, comp IS finished.
-            DateTime def = new DateTime(0001, 1, 1, 0, 0, 0);
+        //to avoid bad casting, time in db is defaulted to 0000000000,
+        // if a time is set, comp IS finished.
+        DateTime def = new DateTime(0001, 1, 1, 0, 0, 0);
             if (DateTime.Equals(def, time))
                 return false;
             return true;
         }
 
-    }
+}
 }

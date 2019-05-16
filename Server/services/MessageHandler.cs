@@ -13,16 +13,6 @@ using System.Security.Cryptography;
 
 namespace Server.services
 {
-
-    public enum MessageType { NoType, Login, Register, Competition }
-
-    public class Response
-    {
-        public MessageType Type { get; set; }
-        public string Data { get; set; }
-        public User user { get; set; }
-    }
-
     public class Message
     {
         //Whenever we recieve a message from client, we parse it as a Message type

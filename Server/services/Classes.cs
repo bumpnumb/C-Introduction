@@ -6,7 +6,16 @@ using Newtonsoft.Json;
 
 namespace Server.modules
 {
-    public enum webType { Competitions }
+    //These are a set of classes being used by different parts of the program.
+    //Mostly used to parse messages and to retrieve data from db
+    //Explains itself.
+    public enum MessageType { NoType, Login, Register, Competition }
+    public class Response
+    {
+        public MessageType Type { get; set; }
+        public string Data { get; set; }
+        public User user { get; set; }
+    }
     public class User
     {
         public int ID { get; set; }
@@ -48,14 +57,6 @@ namespace Server.modules
         public int UID { get; set; }
         public int CID { get; set; }
     }
-
-    public class WebMessage
-    {
-        public webType Type { get; set; }
-        public int Num { get; set; }
-        public string Data { get; set; }
-    }
-
     public class config
     {
         public string Server { get; set; }

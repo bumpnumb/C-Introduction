@@ -11,6 +11,7 @@ namespace Server.modules
 {
     public class DivingCompDbContext : DbContext
     {
+        //Classes to be fetched from the db, name is exact. Read up on DBContext for info
         public DbSet<User> Users { get; set; }
         public DbSet<Competition> Competitions { get; set; }
         public DbSet<CompetitionJudge> CompetitionJudges { get; set; }
@@ -21,6 +22,7 @@ namespace Server.modules
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Override OnModelCreating to fetch our data from db.
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>(entity =>
@@ -66,6 +68,8 @@ namespace Server.modules
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //db info is in gitignore file.
+            //fetch file and read connectionstring.
             config c = new config();
             string fp = "..\\..\\..\\..\\.\\config.json";
             optionsBuilder.UseMySQL(c.Read(fp));

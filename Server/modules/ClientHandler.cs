@@ -10,6 +10,7 @@ using System.Net;
 
 using System.Security.Cryptography;
 using Newtonsoft.Json;
+using Server.modules;
 
 namespace Server.services
 {
@@ -19,20 +20,17 @@ namespace Server.services
         static TcpListener server = new TcpListener(ip, 8787);
         static TcpClient client = default(TcpClient);
         CancellationTokenSource TokenSource;
-
-
-
         public TcpConnection()
         {
             try
             {
                 server.Start();
                 Console.WriteLine("Server started...");
+                //Create a token for cancellation, not used but might be needed
                 this.TokenSource = new CancellationTokenSource();
+                //Start a new thread to accept clients
                 Thread acceptThread = new Thread(new ParameterizedThreadStart(acceptClient));
                 acceptThread.Start(TokenSource.Token);
-
-
             }
             catch (Exception ex)
             {
@@ -44,14 +42,14 @@ namespace Server.services
 
         public void acceptClient(object obj)
         {
+            //Await clients
+            //This needs to be threaded because we have other acceptors.
             while (true)
             {
                 client = server.AcceptTcpClient();
                 ClientHandler handle = new ClientHandler(client);
             }
         }
-
-
     }
     class ClientHandler
     {
@@ -60,14 +58,18 @@ namespace Server.services
         NetworkStream Stream;
         CancellationTokenSource TokenSource;
 
+
+        //Holds all clients & token as static to remove individual clients
         static List<ClientHandler> allClients = new List<ClientHandler>();
         static List<CancellationTokenSource> allTokens = new List<CancellationTokenSource>();
         static int nextN = 0;
 
+        //SyncLock so no two clients can conflict numbers
         private readonly object syncLock = new object();
 
         public ClientHandler(TcpClient clientInfo)
         {
+            //Instantiate new client
             this.Client = clientInfo;
             this.ID = nextN;
             this.Stream = Client.GetStream();
@@ -79,20 +81,23 @@ namespace Server.services
                 nextN++;
             }
 
-
+            //Fire of thread for client
             Thread clientThread = new Thread(new ParameterizedThreadStart(Listen));
             clientThread.Start(TokenSource.Token);
         }
 
         public void Listen(object obj)
         {
+            //Can be cancelled with token
             CancellationToken ct = (CancellationToken)obj;
             while (!ct.IsCancellationRequested)
             {
-                byte[] recievedBuffer = new byte[1024]; // Fixa en bättre buffersize än en specifik siffra (dynamisk vore najs)
+                //Readbuffer, since reading from stream.
+                byte[] recievedBuffer = new byte[1024];
                 int bytesRead = 0;
                 StringBuilder msg = new StringBuilder();
 
+                //While DataAvailable read from stream and append to msg
                 do
                 {
                     try
@@ -102,6 +107,8 @@ namespace Server.services
                     }
                     catch (System.IO.IOException)
                     {
+                        //IOException should only be when client disconnect during message transit
+                        //Removes all trace of client
                         Console.WriteLine("Client: " + this.ID.ToString() + " has disconnected");
 
                         Stream.Close();
@@ -112,24 +119,23 @@ namespace Server.services
                         break;
                     }
                 }
-
-
                 while (Stream.DataAvailable);
-
 
                 string readMsg = msg.ToString();
                 if (readMsg != "")
                 {
+                    //Parse message
                     Message objMessage = JsonConvert.DeserializeObject<Message>(readMsg);
-
+                    //Generate response
                     Response rsp = objMessage.CreateResponse();
 
-
+                    //Send message back to client
                     Console.WriteLine("replying with: " + JsonConvert.SerializeObject(rsp));
                     Send(JsonConvert.SerializeObject(rsp));
                 }
                 else
                 {
+                    //breaks stream on empty message?
                     Console.WriteLine("Client: " + this.ID.ToString() + " has disconnected");
 
                     Stream.Close();
@@ -139,19 +145,8 @@ namespace Server.services
                     allTokens.Remove(this.TokenSource);
                     break;
                 }
-
             }
-
         }
-
-
-        //foreach (var c in allClients)
-        //{
-        //    //if (c != this) //uncomment for multiple client usage
-        //    c.Send(msg);
-        //}
-
-
         void Send(string msg)
         {
             int byteCount = Encoding.Unicode.GetByteCount(msg);
