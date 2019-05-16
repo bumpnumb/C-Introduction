@@ -18,6 +18,7 @@ namespace Server.services
         //Whenever we recieve a message from client, we parse it as a Message type
         //A message will have a User, Though is this needed? as we could set this in clienthandler...
 
+
         public MessageType Type { get; set; }
         public string Data { get; set; }
         private User user { get; set; }
