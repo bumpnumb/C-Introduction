@@ -59,10 +59,7 @@ namespace Client.windows
             {
                 AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
 
-
                 currentPage.competitionListBox.ItemsSource = competitions;
-                
-                   
                 
             });
         }

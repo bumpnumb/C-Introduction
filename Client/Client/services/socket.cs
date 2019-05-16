@@ -93,7 +93,7 @@ namespace Client.services
                 case MessageType.Competition:
                     CompetitionWithUser objMessage = JsonConvert.DeserializeObject<CompetitionWithUser>(this.Data);
                     string[] competitionsString = this.Data.Split('\"');
-                    List<CompetitionWithUser> competitions = JsonConvert.DeserializeObject<CompetitionWithUser>(this.Data);
+                    List<CompetitionWithUser> competitions = JsonConvert.DeserializeObject<List<CompetitionWithUser>>(this.Data);
                     for (int i = 0; i < competitionsString.Length; i++)
                     {
                         if(competitionsString[i] == "Name")
@@ -103,7 +103,7 @@ namespace Client.services
                         Console.WriteLine(competitions);
                     }
                     AdminMainPage.FillCompetitionListBox(competitions);
-                    //AdminMainPage.FillCompetitionDataBox(this.Data); //Removed this textbox
+                    
                     break;
                 default:
                     break;
