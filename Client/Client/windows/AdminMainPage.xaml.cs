@@ -39,7 +39,7 @@ namespace Client.windows
         {
             Message getCompetitions = new Message();
             getCompetitions.Type = MessageType.Competition;
-            getCompetitions.Data = "GetActive"; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
+            getCompetitions.Data = "GetAll"; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
             ClientControll.Send(getCompetitions);
         }
 

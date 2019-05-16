@@ -78,7 +78,7 @@ namespace Client.windows
         private void register(string id, string pw) {
             Message registerMsg = new Message();
             registerMsg.Type = MessageType.Register;
-            registerMsg.Data = id + "=;=" + pw; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
+            registerMsg.Data = id + "\r\n" + pw; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
             ClientControll.Send(registerMsg);
             /*Fixa en snygg json grej här för ID och PW så det går att ha vilket namn som helst
             "{
