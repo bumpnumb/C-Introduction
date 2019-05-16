@@ -166,14 +166,14 @@ namespace Server.services
 
                             //here will the iterations be made for judges and dviers
                             //to store them in db.
-                            if (competitions.createCompetition(Judges, Divers) == true)
-                            {
-                                //yes, send done
-                            }
-                            else
-                            {
-                                //no, send didnt go through
-                            }
+                            //if (competitions.createCompetition(Judges, Divers) == true)
+                            //{
+                            //    //yes, send done
+                            //}
+                            //else
+                            //{
+                            //    //no, send didnt go through
+                            //}
                             break;
                     }
                     break;
