@@ -1,32 +1,30 @@
-//var c = hsvToRgb(Math.random(), 0.3, 1);
-//temp.color = 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')';
-//temp.x = i; //is this required?
-//temp.y = j;
-//BLOCKS[i][j] = temp;
-//        }
-//    }
-//}
+function generatePastel() {
+    var c = hsvToRgb(Math.random(), 0.3, 1);
+    var color = 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')';
 
-//function hsvToRgb(h, s, v) {
-//    var r, g, b;
+    return color;
+}
 
-//    var i = Math.floor(h * 6);
-//    var f = h * 6 - i;
-//    var p = v * (1 - s);
-//    var q = v * (1 - f * s);
-//    var t = v * (1 - (1 - f) * s);
+function hsvToRgb(h, s, v) {
+    var r, g, b;
 
-//    switch (i % 6) {
-//        case 0: r = v, g = t, b = p; break;
-//        case 1: r = q, g = v, b = p; break;
-//        case 2: r = p, g = v, b = t; break;
-//        case 3: r = p, g = q, b = v; break;
-//        case 4: r = t, g = p, b = v; break;
-//        case 5: r = v, g = p, b = q; break;
-//    }
+    var i = Math.floor(h * 6);
+    var f = h * 6 - i;
+    var p = v * (1 - s);
+    var q = v * (1 - f * s);
+    var t = v * (1 - (1 - f) * s);
 
-//    return [r * 255, g * 255, b * 255];
-//}
+    switch (i % 6) {
+        case 0: r = v, g = t, b = p; break;
+        case 1: r = q, g = v, b = p; break;
+        case 2: r = p, g = v, b = t; break;
+        case 3: r = p, g = q, b = v; break;
+        case 4: r = t, g = p, b = v; break;
+        case 5: r = v, g = p, b = q; break;
+    }
+
+    return [r * 255, g * 255, b * 255];
+}
 
 
 
@@ -42,28 +40,14 @@ socket.onmessage = function (e) {
     //console.log("Recieved: " + JSON.parse(e.data));
     //"[{\"ID\":1,\"Name\":\"Första Tävlingen\",\"Start\":\"2019-04-15T21:51:24\",\"Finished\":\"0001-01-01T00:00:00\""
 
-    console.log(e.data);
     str = "";
     for (var i = 0; i < e.data.length; i += 8) {
         val = e.data[i + 4] + e.data[i + 6] + e.data[i] + e.data[i + 2] + "";
-        console.log(val);
-        // ff 1b
-
-        console.log(i + "  " + parseInt(val, 16));
         str += String.fromCharCode(parseInt(val, 16));
     }
     console.log(str);
-
-
-
     var obj = JSON.parse(str);
-    console.log(obj);
-
-
-    //Object { Type: 0, Num: 1, Data: "[{\"ID\":1,\"Name\":\"Första Tävlingen\",\"Start\":\"2019-04-15T21:51:24\",\"Finished\":\"0001-011T00:00:00\"}]" }
-
     decodeMessage(obj);
-
 };
 
 function generateCompetitions(num, data) {
@@ -74,6 +58,8 @@ function generateCompetitions(num, data) {
         clone.classList.remove("hidden");
         var t = clone.children[0];
         t.innerHTML = data[i].Name;
+
+        t.style.backgroundColor = generatePastel();
 
         dest.appendChild(clone);
     }

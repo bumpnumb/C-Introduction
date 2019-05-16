@@ -87,6 +87,7 @@ namespace Server.services
             Client.Close();
             allClients.Remove(this);
         }
+
         private void Listen(object obj)
         {
             var address = Client.Client.RemoteEndPoint.ToString().Split(':');
@@ -95,43 +96,70 @@ namespace Server.services
             CancellationToken ct = (CancellationToken)obj;
             while (!ct.IsCancellationRequested)
             {
-                while (Stream.DataAvailable)
+                Byte[] bytes = new byte[0];
+                string handshake = "";
+
+                do
                 {
-                    Byte[] bytes = new Byte[Client.Available];
+                    bytes = new Byte[Client.Available];
                     try
                     {
                         Stream.Read(bytes, 0, bytes.Length);
+                        handshake += Encoding.UTF8.GetString(bytes);
                     }
                     catch (System.IO.IOException)
                     {
-                        Disconnect();
-                        return;
+                        //IOException should only be when client disconnect during message transit
+                        //Removes all trace of client
+                        Console.WriteLine("Client: " + this.ID.ToString() + " has disconnected");
+
+                        Stream.Close();
+                        Client.Close();
+
+                        allClients.Remove(this);
+                        allTokens.Remove(this.TokenSource);
+                        break;
                     }
-                    //translate bytes of request to string
-                    String data = Encoding.UTF8.GetString(bytes);
+                } while (Stream.DataAvailable);
 
-
+                if (handshake != "")
+                {
                     //this is the first difference, a handshake!
-                    if (new Regex("^GET").IsMatch(data))
+                    if (new Regex("^GET").IsMatch(handshake))
                     {
-                        Byte[] response = Encoding.UTF8.GetBytes("HTTP/1.1 101 Switching Protocols" + Environment.NewLine
-                            + "Connection: Upgrade" + Environment.NewLine
-                            + "Upgrade: websocket" + Environment.NewLine
-                            + "Sec-WebSocket-Accept: " + Convert.ToBase64String(
-                                SHA1.Create().ComputeHash(
-                                    Encoding.UTF8.GetBytes(
-                                        new Regex("Sec-WebSocket-Key: (.*)").Match(data).Groups[1].Value.Trim() + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
-                                    )
-                                )
-                            ) + Environment.NewLine
-                            + Environment.NewLine);
+                        Byte[] response = Encoding.UTF8.GetBytes(
+                            "HTTP/1.1 101 Switching Protocols" + Environment.NewLine
+                                                               + "Connection: Upgrade" +
+                                                               Environment.NewLine
+                                                               + "Upgrade: websocket" +
+                                                               Environment.NewLine
+                                                               + "Sec-WebSocket-Accept: " +
+                                                               Convert.ToBase64String(
+                                                                   SHA1.Create()
+                                                                       .ComputeHash(
+                                                                           Encoding
+                                                                               .UTF8
+                                                                               .GetBytes(
+                                                                                   new
+                                                                                           Regex(
+                                                                                               "Sec-WebSocket-Key: (.*)")
+                                                                                       .Match(
+                                                                                           handshake)
+                                                                                       .Groups
+                                                                                           [1]
+                                                                                       .Value
+                                                                                       .Trim() +
+                                                                                   "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
+                                                                               )
+                                                                       )
+                                                               ) + Environment.NewLine
+                                                               + Environment.NewLine);
                         Stream.Write(response, 0, response.Length);
                     }
                     else
                     {
-                        string msg = Encoding.UTF8.GetString(javaScriptUser(bytes));
-
-                        switch (msg)
+                        handshake = Encoding.UTF8.GetString(javaScriptUser(bytes));
+                        switch (handshake)
                         {
                             case "GET ALL COMPETITIONS":
                                 Database db = new Database();
@@ -152,9 +180,11 @@ namespace Server.services
                                 break;
                         }
                     }
+
                 }
             }
         }
+
         public static byte[] Decode(string s)
         {
             byte[] bytes = Encoding.Unicode.GetBytes(s);
