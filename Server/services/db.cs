@@ -130,11 +130,32 @@ namespace Server.services
             }
         }
 
-        public List<Competition> GetAllCompetitions()
+        public List<CompetitionWithUser> GetAllCompetitions()
         {
             using (var context = new DivingCompDbContext())
             {
-                return context.Competitions.ToList<Competition>();
+                List<CompetitionWithUser> result = new List<CompetitionWithUser>();
+                List<Competition> c = context.Competitions.ToList<Competition>();
+                int i = 0;
+                foreach (Competition comp in c)
+                {
+                    CompetitionWithUser temp = new CompetitionWithUser();
+                    temp.ID = comp.ID;
+                    temp.Name = comp.Name;
+                    temp.Start = comp.Start;
+                    temp.Finished = comp.Finished;
+
+                    List<User> users = context.Users.Where(u => context.CompetitionUsers.Any(cu => u.ID == cu.UID & cu.CID == comp.ID)).ToList();
+                    List<User> judges = context.Users.Where(j => context.CompetitionJudges.Any(cj => j.ID == cj.UID & cj.CID == comp.ID)).ToList();
+                    
+                    temp.Users = users;
+                    temp.Judges = judges;
+                    result.Add(temp);
+                }
+
+                return result;
+
+
             }
         }
     }
