@@ -102,7 +102,7 @@ namespace Client.services
                         Console.WriteLine(competitions);
                     }
                     AdminMainPage.FillCompetitionListBox(competitions);
-                    AdminMainPage.FillCompetitionDataBox(this.Data);
+                    //AdminMainPage.FillCompetitionDataBox(this.Data); //Removed this textbox
                     break;
                 default:
                     break;
