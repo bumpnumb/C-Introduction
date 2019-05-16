@@ -117,7 +117,7 @@ namespace Server.services
                 case MessageType.Competition:
                     //split string in case we want to know more
                     string[] part = this.Data.Split("\r\n"); //correct separator use!
-                    List<Competition> comp;
+                    List<CompetitionWithUser> comp;
 
 
                     //Competition messagetypes will be as following:
@@ -141,9 +141,9 @@ namespace Server.services
                         case "GetActive":
                             //Fetch all competitions which are started but not ended
                             rsp.Type = MessageType.Competition;
-                            comp = db.GetActiveCompetitions();
+                            //comp = db.GetActiveCompetitions();
 
-                            rsp.Data = JsonConvert.SerializeObject(comp);
+                            //rsp.Data = JsonConvert.SerializeObject(comp);
                             break;
 
                         case "CreateCompetition":

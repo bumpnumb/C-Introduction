@@ -46,6 +46,17 @@ namespace Server.modules
         public DateTime Finished { get; set; }
     }
 
+    public class CompetitionWithUser
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime Finished { get; set; }
+        public List<User> Users { get; set; }
+        public List<User> Judges { get; set; }
+
+    }
+
     public class CompetitionUser
     {
         public int ID { get; set; }
