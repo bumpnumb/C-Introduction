@@ -14,6 +14,9 @@ namespace Server.services
 {
     class WebServer
     {
+        //This is exactly the same as ClientHandler
+        //Though the protocol is slightly different and the data is different,
+        //setting up a webclient handler is more readable.
         static TcpListener server = new TcpListener(IPAddress.Parse("127.0.0.1"), 80);
         static TcpClient client = default(TcpClient);
         CancellationTokenSource TokenSource;
@@ -26,8 +29,6 @@ namespace Server.services
                 this.TokenSource = new CancellationTokenSource();
                 Thread acceptThread = new Thread(new ParameterizedThreadStart(acceptClient));
                 acceptThread.Start(TokenSource.Token);
-
-
             }
             catch (Exception ex)
             {
@@ -47,8 +48,6 @@ namespace Server.services
 
         //cancel()
         //token set cancel
-
-
     }
     class WebClientHandler
     {
@@ -109,33 +108,28 @@ namespace Server.services
                         return;
                     }
                     //translate bytes of request to string
-                    String data = Encoding.UTF8.GetString(bytes);
+                    String data = Encoding.Unicode.GetString(bytes);
 
+
+                    //this is the first difference, a handshake!
                     if (new Regex("^GET").IsMatch(data))
                     {
-                        Byte[] response = Encoding.UTF8.GetBytes("HTTP/1.1 101 Switching Protocols" + Environment.NewLine
+                        Byte[] response = Encoding.Unicode.GetBytes("HTTP/1.1 101 Switching Protocols" + Environment.NewLine
                             + "Connection: Upgrade" + Environment.NewLine
                             + "Upgrade: websocket" + Environment.NewLine
                             + "Sec-WebSocket-Accept: " + Convert.ToBase64String(
                                 SHA1.Create().ComputeHash(
-                                    Encoding.UTF8.GetBytes(
+                                    Encoding.Unicode.GetBytes(
                                         new Regex("Sec-WebSocket-Key: (.*)").Match(data).Groups[1].Value.Trim() + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
                                     )
                                 )
                             ) + Environment.NewLine
                             + Environment.NewLine);
                         Stream.Write(response, 0, response.Length);
-                        Console.WriteLine("Do the thing");
                     }
                     else
                     {
-                        string msg = Encoding.UTF8.GetString(javaScriptUser(bytes));
-                        if (msg == "Exit<00>")
-                        {
-                            Disconnect();
-                            return;
-                        }
-
+                        string msg = Encoding.Unicode.GetString(javaScriptUser(bytes));
 
                         switch (msg)
                         {
@@ -157,9 +151,6 @@ namespace Server.services
                             default:
                                 break;
                         }
-
-
-
                     }
                 }
             }
@@ -237,7 +228,6 @@ namespace Server.services
 
             //KeyCode positions
             Byte[] key = new Byte[4] { data[2], data[3], data[4], data[5] };
-
             for (int i = 0; i < encoded.Length; i++)
             {
                 decoded[i] = (Byte)(encoded[i] ^ key[i % 4]);

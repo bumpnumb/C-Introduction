@@ -41,16 +41,16 @@ namespace Client.windows
             ClientControll.Send(loginMsg);
         }
 
-        public static void FillCompetitionDataBox(string data)
-        {
-            App.Current.Dispatcher.Invoke((Action)delegate
-            {
-                AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
+        //public static void FillCompetitionDataBox(string data)
+        //{
+        //    App.Current.Dispatcher.Invoke((Action)delegate
+        //    {
+        //        AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
 
-                currentPage.competitionDataBox.Text = data;
+        //        currentPage.competitionDataBox.Text = data;
 
-            });
-        }
+        //    });
+        //}
 
         public static void FillCompetitionListBox(List<Competition> competitions)
         {
