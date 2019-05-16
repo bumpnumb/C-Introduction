@@ -105,18 +105,18 @@ namespace Server.services
                 return u.Hash;
             }
         }
-        public void CreateCompetitions(/*argument*/)
+        public void CreateCompetitions(/*lista från client*/)
         {
             var context = new DivingCompDbContext();
             context.Database.EnsureCreated();
 
-            Competition c = new Competition
-            {
-                //ID = ID,              //
-                //Name = name,          //kanske ska vara listor... eller hur funkar det här?
-                //Start = time,         //var ska vi lagra Divers, och Judges som är knutna till denna competition? 
-                //Finished = time       //Ska judges och Divers ha på sin class, vilka competitions de hör till?
-            };
+            //om jag tänker rätt här, så ska vi plocka ur listan från clienten och slänga in allt i databasen:
+            //ur listan tar vi först namn och assignar det till en string.
+            //sedan samma sak med start-time och finished-time
+            //sedan gör vi två for-loopar som kollar igenom vår lista med judges och divers
+            //där vi för varje iteration slänger in en judge respektive diver till databasen under samma competition
+
+            Competition c = new Competition();      
             context.Competitions.Add(c);
             context.SaveChanges();
         }

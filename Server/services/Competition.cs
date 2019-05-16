@@ -11,28 +11,7 @@ using Server.services;
 using Newtonsoft.Json;
 
 namespace Server.services
-{
-    static class competitions
-    {
-        public static bool createCompetition(string Judge, string Divers)
-        {
-            Competition c = new Competition();
-            //exempel
-            if(Judge == "hello" && Divers == "world")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static Competition getAllCompetitions()
-        {
-            Competition c = new Competition();
-            return c;
-
+{ 
             //Finns detta redan någonstans???
             //( ͡° ͜ʖ ͡°)
             //( ͡° ͜ʖ ͡°)
@@ -59,12 +38,5 @@ namespace Server.services
             //░░░░▐▌▀▄░░░░░░░░░░░░░░░░░▐▌░░
             //░░░░░█░░▀░░░░░░░░░░░░░░░░▀░░░
             //░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-        }
-
-        public static Competition getActiveCompetitions()
-        {
-            Competition c = new Competition();
-            return c;
-        }
-    }
+            //jag tycker, oavsett vad, att vi behåller denna kommentar
 }
