@@ -61,6 +61,13 @@ namespace Server.modules
 
     }
 
+    public class CompetitionWithResult
+    {
+        public CompetitionWithUser Comp { get; set; }
+        public List<Jump> Jumps { get; set; }
+        public List<Result> Results { get; set; }
+    }
+
     public class CompetitionUser
     {
         public int ID { get; set; }

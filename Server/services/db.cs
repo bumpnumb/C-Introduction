@@ -196,6 +196,16 @@ namespace Server.services
 
             }
         }
+
+        public CompetitionWithResult GetCompetitionWithResultFromID(int ID)
+        {
+
+
+
+
+            return new CompetitionWithResult();
+        }
+
     }
 }
 

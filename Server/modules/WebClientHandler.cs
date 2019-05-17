@@ -156,10 +156,12 @@ namespace Server.services
                     else
                     {
                         handshake = Encoding.UTF8.GetString(javaScriptUser(bytes));
-                        switch (handshake)
+                        string[] splitMsg = handshake.Split("\r\n");
+                        Database db = new Database();
+
+                        switch (splitMsg[0])
                         {
                             case "GET ALL COMPETITIONS":
-                                Database db = new Database();
                                 List<CompetitionWithUser> comp = db.GetAllCompetitions();
                                 int i = 0;
                                 foreach (CompetitionWithUser c in comp)
@@ -171,7 +173,9 @@ namespace Server.services
                                 Send("{\"Type\":\"CompetitionWithUser\",\"Num\":" + i + ",\"Data\":" + json + '}');
 
                                 break;
-                            case "GET COMPETITION:":
+                            case "GET COMPETITION":
+                                CompetitionWithResult temp =
+                                    db.GetCompetitionWithResultFromID(Int32.Parse(splitMsg[1]));
                                 break;
                             case "Exit<00>":
                                 Disconnect();
