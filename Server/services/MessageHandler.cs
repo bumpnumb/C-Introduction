@@ -136,8 +136,6 @@ namespace Server.services
                         case "CreateCompetition":
                             rsp.Type = MessageType.Competition;
 
-                            //CreateCompetitions();
-
                             //this needs a lot of work.
 
                             //My thoughts:
@@ -154,9 +152,19 @@ namespace Server.services
 
                             //send object to function
                             //function loops thhrough divers and judges pushing querry to db.
+                            if(part[1] != null)
+                            {
+                                CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
+                                db.CreateCompetition(CompInfo);
+                                rsp.Data = "Competition created";
+                                //vi skickar inte något data när vi registrerar en user,
+                                //men jag tänkte att det kanske kan vara bra ifall man vill göra något med det infot från clienten
+                            }
+                            else
+                            {
+                                rsp.Data = "Competition failed";
+                            }
 
-                            CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
-                            db.CreateCompetition(CompInfo);
                             break;
                     }
                     break;

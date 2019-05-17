@@ -49,8 +49,8 @@ namespace Client
         public void pageSwitcher(Page pg)
         {
 
-            App.MainWindowRef.Height = 850;
-            App.MainWindowRef.Width = 1050;
+            //App.MainWindowRef.Height = 850;
+            //App.MainWindowRef.Width = 1050;
             App.MainWindowRef.Main.Navigate(pg);
             App.MainWindowRef.MinHeight = 850;
             App.MainWindowRef.MinWidth = 1050;
