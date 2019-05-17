@@ -34,7 +34,7 @@ namespace Client.windows
         private void Edit_Create_Btn(object sender, RoutedEventArgs e)
         {
 
-            App.MainWindowRef.Main.Navigate(new CreateAndEditPage());
+            App.MainWindowRef.Main.Navigate(new CreateContest());
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -66,8 +66,10 @@ namespace Client.windows
 
             App.Current.Dispatcher.Invoke((Action)delegate
             {
+                
                 AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
                 currentPage.competitionListBox.ItemsSource = competitions;
+                currentPage.competitionListBox.UnselectAll();
             });
         }
 
@@ -104,6 +106,16 @@ namespace Client.windows
                 AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
                 currentPage.usersListBox.ItemsSource = jumpers;
             });
+        }
+
+        private void EditUsersBtn_Click(object sender, RoutedEventArgs e)
+        {
+            App.MainWindowRef.Main.Navigate(new EditUsers());
+        }
+
+        private void EditContestBtn_Click(object sender, RoutedEventArgs e)
+        {
+            App.MainWindowRef.Main.Navigate(new EditContest());
         }
     }
 }

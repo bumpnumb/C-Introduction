@@ -102,6 +102,7 @@ namespace Server.services
                     break;
 
                 case MessageType.Competition:
+                    rsp.Type = MessageType.Competition;
                     //split string in case we want to know more
                     string[] part = this.Data.Split("\r\n"); //correct separator use!
                     List<CompetitionWithUser> comp;
@@ -152,22 +153,38 @@ namespace Server.services
 
                             //send object to function
                             //function loops thhrough divers and judges pushing querry to db.
-                            if(part[1] != null)
+
+                            CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
+                            if (CompInfo != null)
                             {
-                                CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
                                 db.CreateCompetition(CompInfo);
-                                rsp.Data = "Competition created";
-                                //vi skickar inte något data när vi registrerar en user,
-                                //men jag tänkte att det kanske kan vara bra ifall man vill göra något med det infot från clienten
+                                rsp.Data = "Competition created"; 
+
                             }
                             else
                             {
                                 rsp.Data = "Competition failed";
                             }
-
                             break;
                     }
                     break;
+
+                case MessageType.ScoreToJump:
+                    rsp.Type = MessageType.ScoreToJump;
+
+                    Result ResultInfo = JsonConvert.DeserializeObject<Result>(this.Data);
+                    if(ResultInfo != null)
+                    {
+                        db.SetScoreToJump(ResultInfo);
+                        //rsp.Data = "Score set";
+                    }
+                    else
+                    {
+                        //rsp.Data = "Score not set";
+                    }
+
+                    break;
+
 
                 default:
                     break;

@@ -59,11 +59,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="services\Classes.cs" />
-    <Compile Include="windows\CreateAndEditPage.xaml.cs">
-      <DependentUpon>CreateAndEditPage.xaml</DependentUpon>
+    <Compile Include="windows\CreateContest.xaml.cs">
+      <DependentUpon>CreateContest.xaml</DependentUpon>
     </Compile>
     <Compile Include="windows\AdminMainPage.xaml.cs">
       <DependentUpon>AdminMainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\EditContest.xaml.cs">
+      <DependentUpon>EditContest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\EditUsers.xaml.cs">
+      <DependentUpon>EditUsers.xaml</DependentUpon>
     </Compile>
     <Compile Include="windows\JudgePage.xaml.cs">
       <DependentUpon>JudgePage.xaml</DependentUpon>
@@ -93,11 +99,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="windows\CreateAndEditPage.xaml">
+    <Page Include="windows\CreateContest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="windows\AdminMainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="windows\EditContest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="windows\EditUsers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

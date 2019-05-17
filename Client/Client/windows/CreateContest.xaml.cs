@@ -17,10 +17,14 @@ namespace Client.windows {
     /// <summary>
     /// Interaction logic for Create.xaml
     /// </summary>
-    public partial class CreateAndEditPage : Page {
-        public CreateAndEditPage() {
+    public partial class CreateContest : Page {
+        public CreateContest() {
             InitializeComponent();
         }
 
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            App.MainWindowRef.Main.Navigate(new AdminMainPage());
+        }
     }
 }
