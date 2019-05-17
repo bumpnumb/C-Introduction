@@ -196,6 +196,11 @@ namespace Server.services
 
             }
         }
+
+        public void SetScore(Result ResultInfo)
+        {
+
+        }
     }
 }
 

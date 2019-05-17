@@ -102,6 +102,7 @@ namespace Server.services
                     break;
 
                 case MessageType.Competition:
+                    rsp.Type = MessageType.Competition;
                     //split string in case we want to know more
                     string[] part = this.Data.Split("\r\n"); //correct separator use!
                     List<CompetitionWithUser> comp;
@@ -156,18 +157,25 @@ namespace Server.services
                             {
                                 CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
                                 db.CreateCompetition(CompInfo);
-                                rsp.Data = "Competition created";
-                                //vi skickar inte något data när vi registrerar en user,
-                                //men jag tänkte att det kanske kan vara bra ifall man vill göra något med det infot från clienten
+                                rsp.Data = "Competition created"; 
+
                             }
                             else
                             {
                                 rsp.Data = "Competition failed";
                             }
-
                             break;
                     }
                     break;
+
+                case MessageType.Score:
+                    rsp.Type = MessageType.Score;
+
+                    Result ResultInfo = JsonConvert.DeserializeObject<Result>(this.Data);
+                    db.SetScore(ResultInfo);
+
+                    break;
+
 
                 default:
                     break;
