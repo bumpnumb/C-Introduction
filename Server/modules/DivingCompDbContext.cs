@@ -18,7 +18,7 @@ namespace Server.modules
         public DbSet<CompetitionUser> CompetitionUsers { get; set; }
         public DbSet<UICJump> UICJumps { get; set; }
         public DbSet<Result> Results { get; set; }
-
+        public object CompetitionWithUser { get; internal set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

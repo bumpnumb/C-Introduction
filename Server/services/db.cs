@@ -110,34 +110,32 @@ namespace Server.services
             var context = new DivingCompDbContext();
             context.Database.EnsureCreated();
 
-            //om jag tänker rätt här, så ska vi plocka ur listan från clienten och slänga in allt i databasen:
-            //ur listan tar vi först namn och assignar det till en string.
-            //sedan samma sak med start-time och finished-time
-            //sedan gör vi två for-loopar som kollar igenom vår lista med judges och divers
-            //där vi för varje iteration slänger in en judge respektive diver till databasen under samma competition
+            Competition c = new Competition();
 
+            c.ID = CompInfo.ID;
+            c.Name = CompInfo.Name;
+            c.Start = CompInfo.Start;
+            c.Finished = CompInfo.Finished;
 
-              //jag utgår från "CompetitionWithUser" under Classes.cs
-//            string name = splittedComp[1];
-//            DateTime start_time = splittedComp[2];
-//            DateTime finish_time = splittedComp[3];
-
-//            CompetitionWithUser AllDivers = new CompetitionWithUser
-//            {
-//                List<User>Users = splittedComp[4].Split(',').ToList()
-//            };
-
-//            CompetitionWithUser AllJudges = new CompetitionWithUser
-//            {
-//                List<User>Judges = splittedComp[5].Split(',').ToList()
-//            };
-
-//            context.Competitions.Add(AllDivers);
-//            context.Competitions.Add(AllJudges);
-//            context.SaveChanges();
-
-            Competition c = new Competition();      
             context.Competitions.Add(c);
+
+            foreach (User userJumper in CompInfo.Users)
+            {
+                CompetitionUser temp = new CompetitionUser();
+                temp.CID = CompInfo.ID;
+                temp.UID = userJumper.ID;
+                context.CompetitionUsers.Add(temp);
+            }
+
+
+            foreach (User userJudge in CompInfo.Judges)
+            {
+                CompetitionJudge temp = new CompetitionJudge();
+                temp.CID = CompInfo.ID;
+                temp.UID = userJudge.ID;
+                context.CompetitionJudges.Add(temp);
+            }
+
             context.SaveChanges();
         }
 
