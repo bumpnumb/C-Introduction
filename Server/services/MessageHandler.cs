@@ -153,9 +153,10 @@ namespace Server.services
 
                             //send object to function
                             //function loops thhrough divers and judges pushing querry to db.
-                            if(part[1] != null)
+
+                            CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
+                            if (CompInfo != null)
                             {
-                                CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
                                 db.CreateCompetition(CompInfo);
                                 rsp.Data = "Competition created"; 
 
@@ -168,11 +169,19 @@ namespace Server.services
                     }
                     break;
 
-                case MessageType.Score:
-                    rsp.Type = MessageType.Score;
+                case MessageType.ScoreToJump:
+                    rsp.Type = MessageType.ScoreToJump;
 
                     Result ResultInfo = JsonConvert.DeserializeObject<Result>(this.Data);
-                    db.SetScore(ResultInfo);
+                    if(ResultInfo != null)
+                    {
+                        db.SetScoreToJump(ResultInfo);
+                        //rsp.Data = "Score set";
+                    }
+                    else
+                    {
+                        //rsp.Data = "Score not set";
+                    }
 
                     break;
 
