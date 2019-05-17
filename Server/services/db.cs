@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -197,13 +198,42 @@ namespace Server.services
             }
         }
 
+        public CompetitionWithUser GetCompetitionWithUserFromID(int ID)
+        {
+            using (var context = new DivingCompDbContext())
+            {
+                Competition comp = context.Competitions.Where(x => x.ID == ID).FirstOrDefault();
+                CompetitionWithUser cwu = new CompetitionWithUser();
+
+                cwu.ID = comp.ID;
+                cwu.Name = comp.Name;
+                cwu.Start = comp.Start;
+                cwu.Finished = comp.Finished;
+                cwu.Jumps = comp.Jumps;
+                List<User> users = context.Users.Where(u => context.CompetitionUsers.Any(cu => u.ID == cu.UID & cu.CID == comp.ID)).ToList();
+                List<User> judges = context.Users.Where(j => context.CompetitionJudges.Any(cj => j.ID == cj.UID & cj.CID == comp.ID)).ToList();
+                cwu.Users = users;
+                cwu.Judges = users;
+                return cwu;
+            }
+        }
         public CompetitionWithResult GetCompetitionWithResultFromID(int ID)
         {
+            using (var context = new DivingCompDbContext())
+            {
+                CompetitionWithResult cwr = new CompetitionWithResult();
+                cwr.Comp = GetCompetitionWithUserFromID(ID);
+
+                //users = context.Users.Where(u => context.CompetitionUsers.Any(cu => u.ID == cu.UID & cu.CID == comp.ID)).ToList();
+                //users where id = ( in competition users where cu.UID <-- and cu.cid == comp.id)
+                cwr.Jumps = context.Jumps.Where(jump =>
+                    context.CompetitionUsers.Any(cu => jump.CUID == cu.ID && cu.CID == cwr.Comp.ID)).ToList();
+
+                cwr.Results = context.Results.Where(res => cwr.Jumps.Any(jump => res.JumpID == jump.ID)).ToList();
 
 
-
-
-            return new CompetitionWithResult();
+                return cwr;
+            }
         }
 
     }

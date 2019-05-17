@@ -176,6 +176,8 @@ namespace Server.services
                             case "GET COMPETITION":
                                 CompetitionWithResult temp =
                                     db.GetCompetitionWithResultFromID(Int32.Parse(splitMsg[1]));
+
+                                Send("{\"Type\":\"SingleCompetition\",\"Data\":" + JsonConvert.SerializeObject(temp) + '}');
                                 break;
                             case "Exit<00>":
                                 Disconnect();

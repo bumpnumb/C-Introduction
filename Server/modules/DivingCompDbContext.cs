@@ -58,7 +58,6 @@ namespace Server.modules
             modelBuilder.Entity<Jump>(entity =>
             {
                 entity.HasKey(e => e.ID);
-                entity.Property(e => e.JudgeID).IsRequired();
                 entity.Property(e => e.Code).IsRequired();
                 entity.Property(e => e.Name).IsRequired();
                 entity.Property(e => e.Difficulty).IsRequired();

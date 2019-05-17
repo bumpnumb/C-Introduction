@@ -74,42 +74,54 @@ function viewCompetition(data) {
     console.log(data);
     switchWindow("single_competition_holder");
 
-    document.getElementsByClassName("title")[0].innerHTML = comp.Name;
+    document.getElementsByClassName("title")[0].innerHTML = data.Comp.Name;
 
-    
+
 
 
     var ghost = document.getElementsByClassName("jump_holder")[0];
     var dest = document.getElementById("single_competition_holder");
+    var ghost_item = ghost.getElementsByClassName("jump_data_holder")[0];
 
-    for (var i = 1; i < Data.Jumps; i++) {
-        ghost.getElementsByClassName("jump_data_holder")[i].innerHTML = "Jump " + i;
+    ghost.style.columnCount = data.Comp.Jumps + 1;
+
+    var clone;
+    for (var i = 0; i < data.Comp.Jumps; i++) {
+        clone = ghost_item.cloneNode(true);
+        clone.innerHTML = "Jump " + i + 1;
+        ghost.appendChild(clone);
     }
 
-    for (var j = 0; j < Data.Users; j++) {
-        var clone = ghost.cloneNode(true);
+    for (var j = 0; j < data.Comp.Users.length; j++) {
+        clone = ghost.cloneNode(true);
+
+        clone.style.padding = "5px 0 5px 0";
+        clone.style.borderTop = "1px solid black";
+        clone.style.borderLeft = "1px solid black";
+        clone.style.borderRight = "1px solid black";
+        if (j == data.Comp.Users.length - 1) {
+            clone.style.borderBottom = "1px solid black";
+        }
 
 
-
-
-
+        clone.getElementsByClassName("jump_data_holder")[0].innerHTML = data.Comp.Users[j].Name;
+        for (var k = 0; k < data.Comp.Jumps; k++) {
+            //clone.getElementsByClassName("jump_data_holder")[k + 1].innerHTML = getScoreByID(data.Comp.Users[j].ID, k , data.Results, data.Comp.Jumps);
+            //vi behöver hoppnummer också
+        }
+        dest.appendChild(clone);
     }
-
-    //<div id="single_competition_holder" class="center_holder hidden">
-    //    <div class="title">
-    //        <p>
-    //            Inbjudan till Nationellt Simhoppsläger 2019
-    //    </p>
-    //    </div>
-    //    <div class="jump_holder">
-    //        <div class="jump_data_holder">
-    //            Diver
-    //    </div>
-    //    </div>
-
-    //</div>
-
 }
+
+//function getScoreByID(userID, jump, results, jumps) {
+//    var scores;
+
+//    for (var i = 0; i < jumps.length; i++) {
+//        if (jumps[i].CUID == userID) {
+
+//        }
+//    }
+//}
 
 function generateCompetitions(num, data) {
     switchWindow("overview_competition_holder");
@@ -130,7 +142,10 @@ function generateCompetitions(num, data) {
             clone.style.backgroundColor = "rgb(193, 236, 245)";
         }
         clone.onmouseover = function () { this.style.backgroundColor = "#C1F5D0" };
-        clone.onmousedown = function () { sendTextMessage("GET COMPETITION\r\n{0}", data[i].Name); };
+
+
+        clone.value = data[i].ID;
+        clone.onmousedown = function () { sendTextMessage("GET COMPETITION\r\n" + this.value); };
 
         dest.appendChild(clone);
     }

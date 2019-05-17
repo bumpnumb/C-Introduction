@@ -28,7 +28,6 @@ namespace Server.modules
     public class Jump
     {
         public int ID { get; set; }
-        public int JudgeID { get; set; }
         public int CUID { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
