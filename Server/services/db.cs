@@ -136,6 +136,8 @@ namespace Server.services
                 context.CompetitionJudges.Add(temp);
             }
 
+            //Jumps ska bli assignade här till varje user-jump!
+
             context.SaveChanges();
         }
 
@@ -204,6 +206,21 @@ namespace Server.services
 
 
             return new CompetitionWithResult();
+        }
+
+        public void SetScoreToJump(Result ResultInfo)
+        {
+            var context = new DivingCompDbContext();
+            context.Database.EnsureCreated();
+
+            Result r = new Result();
+            r.JudgeID = ResultInfo.JudgeID;
+            r.JumpID = ResultInfo.JumpID;
+            r.Score = ResultInfo.Score;
+
+            context.Results.Add(r);
+            context.SaveChanges();
+
         }
 
     }
