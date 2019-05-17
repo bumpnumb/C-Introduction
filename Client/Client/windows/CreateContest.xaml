@@ -1,15 +1,14 @@
-﻿<Page x:Class="Client.windows.CreateAndEditPage"
+﻿<Page x:Class="Client.windows.CreateContest"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Client.windows"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
-      Title="CreateAndEditPage">
+      d:DesignHeight="850" d:DesignWidth="1050"
+      Title="CreateContest">
 
     <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="121,10,0,0" TextWrapping="Wrap" Text="Edit/Create" VerticalAlignment="Top"/>
         <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="21" Margin="24,42,0,0" TextWrapping="Wrap" Text="JUDGE NAME GOES HERE" VerticalAlignment="Top" Width="194"/>
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Height="88" Margin="24,63,0,0" TextWrapping="Wrap" Text="Reserved for automatic added lines, every line with text in it spawns a new empy line beneth it (many lines spawns a scroll bar if needed)." VerticalAlignment="Top" Width="194"/>
         <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" Margin="24,162,0,0" TextWrapping="Wrap" Text="JUMPER NAME GOES HERE" VerticalAlignment="Top" Width="194"/>
@@ -20,6 +19,7 @@
         <TextBox x:Name="textBox6" HorizontalAlignment="Left" Height="23" Margin="168,190,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
         <TextBox x:Name="textBox7" HorizontalAlignment="Left" Height="23" Margin="205,190,0,0" TextWrapping="Wrap" Text="J# 6" VerticalAlignment="Top" Width="31"/>
         <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Height="72" Margin="24,218,0,0" TextWrapping="Wrap" Text="Same principle goes here, as soon as name field is filled out a new automaticly appears" VerticalAlignment="Top" Width="212"/>
+        <Button x:Name="cancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Click="CancelBtn_Click"/>
 
     </Grid>
 </Page>

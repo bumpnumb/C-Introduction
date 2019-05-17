@@ -13,7 +13,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Button x:Name="button" Content="Refresh" HorizontalAlignment="Left" Margin="460,17,0,0" VerticalAlignment="Top" Width="50" Click="Button_Click"/>
-        <Button x:Name="create" Content="New Contest" HorizontalAlignment="Left" Margin="520,0,0,10" VerticalAlignment="Bottom" Width="75" Click="Edit_Create_Btn"/>
+        <Button x:Name="create" Content="New Contest" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Click="Edit_Create_Btn"/>
         <ListBox x:Name="competitionListBox" Margin="10,43,0,10" HorizontalAlignment="Left" Width="500" SelectionChanged="DisplaySelectedContest" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -44,8 +44,8 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button x:Name="edit" Content="Edit Contest" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75"/>
-        <ListBox x:Name="judgeListBox" Margin="520,43,10,0" Height="236" VerticalAlignment="Top" >
+        <Button x:Name="editContestBtn" Content="Edit Contest" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" Click="EditContestBtn_Click"/>
+        <ListBox x:Name="judgeListBox" Margin="520,43,10,0" Height="248" VerticalAlignment="Top" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="2,3">
@@ -62,6 +62,7 @@
         <Label x:Name="contestLabel" Content="Contest" HorizontalAlignment="Left" Margin="10,17,0,0" VerticalAlignment="Top"/>
         <Label x:Name="judgeLabel" Content="Judges" HorizontalAlignment="Left" Margin="520,17,0,0" VerticalAlignment="Top"/>
         <Label x:Name="jumpersLabel" Content="Jumpers" HorizontalAlignment="Left" Margin="520,291,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="editUsersBtn" Content="Edit Users" Margin="0,0,170,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Click="EditUsersBtn_Click"/>
 
     </Grid>
 </Page>
