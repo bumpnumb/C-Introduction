@@ -59,7 +59,6 @@ namespace Server.modules
 
     public class CompetitionUser
     {
-        public int ID { get; set; }
         public int UID { get; set; }
         public int CID { get; set; }
     }

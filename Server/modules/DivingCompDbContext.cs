@@ -43,7 +43,6 @@ namespace Server.modules
             });
             modelBuilder.Entity<CompetitionUser>(entity =>
             {
-                entity.HasKey(e => e.ID);
                 entity.Property(e => e.UID).IsRequired();
                 entity.Property(e => e.CID).IsRequired();
             });

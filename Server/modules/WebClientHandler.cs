@@ -72,6 +72,7 @@ namespace Server.services
             lock (syncLock)
             {
                 allClients.Add(this);
+                allTokens.Add(this.TokenSource);
                 nextN++;
             }
 
@@ -82,22 +83,26 @@ namespace Server.services
         private void Disconnect()
         {
             Console.WriteLine("WebClient: " + this.ID.ToString() + " has disconnected");
-            TokenSource.Cancel();
-            Stream.Close();
-            Client.Close();
-            allClients.Remove(this);
+            Console.WriteLine("Removing Tokensource " + this.TokenSource);
+            this.TokenSource.Cancel();
+            Console.WriteLine("closing stream " + this.Stream);
+            this.Stream.Close();
+            Console.WriteLine("closing client " + this.Client);
+            this.Client.Close();
+            // allClients.Remove(this);
         }
 
         private void Listen(object obj)
         {
             var address = Client.Client.RemoteEndPoint.ToString().Split(':');
-            Console.WriteLine(String.Format("A client is connected from {0}", address[0]));
+            Console.WriteLine(String.Format("Client {0} is connected from {1}",this.ID , address[0]));
 
             CancellationToken ct = (CancellationToken)obj;
             while (!ct.IsCancellationRequested)
             {
                 Byte[] bytes = new byte[0];
                 string handshake = "";
+
 
                 do
                 {
@@ -111,13 +116,7 @@ namespace Server.services
                     {
                         //IOException should only be when client disconnect during message transit
                         //Removes all trace of client
-                        Console.WriteLine("Client: " + this.ID.ToString() + " has disconnected");
-
-                        Stream.Close();
-                        Client.Close();
-
-                        allClients.Remove(this);
-                        allTokens.Remove(this.TokenSource);
+                        Disconnect();
                         break;
                     }
                 } while (Stream.DataAvailable);
@@ -171,16 +170,23 @@ namespace Server.services
                                 }
 
                                 string json = JsonConvert.SerializeObject(comp);
-                                Send("{\"Type\":CompetitionWithUser,\"Num\":" + i + ",\"Data\":" + json + '}');
+                                Send("{\"Type\":\"CompetitionWithUser\",\"Num\":" + i + ",\"Data\":" + json + '}');
 
                                 break;
                             case "GET COMPETITION:":
+                                break;
+                            case "Exit<00>":
+                                    Disconnect();
                                 break;
                             default:
                                 break;
                         }
                     }
 
+                }
+                else
+                {
+                    Disconnect();
                 }
             }
         }
