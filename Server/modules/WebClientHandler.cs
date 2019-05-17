@@ -83,19 +83,17 @@ namespace Server.services
         private void Disconnect()
         {
             Console.WriteLine("WebClient: " + this.ID.ToString() + " has disconnected");
-            Console.WriteLine("Removing Tokensource " + this.TokenSource);
             this.TokenSource.Cancel();
-            Console.WriteLine("closing stream " + this.Stream);
             this.Stream.Close();
-            Console.WriteLine("closing client " + this.Client);
             this.Client.Close();
-            // allClients.Remove(this);
+            allClients.Remove(this);
+            allTokens.Remove(this.TokenSource);
         }
 
         private void Listen(object obj)
         {
             var address = Client.Client.RemoteEndPoint.ToString().Split(':');
-            Console.WriteLine(String.Format("Client {0} is connected from {1}",this.ID , address[0]));
+            Console.WriteLine(String.Format("Client {0} is connected from {1}", this.ID, address[0]));
 
             CancellationToken ct = (CancellationToken)obj;
             while (!ct.IsCancellationRequested)
@@ -176,7 +174,7 @@ namespace Server.services
                             case "GET COMPETITION:":
                                 break;
                             case "Exit<00>":
-                                    Disconnect();
+                                Disconnect();
                                 break;
                             default:
                                 break;

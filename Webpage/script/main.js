@@ -34,6 +34,7 @@ var socket = new WebSocket("ws://127.0.0.1:80");
 socket.onopen = function (openEvent) {
     console.log("Socket connection is open.");
     sendTextMessage();
+    getAllCompetitions();
 };
 
 socket.onmessage = function (e) {
@@ -50,30 +51,50 @@ socket.onmessage = function (e) {
     decodeMessage(obj);
 };
 
-
-socket.onclose = function (e) {
-    console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
-    setTimeout(function () {
-        connect();
-    }, 1000);
-};
-
 socket.onerror = function (err) {
     console.error(err);
 };
 
+function switchWindow(window) {
+
+    var switchTo = document.getElementById(window);
+
+    var open = document.getElementsByClassName("center_holder");
+    for (var i = 0; i < open.length; i++) {
+        if (open[i].classList.contains("active")) {
+            open[i].classList.remove("active");
+            open[i].classList.add("hidden");
+        }
+    }
+    switchTo.classList.remove("hidden");
+    switchTo.classList.add("active");
+}
+
+function viewCompetition(comp) {
+    switchWindow("single_competition_holder");
+
+
+
+}
 
 function generateCompetitions(num, data) {
     var ghost = document.getElementsByClassName("comp_item")[0];
-    var dest = document.getElementsByClassName("center_holder")[0];
+    var dest = document.getElementById("overview_competition_holder");
     for (var i = 0; i < num; i++) {
         var clone = ghost.cloneNode(true);
         clone.classList.remove("hidden");
         var t = clone.children[0];
         t.innerHTML = data[i].Name;
 
-        //t.style.backgroundColor = generatePastel();
-        clone.style.backgroundColor = generatePastel();
+        if (i % 2 === 0) {
+            clone.onmouseleave = function () { this.style.backgroundColor = "rgb(225, 250, 255)"; };
+            clone.style.backgroundColor = "rgb(225, 250, 255)";
+        } else {
+            clone.onmouseleave = function () { this.style.backgroundColor = "rgb(193, 236, 245)"; };
+            clone.style.backgroundColor = "rgb(193, 236, 245)";
+        }
+        clone.onmouseover = function () { this.style.backgroundColor = "#C1F5D0" };
+        clone.onmousedown = function () { viewCompetition(data[i]); };
 
         dest.appendChild(clone);
     }
