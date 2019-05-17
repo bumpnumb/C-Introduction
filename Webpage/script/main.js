@@ -34,6 +34,7 @@ var socket = new WebSocket("ws://127.0.0.1:80");
 socket.onopen = function (openEvent) {
     console.log("Socket connection is open.");
     sendTextMessage();
+    getAllCompetitions();
 };
 
 socket.onmessage = function (e) {
@@ -64,8 +65,15 @@ function generateCompetitions(num, data) {
         var t = clone.children[0];
         t.innerHTML = data[i].Name;
 
-        //t.style.backgroundColor = generatePastel();
-        clone.style.backgroundColor = generatePastel();
+        if (i % 2 === 0) {
+            clone.onmouseleave = function () { this.style.backgroundColor = "rgb(225, 250, 255)"; };
+            clone.style.backgroundColor = "rgb(225, 250, 255)";
+        } else {
+            clone.onmouseleave = function () { this.style.backgroundColor = "rgb(193, 236, 245)"; };
+            clone.style.backgroundColor = "rgb(193, 236, 245)";
+        }
+        clone.onmouseover = function () { this.style.backgroundColor = "#C1F5D0" };
+
 
         dest.appendChild(clone);
     }
