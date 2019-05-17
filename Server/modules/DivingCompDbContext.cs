@@ -40,6 +40,8 @@ namespace Server.modules
                 entity.Property(e => e.Name).IsRequired();
                 entity.Property(e => e.Start).IsRequired();
                 entity.Property(e => e.Finished).IsRequired();
+                entity.Property(e => e.Jumps).IsRequired();
+
             });
             modelBuilder.Entity<CompetitionUser>(entity =>
             {

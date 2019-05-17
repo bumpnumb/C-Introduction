@@ -55,10 +55,31 @@ socket.onerror = function (err) {
     console.error(err);
 };
 
+function switchWindow(window) {
+
+    var switchTo = document.getElementById(window);
+
+    var open = document.getElementsByClassName("center_holder");
+    for (var i = 0; i < open.length; i++) {
+        if (open[i].classList.contains("active")) {
+            open[i].classList.remove("active");
+            open[i].classList.add("hidden");
+        }
+    }
+    switchTo.classList.remove("hidden");
+    switchTo.classList.add("active");
+}
+
+function viewCompetition(comp) {
+    switchWindow("single_competition_holder");
+
+
+
+}
 
 function generateCompetitions(num, data) {
     var ghost = document.getElementsByClassName("comp_item")[0];
-    var dest = document.getElementsByClassName("center_holder")[0];
+    var dest = document.getElementById("overview_competition_holder");
     for (var i = 0; i < num; i++) {
         var clone = ghost.cloneNode(true);
         clone.classList.remove("hidden");
@@ -73,7 +94,7 @@ function generateCompetitions(num, data) {
             clone.style.backgroundColor = "rgb(193, 236, 245)";
         }
         clone.onmouseover = function () { this.style.backgroundColor = "#C1F5D0" };
-
+        clone.onmousedown = function () { viewCompetition(data[i]); };
 
         dest.appendChild(clone);
     }

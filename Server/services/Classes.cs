@@ -44,6 +44,7 @@ namespace Server.modules
         public string Name { get; set; }
         public DateTime Start { get; set; }
         public DateTime Finished { get; set; }
+        public int Jumps { get; set; }
     }
 
     public class CompetitionWithUser
@@ -52,6 +53,8 @@ namespace Server.modules
         public string Name { get; set; }
         public DateTime Start { get; set; }
         public DateTime Finished { get; set; }
+        public int Jumps { get; set; }
+
         public List<User> Users { get; set; }
         public List<User> Judges { get; set; }
 

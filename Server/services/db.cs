@@ -182,6 +182,7 @@ namespace Server.services
                     temp.Name = comp.Name;
                     temp.Start = comp.Start;
                     temp.Finished = comp.Finished;
+                    temp.Jumps = comp.Jumps;
 
                     List<User> users = context.Users.Where(u => context.CompetitionUsers.Any(cu => u.ID == cu.UID & cu.CID == comp.ID)).ToList();
                     List<User> judges = context.Users.Where(j => context.CompetitionJudges.Any(cj => j.ID == cj.UID & cj.CID == comp.ID)).ToList();
