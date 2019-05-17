@@ -116,6 +116,7 @@ namespace Server.services
             c.Name = CompInfo.Name;
             c.Start = CompInfo.Start;
             c.Finished = CompInfo.Finished;
+            c.Jumps = CompInfo.Jumps;
 
             context.Competitions.Add(c);
 
@@ -126,7 +127,6 @@ namespace Server.services
                 temp.UID = userJumper.ID;
                 context.CompetitionUsers.Add(temp);
             }
-
 
             foreach (User userJudge in CompInfo.Judges)
             {
