@@ -25,17 +25,19 @@ namespace Server.modules
         public string Salt { get; set; }
         public string Hash { get; set; }
     }
-    public class UICJump
+    public class Jump
     {
         public int ID { get; set; }
-        public int UICID { get; set; }
+        public int JudgeID { get; set; }
+        public int CUID { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public float Difficulty { get; set; }
     }
     public class Result
     {
-        public int UICJID { get; set; }
+        public int JumpID { get; set; }
+        public int JudgeID { get; set; }
         public float Score { get; set; }
     }
     public class Competition
@@ -62,11 +64,13 @@ namespace Server.modules
 
     public class CompetitionUser
     {
+        public int ID { get; set; }
         public int UID { get; set; }
         public int CID { get; set; }
     }
     public class CompetitionJudge
     {
+        public int ID { get; set; }
         public int UID { get; set; }
         public int CID { get; set; }
     }
