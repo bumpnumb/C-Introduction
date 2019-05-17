@@ -81,9 +81,9 @@ namespace Server.services
                 Name = name,
                 Salt = salt,
                 Hash = hash,
+                Group = 0,
                 //detta ska komma som ett argument!
                 SSN = "temporary",
-                Group = 0
             };
 
             context.Users.Add(u);
@@ -105,19 +105,37 @@ namespace Server.services
                 return u.Hash;
             }
         }
-        public void CreateCompetitions(/*lista från client*/)
+        public void CreateCompetition(CompetitionWithUser CompInfo)
         {
             var context = new DivingCompDbContext();
             context.Database.EnsureCreated();
 
-            //om jag tänker rätt här, så ska vi plocka ur listan från clienten och slänga in allt i databasen:
-            //ur listan tar vi först namn och assignar det till en string.
-            //sedan samma sak med start-time och finished-time
-            //sedan gör vi två for-loopar som kollar igenom vår lista med judges och divers
-            //där vi för varje iteration slänger in en judge respektive diver till databasen under samma competition
+            Competition c = new Competition();
 
-            Competition c = new Competition();      
+            c.ID = CompInfo.ID;
+            c.Name = CompInfo.Name;
+            c.Start = CompInfo.Start;
+            c.Finished = CompInfo.Finished;
+            c.Jumps = CompInfo.Jumps;
+
             context.Competitions.Add(c);
+
+            foreach (User userJumper in CompInfo.Users)
+            {
+                CompetitionUser temp = new CompetitionUser();
+                temp.CID = CompInfo.ID;
+                temp.UID = userJumper.ID;
+                context.CompetitionUsers.Add(temp);
+            }
+
+            foreach (User userJudge in CompInfo.Judges)
+            {
+                CompetitionJudge temp = new CompetitionJudge();
+                temp.CID = CompInfo.ID;
+                temp.UID = userJudge.ID;
+                context.CompetitionJudges.Add(temp);
+            }
+
             context.SaveChanges();
         }
 
@@ -135,6 +153,7 @@ namespace Server.services
                     temp.Name = comp.Name;
                     temp.Start = comp.Start;
                     temp.Finished = comp.Finished;
+                    temp.Jumps = comp.Jumps;
 
                     List<User> users = context.Users.Where(u => context.CompetitionUsers.Any(cu => u.ID == cu.UID & cu.CID == comp.ID)).ToList();
                     List<User> judges = context.Users.Where(j => context.CompetitionJudges.Any(cj => j.ID == cj.UID & cj.CID == comp.ID)).ToList();
@@ -162,6 +181,7 @@ namespace Server.services
                     temp.Name = comp.Name;
                     temp.Start = comp.Start;
                     temp.Finished = comp.Finished;
+                    temp.Jumps = comp.Jumps;
 
                     List<User> users = context.Users.Where(u => context.CompetitionUsers.Any(cu => u.ID == cu.UID & cu.CID == comp.ID)).ToList();
                     List<User> judges = context.Users.Where(j => context.CompetitionJudges.Any(cj => j.ID == cj.UID & cj.CID == comp.ID)).ToList();
