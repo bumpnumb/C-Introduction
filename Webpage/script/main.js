@@ -50,14 +50,6 @@ socket.onmessage = function (e) {
     decodeMessage(obj);
 };
 
-
-socket.onclose = function (e) {
-    console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
-    setTimeout(function () {
-        connect();
-    }, 1000);
-};
-
 socket.onerror = function (err) {
     console.error(err);
 };
