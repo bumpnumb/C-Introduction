@@ -8,17 +8,16 @@
       d:DesignHeight="850" d:DesignWidth="1050"
       Title="AdminMainPage">
 
-    <Grid MinWidth="1024" MinHeight="768">
+    <Grid MinWidth="1024" MinHeight="768" >
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="461,10,460,0" TextWrapping="Wrap" Text="ADMIN FIRST PAGE" VerticalAlignment="Top" Height="15"/>
-        <Button x:Name="button" Content="Refresh" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="50" Click="Button_Click"/>
+        <Button x:Name="button" Content="Refresh" HorizontalAlignment="Left" Margin="460,10,0,0" VerticalAlignment="Top" Width="50" Click="Button_Click"/>
         <Button x:Name="create" Content="New" HorizontalAlignment="Left" Margin="520,0,0,10" VerticalAlignment="Bottom" Width="75" Click="Edit_Create_Btn"/>
-        <ListBox x:Name="competitionListBox" Margin="10,43,0,10" HorizontalAlignment="Left" Width="500">
+        <ListBox x:Name="competitionListBox" Margin="10,43,0,10" HorizontalAlignment="Left" Width="500" SelectionChanged="DisplaySelectedContest" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Margin="2,3">
+                    <Grid Margin="2,3" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="240" />
                             <ColumnDefinition Width="120" />
@@ -31,23 +30,38 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox x:Name="usersListBox" Margin="520,43,10,35">
+        <ListBox x:Name="usersListBox" Margin="520,317,10,35">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Margin="2,3">
+                    <Grid Margin="2,3" HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="240" />
-                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="400" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Name}" />
-                        <TextBlock Grid.Column="1" Text="{Binding Start}" TextAlignment="Center" />
-                        <TextBlock Grid.Column="2" Text="{Binding Finished}" TextAlignment="Center" />
+                        <TextBlock Grid.Column="1" Text="{Binding SSN}" TextAlignment="Right" HorizontalAlignment="Stretch" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
         <Button x:Name="edit" Content="Edit" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75"/>
+        <ListBox x:Name="judgeListBox" Margin="520,43,10,0" Height="236" VerticalAlignment="Top" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="2,3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="400" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Grid.Column="1" Text="{Binding SSN}" TextAlignment="Right" HorizontalAlignment="Stretch" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Label x:Name="contestLabel" Content="Contest" HorizontalAlignment="Left" Margin="10,17,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="judgeLabel" Content="Judges" HorizontalAlignment="Left" Margin="520,17,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="jumpersLabel" Content="Jumpers" HorizontalAlignment="Left" Margin="520,291,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Page>

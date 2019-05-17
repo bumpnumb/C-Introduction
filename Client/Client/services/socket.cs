@@ -178,7 +178,7 @@ namespace Client.services
                 ct.Cancel();
                 Stream.Close();
                 Client.Close();
-
+                System.Windows.Application.Current.Shutdown();
                 return;
             }
             Console.WriteLine("Sending: " + msg);
