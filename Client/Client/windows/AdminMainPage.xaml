@@ -34,13 +34,16 @@
         <ListBox x:Name="usersListBox" Margin="520,43,10,35">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel>
-                        <TextBlock DockPanel.Dock="Top" Text="{Binding Name}">
-
-                        </TextBlock>
-                        <Line Stroke="Red" DockPanel.Dock="Top" StrokeThickness="4"></Line>
-
-                    </DockPanel>
+                    <Grid Margin="2,3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="240" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Grid.Column="1" Text="{Binding Start}" TextAlignment="Center" />
+                        <TextBlock Grid.Column="2" Text="{Binding Finished}" TextAlignment="Center" />
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
