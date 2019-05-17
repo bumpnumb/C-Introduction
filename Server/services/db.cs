@@ -197,10 +197,15 @@ namespace Server.services
             }
         }
 
-        public void SetScore(Result ResultInfo)
+        public CompetitionWithResult GetCompetitionWithResultFromID(int ID)
         {
 
+
+
+
+            return new CompetitionWithResult();
         }
+
     }
 }
 

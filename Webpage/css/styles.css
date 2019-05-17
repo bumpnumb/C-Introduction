@@ -28,12 +28,6 @@
     position: relative;
 }
 
-/*.jump_holder {
-    -webkit-column-count: 3; /* Chrome, Safari, Opera */
-    -moz-column-count: 3; /* Firefox */
-    column-count: 3;
-}*/
-
 .hidden {
     visibility: hidden;
     height: 0;

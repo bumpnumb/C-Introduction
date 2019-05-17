@@ -70,14 +70,50 @@ function switchWindow(window) {
     switchTo.classList.add("active");
 }
 
-function viewCompetition(comp) {
+function viewCompetition(data) {
+    console.log(data);
     switchWindow("single_competition_holder");
 
+    document.getElementsByClassName("title")[0].innerHTML = comp.Name;
 
+    
+
+
+    var ghost = document.getElementsByClassName("jump_holder")[0];
+    var dest = document.getElementById("single_competition_holder");
+
+    for (var i = 1; i < Data.Jumps; i++) {
+        ghost.getElementsByClassName("jump_data_holder")[i].innerHTML = "Jump " + i;
+    }
+
+    for (var j = 0; j < Data.Users; j++) {
+        var clone = ghost.cloneNode(true);
+
+
+
+
+
+    }
+
+    //<div id="single_competition_holder" class="center_holder hidden">
+    //    <div class="title">
+    //        <p>
+    //            Inbjudan till Nationellt Simhoppsläger 2019
+    //    </p>
+    //    </div>
+    //    <div class="jump_holder">
+    //        <div class="jump_data_holder">
+    //            Diver
+    //    </div>
+    //    </div>
+
+    //</div>
 
 }
 
 function generateCompetitions(num, data) {
+    switchWindow("overview_competition_holder");
+
     var ghost = document.getElementsByClassName("comp_item")[0];
     var dest = document.getElementById("overview_competition_holder");
     for (var i = 0; i < num; i++) {
@@ -94,7 +130,7 @@ function generateCompetitions(num, data) {
             clone.style.backgroundColor = "rgb(193, 236, 245)";
         }
         clone.onmouseover = function () { this.style.backgroundColor = "#C1F5D0" };
-        clone.onmousedown = function () { viewCompetition(data[i]); };
+        clone.onmousedown = function () { sendTextMessage("GET COMPETITION\r\n{0}", data[i].Name); };
 
         dest.appendChild(clone);
     }
@@ -139,6 +175,10 @@ function decodeMessage(messageObj) {
         case "CompetitionWithUser":
             generateCompetitions(messageObj.Num, messageObj.Data);
             break;
+        case "SingleCompetition":
+            viewCompetition(messageObj.Data);
+            break;
+
 
         default:
             break;

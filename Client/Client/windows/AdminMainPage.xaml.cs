@@ -66,8 +66,10 @@ namespace Client.windows
 
             App.Current.Dispatcher.Invoke((Action)delegate
             {
+                
                 AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
                 currentPage.competitionListBox.ItemsSource = competitions;
+                currentPage.competitionListBox.UnselectAll();
             });
         }
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="Simmhopp" Height="350" Width="250" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+        Title="Simmhopp" Height="350" Width="250" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Background="AliceBlue">
     <Grid>
         <Frame x:Name="Main" NavigationUIVisibility="Hidden"/>
         <StackPanel x:Name="doelenContentPanel" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
