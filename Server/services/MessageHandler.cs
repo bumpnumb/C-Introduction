@@ -135,6 +135,7 @@ namespace Server.services
 
                         case "CreateCompetition":
                             rsp.Type = MessageType.Competition;
+
                             //CreateCompetitions();
 
                             //this needs a lot of work.
@@ -154,7 +155,8 @@ namespace Server.services
                             //send object to function
                             //function loops thhrough divers and judges pushing querry to db.
 
-                            db.CreateCompetitions(/*listan på competition från client*/);
+                            CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
+                            db.CreateCompetition(CompInfo);
                             break;
                     }
                     break;

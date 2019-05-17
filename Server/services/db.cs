@@ -81,9 +81,9 @@ namespace Server.services
                 Name = name,
                 Salt = salt,
                 Hash = hash,
+                Group = 0,
                 //detta ska komma som ett argument!
                 SSN = "temporary",
-                Group = 0
             };
 
             context.Users.Add(u);
@@ -105,7 +105,7 @@ namespace Server.services
                 return u.Hash;
             }
         }
-        public void CreateCompetitions(/*lista från client*/)
+        public void CreateCompetition(CompetitionWithUser CompInfo)
         {
             var context = new DivingCompDbContext();
             context.Database.EnsureCreated();
@@ -115,6 +115,26 @@ namespace Server.services
             //sedan samma sak med start-time och finished-time
             //sedan gör vi två for-loopar som kollar igenom vår lista med judges och divers
             //där vi för varje iteration slänger in en judge respektive diver till databasen under samma competition
+
+
+              //jag utgår från "CompetitionWithUser" under Classes.cs
+//            string name = splittedComp[1];
+//            DateTime start_time = splittedComp[2];
+//            DateTime finish_time = splittedComp[3];
+
+//            CompetitionWithUser AllDivers = new CompetitionWithUser
+//            {
+//                List<User>Users = splittedComp[4].Split(',').ToList()
+//            };
+
+//            CompetitionWithUser AllJudges = new CompetitionWithUser
+//            {
+//                List<User>Judges = splittedComp[5].Split(',').ToList()
+//            };
+
+//            context.Competitions.Add(AllDivers);
+//            context.Competitions.Add(AllJudges);
+//            context.SaveChanges();
 
             Competition c = new Competition();      
             context.Competitions.Add(c);
