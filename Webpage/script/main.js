@@ -45,10 +45,23 @@ socket.onmessage = function (e) {
         val = e.data[i + 4] + e.data[i + 6] + e.data[i] + e.data[i + 2] + "";
         str += String.fromCharCode(parseInt(val, 16));
     }
-    console.log(str);
+    //console.log(str);
     var obj = JSON.parse(str);
     decodeMessage(obj);
 };
+
+
+socket.onclose = function (e) {
+    console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+    setTimeout(function () {
+        connect();
+    }, 1000);
+};
+
+socket.onerror = function (err) {
+    console.error(err);
+};
+
 
 function generateCompetitions(num, data) {
     var ghost = document.getElementsByClassName("comp_item")[0];
@@ -59,7 +72,8 @@ function generateCompetitions(num, data) {
         var t = clone.children[0];
         t.innerHTML = data[i].Name;
 
-        t.style.backgroundColor = generatePastel();
+        //t.style.backgroundColor = generatePastel();
+        clone.style.backgroundColor = generatePastel();
 
         dest.appendChild(clone);
     }
@@ -101,7 +115,7 @@ function decodeMessage(messageObj) {
 
 
     switch (messageObj.Type) {
-        case 0:
+        case "CompetitionWithUser":
             generateCompetitions(messageObj.Num, messageObj.Data);
             break;
 

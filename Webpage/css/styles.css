@@ -15,13 +15,13 @@
 
 .comp_item {
     border: 1px solid black;
-    background-color: #d5edc1;
+    /*background-color: #d5edc1;*/
     border: 1px solid black;
     text-align: center;
 }
 
     .comp_item:hover {
-        background-color: #c1e0ed;
+        /*background-color: #c1e0ed;*/
     }
 
 .hidden {
