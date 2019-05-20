@@ -32,6 +32,7 @@ namespace Server.modules
         public string Code { get; set; }
         public string Name { get; set; }
         public float Difficulty { get; set; }
+        public int Number { get; set; }
     }
     public class Result
     {
