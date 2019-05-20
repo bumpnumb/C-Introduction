@@ -39,14 +39,10 @@ namespace Client.windows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            App.Current.Dispatcher.Invoke((Action)delegate
-            {
-                AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
-                currentPage.competitionListBox.UnselectAll();
-            });
+            //Gets all copmetitions from the database via the server
             Message getCompetitions = new Message();
             getCompetitions.Type = MessageType.Competition;
-            getCompetitions.Data = "GetAll"; //DONT FORGET TO ADD RESTRICTIONS TO NAMING
+            getCompetitions.Data = "GetAll";
             ClientControll.Send(getCompetitions);
         }
 
@@ -73,7 +69,7 @@ namespace Client.windows
             });
         }
 
-        private void DisplaySelectedContest(object sender, SelectionChangedEventArgs e)
+        private void DisplaySelectedContest(object sender, MouseButtonEventArgs e)
         {
             App.Current.Dispatcher.Invoke((Action)delegate
             {
@@ -83,7 +79,6 @@ namespace Client.windows
                 List<User> jumpers = data.Users;
                 List<User> judges = data.Judges;
                 Console.WriteLine(id);
-                
                 FillUsersListBox(jumpers);
                 FillJudgesListBox(judges);
             });
@@ -117,6 +112,8 @@ namespace Client.windows
         {
             App.MainWindowRef.Main.Navigate(new EditContest());
         }
+
+       
     }
 }
 //            /*Fixa en snygg json grej här för ID och PW så det går att ha vilket namn som helst

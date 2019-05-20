@@ -9,17 +9,18 @@
       Title="CreateContest">
 
     <Grid>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="21" Margin="24,42,0,0" TextWrapping="Wrap" Text="JUDGE NAME GOES HERE" VerticalAlignment="Top" Width="194"/>
-        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Height="88" Margin="24,63,0,0" TextWrapping="Wrap" Text="Reserved for automatic added lines, every line with text in it spawns a new empy line beneth it (many lines spawns a scroll bar if needed)." VerticalAlignment="Top" Width="194"/>
-        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" Margin="24,162,0,0" TextWrapping="Wrap" Text="JUMPER NAME GOES HERE" VerticalAlignment="Top" Width="194"/>
-        <TextBox x:Name="textBox2" HorizontalAlignment="Left" Height="23" Margin="24,190,0,0" TextWrapping="Wrap" Text="J# 1" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox3" HorizontalAlignment="Left" Height="23" Margin="61,190,0,0" TextWrapping="Wrap" Text="J# 2" VerticalAlignment="Top" Width="30"/>
-        <TextBox x:Name="textBox4" HorizontalAlignment="Left" Height="23" Margin="96,190,0,0" TextWrapping="Wrap" Text="J# 3" VerticalAlignment="Top" Width="30"/>
-        <TextBox x:Name="textBox5" HorizontalAlignment="Left" Height="23" Margin="131,190,0,0" TextWrapping="Wrap" Text="J# 4" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox6" HorizontalAlignment="Left" Height="23" Margin="168,190,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox7" HorizontalAlignment="Left" Height="23" Margin="205,190,0,0" TextWrapping="Wrap" Text="J# 6" VerticalAlignment="Top" Width="31"/>
-        <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Height="72" Margin="24,218,0,0" TextWrapping="Wrap" Text="Same principle goes here, as soon as name field is filled out a new automaticly appears" VerticalAlignment="Top" Width="212"/>
+        <TextBox x:Name="competitionTitle" HorizontalAlignment="Left" Height="21" Margin="24,42,0,0" TextWrapping="Wrap" Text="Competition name" VerticalAlignment="Top" Width="194"/>
+        <TextBox x:Name="numberOfJumps" HorizontalAlignment="Left" Height="23" Margin="24,97,0,0" TextWrapping="Wrap" Text="#Jumps" VerticalAlignment="Top" Width="86"/>
+        <TextBox x:Name="judgeName" HorizontalAlignment="Left" Height="23" Margin="24,168,0,0" TextWrapping="Wrap" Text="Autocomplete textbox here" VerticalAlignment="Top" Width="194"/>
+        <TextBox x:Name="judgeSSN" HorizontalAlignment="Left" Height="23" Margin="24,196,0,0" TextWrapping="Wrap" Text="xxxx-xx-xx-xxxx" VerticalAlignment="Top" Width="102"/>
+        <TextBox x:Name="textBox4" HorizontalAlignment="Left" Height="23" Margin="96,478,0,0" TextWrapping="Wrap" Text="J# 3" VerticalAlignment="Top" Width="30"/>
+        <TextBox x:Name="textBox5" HorizontalAlignment="Left" Height="23" Margin="131,478,0,0" TextWrapping="Wrap" Text="J# 4" VerticalAlignment="Top" Width="32"/>
+        <TextBox x:Name="textBox6" HorizontalAlignment="Left" Height="23" Margin="168,478,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
+        <TextBox x:Name="textBox7" HorizontalAlignment="Left" Height="23" Margin="205,478,0,0" TextWrapping="Wrap" Text="J# 6" VerticalAlignment="Top" Width="31"/>
+        <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Height="72" Margin="24,506,0,0" TextWrapping="Wrap" Text="Same principle goes here, as soon as name field is filled out a new automaticly appears" VerticalAlignment="Top" Width="212"/>
         <Button x:Name="cancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Click="CancelBtn_Click"/>
+        <DatePicker HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,68,0,0"/>
+        <Label x:Name="judgeLabel" Content="Add Judge" HorizontalAlignment="Left" Margin="24,142,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Page>
