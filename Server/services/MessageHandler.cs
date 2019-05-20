@@ -155,9 +155,10 @@ namespace Server.services
                             //function loops thhrough divers and judges pushing querry to db.
 
                             CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
+                            List<Jump> jumps = JsonConvert.DeserializeObject<List<Jump>>(part[2]);
                             if (CompInfo != null)
                             {
-                                db.CreateCompetition(CompInfo);
+                                db.CreateCompetition(CompInfo, jumps);
                                 rsp.Data = "Competition created"; 
 
                             }

@@ -162,15 +162,35 @@ namespace Server.services
                         switch (splitMsg[0])
                         {
                             case "GET ALL COMPETITIONS":
-                                List<CompetitionWithUser> comp = db.GetAllCompetitions();
-                                int i = 0;
-                                foreach (CompetitionWithUser c in comp)
-                                {
-                                    i++;
-                                }
+                                CompetitionWithUser tu = new CompetitionWithUser();
+                                tu.Jumps = 3;
+                                tu.Name = "Daniels rakettävling!";
+                                tu.Start = DateTime.Now;
 
-                                string json = JsonConvert.SerializeObject(comp);
-                                Send("{\"Type\":\"CompetitionWithUser\",\"Num\":" + i + ",\"Data\":" + json + '}');
+                                List<User> u = new List<User>();
+                                u.Add(db.GetUserByID(20));
+                                u.Add(db.GetUserByID(21));
+                                u.Add(db.GetUserByID(22));
+
+                                tu.Users = u;
+                                tu.Judges = u;
+
+                                List<Jump> jumps = new List<Jump>();
+                                Jump j = new Jump();
+                                j.Code = "301";
+                                j.CUID = 20;
+                                j.Number = 1;                                
+
+                                db.CreateCompetition(tu, jumps);
+                                //List<CompetitionWithUser> comp = db.GetAllCompetitions();
+                                //int i = 0;
+                                //foreach (CompetitionWithUser c in comp)
+                                //{
+                                //    i++;
+                                //}
+
+                                //string json = JsonConvert.SerializeObject(comp);
+                                //Send("{\"Type\":\"CompetitionWithUser\",\"Num\":" + i + ",\"Data\":" + json + '}');
 
                                 break;
                             case "GET COMPETITION":
