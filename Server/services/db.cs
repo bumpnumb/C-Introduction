@@ -112,13 +112,14 @@ namespace Server.services
             context.Competitions.Add(c);
 
 
-
+            List<int> CUIDs = new List<int>();
             foreach (User userJumper in CompInfo.Users)
             {
                 CompetitionUser temp = new CompetitionUser();
                 temp.CID = CompInfo.ID;
                 temp.UID = userJumper.ID;
                 context.CompetitionUsers.Add(temp);
+                CUIDs.Add(temp.ID);
             }
 
             foreach (User userJudge in CompInfo.Judges)
@@ -133,10 +134,6 @@ namespace Server.services
 
             Console.WriteLine(c.ID);
 
-            List<int> CUIDs = GetCUIDFromCID(CompInfo.ID);
-            //Jumps ska bli assignade här till varje user-jump!
-
-
             //....................../´¯/)
             //....................,/¯../ 
             //.................../..../ 
@@ -150,7 +147,7 @@ namespace Server.services
 
 
 
-            //public int CUID { get; set; }
+            //public int CUID { get; set; } jump.cuid är just nu en id på en person.
             //public string Code { get; set; }
             //public string Name { get; set; }
             //public float Difficulty { get; set; }
@@ -160,8 +157,18 @@ namespace Server.services
             foreach (Jump j in jumps)
             {
                 Jump temp = new Jump();
-                temp.CUID = j.CUID;
-                temp.Code = j.Code;
+                foreach (int ID in CUIDs) //cuid is a compuser ID
+                {
+                    if (ID == j.CUID)// this means our jump belongs to this compuser
+                    {
+                        temp.CUID = ID;
+                        temp.Code = j.Code;
+                        temp.Number = j.Number;
+                        temp.Name = JumpHelper.GenerateJumpNameFromCode(j.Code);
+                        temp.Difficulty = JumpHelper.GenerateJumpDifficultyFromCode(j.Code);
+                        context.Jumps.Add(temp);
+                    }
+                }
 
             }
 
