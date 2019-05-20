@@ -62,6 +62,7 @@ namespace Server.modules
                 entity.Property(e => e.Name).IsRequired();
                 entity.Property(e => e.Difficulty).IsRequired();
                 entity.Property(e => e.CUID).IsRequired();
+                entity.Property(e => e.Number).IsRequired();
             });
             modelBuilder.Entity<Result>(entity =>
             {

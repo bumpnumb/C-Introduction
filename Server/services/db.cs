@@ -46,21 +46,13 @@ namespace Server.services
                 context.SaveChanges();
             }
         }
-        public void GetUserByID(int ID)
+        public User GetUserByID(int ID)
         {
             using (var context = new DivingCompDbContext())
             {
-                var u = context.Users.Where(x => x.ID == ID);
-
-                foreach (var user in u)
-                {
-                    var data = new StringBuilder();
-                    data.AppendLine($"ID: {user.ID}");
-                    data.AppendLine($"Name: {user.Name}");
-                    data.AppendLine($"Salt: {user.Salt}");
-                    data.AppendLine($"Hash: {user.Hash}");
-                    Console.WriteLine(data.ToString());
-                }
+                User u = new User();
+                u = context.Users.Where(x => x.ID == ID).FirstOrDefault();
+                return u;
             }
         }
         public User GetUserByName(string name)
@@ -106,20 +98,20 @@ namespace Server.services
                 return u.Hash;
             }
         }
-        public void CreateCompetition(CompetitionWithUser CompInfo)
+        public Competition CreateCompetition(CompetitionWithUser CompInfo, List<Jump> jumps)
         {
             var context = new DivingCompDbContext();
             context.Database.EnsureCreated();
 
             Competition c = new Competition();
 
-            c.ID = CompInfo.ID;
             c.Name = CompInfo.Name;
             c.Start = CompInfo.Start;
-            c.Finished = CompInfo.Finished;
             c.Jumps = CompInfo.Jumps;
 
             context.Competitions.Add(c);
+
+
 
             foreach (User userJumper in CompInfo.Users)
             {
@@ -137,9 +129,44 @@ namespace Server.services
                 context.CompetitionJudges.Add(temp);
             }
 
+            context.SaveChanges();
+
+            Console.WriteLine(c.ID);
+
+            List<int> CUIDs = GetCUIDFromCID(CompInfo.ID);
             //Jumps ska bli assignade här till varje user-jump!
 
+
+            //....................../´¯/)
+            //....................,/¯../ 
+            //.................../..../ 
+            //............./´¯/'...'/´¯¯`·¸ 
+            //........../'/.../..../......./¨¯\ 
+            //........('(...´...´.... ¯~/'...') 
+            //.........\.................'...../ 
+            //..........''...\.......... _.·´ 
+            //............\..............( 
+            //..............\.............\...
+
+
+
+            //public int CUID { get; set; }
+            //public string Code { get; set; }
+            //public string Name { get; set; }
+            //public float Difficulty { get; set; }
+            //public int Number { get; set; }
+
+
+            foreach (Jump j in jumps)
+            {
+                Jump temp = new Jump();
+                temp.CUID = j.CUID;
+                temp.Code = j.Code;
+
+            }
+
             context.SaveChanges();
+            return c;
         }
 
 
