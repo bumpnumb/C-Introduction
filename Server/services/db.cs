@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -46,13 +45,21 @@ namespace Server.services
                 context.SaveChanges();
             }
         }
-        public User GetUserByID(int ID)
+        public void GetUserByID(int ID)
         {
             using (var context = new DivingCompDbContext())
             {
-                User u = new User();
-                u = context.Users.Where(x => x.ID == ID).FirstOrDefault();
-                return u;
+                var u = context.Users.Where(x => x.ID == ID);
+
+                foreach (var user in u)
+                {
+                    var data = new StringBuilder();
+                    data.AppendLine($"ID: {user.ID}");
+                    data.AppendLine($"Name: {user.Name}");
+                    data.AppendLine($"Salt: {user.Salt}");
+                    data.AppendLine($"Hash: {user.Hash}");
+                    Console.WriteLine(data.ToString());
+                }
             }
         }
         public User GetUserByName(string name)
@@ -98,21 +105,23 @@ namespace Server.services
                 return u.Hash;
             }
         }
-        public Competition CreateCompetition(CompetitionWithUser CompInfo, List<Jump> jumps)
+        public void CreateCompetition(CompetitionWithUser CompInfo, List<Jump> jumps)
         {
             var context = new DivingCompDbContext();
             context.Database.EnsureCreated();
 
             Competition c = new Competition();
 
+            //c.ID = CompInfo.ID;
             c.Name = CompInfo.Name;
             c.Start = CompInfo.Start;
+            //c.Finished = CompInfo.Finished
             c.Jumps = CompInfo.Jumps;
 
             context.Competitions.Add(c);
 
-
             List<int> CUIDs = new List<int>();
+
             foreach (User userJumper in CompInfo.Users)
             {
                 CompetitionUser temp = new CompetitionUser();
@@ -129,10 +138,6 @@ namespace Server.services
                 temp.UID = userJudge.ID;
                 context.CompetitionJudges.Add(temp);
             }
-
-            context.SaveChanges();
-
-            Console.WriteLine(c.ID);
 
             //....................../´¯/)
             //....................,/¯../ 
@@ -169,11 +174,8 @@ namespace Server.services
                         context.Jumps.Add(temp);
                     }
                 }
-
             }
-
             context.SaveChanges();
-            return c;
         }
 
 
@@ -253,6 +255,7 @@ namespace Server.services
                 return cwu;
             }
         }
+
         public CompetitionWithResult GetCompetitionWithResultFromID(int ID)
         {
             using (var context = new DivingCompDbContext())
@@ -272,15 +275,15 @@ namespace Server.services
             }
         }
 
-        public void SetScoreToJump(Result ResultInfo)
+        public void SetScoreToJump(Result ScoreInfo)
         {
             var context = new DivingCompDbContext();
             context.Database.EnsureCreated();
 
             Result r = new Result();
-            r.JudgeID = ResultInfo.JudgeID;
-            r.JumpID = ResultInfo.JumpID;
-            r.Score = ResultInfo.Score;
+            r.JudgeID = ScoreInfo.JudgeID;
+            r.JumpID = ScoreInfo.JumpID;
+            r.Score = ScoreInfo.Score;
 
             context.Results.Add(r);
             context.SaveChanges();
