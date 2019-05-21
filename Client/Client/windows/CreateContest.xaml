@@ -9,18 +9,61 @@
       Title="CreateContest">
 
     <Grid>
-        <TextBox x:Name="competitionTitle" HorizontalAlignment="Left" Height="21" Margin="24,42,0,0" TextWrapping="Wrap" Text="Competition name" VerticalAlignment="Top" Width="194"/>
-        <TextBox x:Name="numberOfJumps" HorizontalAlignment="Left" Height="23" Margin="24,97,0,0" TextWrapping="Wrap" Text="#Jumps" VerticalAlignment="Top" Width="86"/>
+        <TextBox x:Name="competitionTitle" HorizontalAlignment="Left" Height="21" Margin="24,42,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194"/>
+        <ComboBox x:Name="jumpHeight" HorizontalAlignment="Left" Height="23" Margin="24,119,0,0" VerticalAlignment="Top" Width="44" IsEditable="False"
+                  ItemsSource="{Binding Items}"
+                  SelectedItem="{Binding SelectedItem}"
+                  Text="{Binding NewItem, UpdateSourceTrigger=LostFocus}"/>
         <TextBox x:Name="judgeName" HorizontalAlignment="Left" Height="23" Margin="24,168,0,0" TextWrapping="Wrap" Text="Autocomplete textbox here" VerticalAlignment="Top" Width="194"/>
         <TextBox x:Name="judgeSSN" HorizontalAlignment="Left" Height="23" Margin="24,196,0,0" TextWrapping="Wrap" Text="xxxx-xx-xx-xxxx" VerticalAlignment="Top" Width="102"/>
-        <TextBox x:Name="textBox4" HorizontalAlignment="Left" Height="23" Margin="96,478,0,0" TextWrapping="Wrap" Text="J# 3" VerticalAlignment="Top" Width="30"/>
-        <TextBox x:Name="textBox5" HorizontalAlignment="Left" Height="23" Margin="131,478,0,0" TextWrapping="Wrap" Text="J# 4" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox6" HorizontalAlignment="Left" Height="23" Margin="168,478,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox7" HorizontalAlignment="Left" Height="23" Margin="205,478,0,0" TextWrapping="Wrap" Text="J# 6" VerticalAlignment="Top" Width="31"/>
-        <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Height="72" Margin="24,506,0,0" TextWrapping="Wrap" Text="Same principle goes here, as soon as name field is filled out a new automaticly appears" VerticalAlignment="Top" Width="212"/>
+        <TextBox x:Name="jumperName" HorizontalAlignment="Left" Height="23" Margin="24,317,0,0" TextWrapping="Wrap" Text="Autocomplete textbox here" VerticalAlignment="Top" Width="194"/>
+        <TextBox x:Name="jumperSSN" HorizontalAlignment="Left" Height="23" Margin="24,345,0,0" TextWrapping="Wrap" Text="xxxx-xx-xx-xxxx" VerticalAlignment="Top" Width="102"/>
+        <TextBox x:Name="textBox6" HorizontalAlignment="Left" Height="23" Margin="24,422,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
+        <TextBox x:Name="textBox7" HorizontalAlignment="Left" Height="23" Margin="24,394,0,0" TextWrapping="Wrap" Text="J# 6" VerticalAlignment="Top" Width="32"/>
         <Button x:Name="cancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Click="CancelBtn_Click"/>
         <DatePicker HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,68,0,0"/>
         <Label x:Name="judgeLabel" Content="Add Judge" HorizontalAlignment="Left" Margin="24,142,0,0" VerticalAlignment="Top"/>
+        <ListBox x:Name="usersListBox" Margin="520,317,10,35">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="2,3" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="400" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Grid.Column="1" Text="{Binding SSN}" TextAlignment="Right" HorizontalAlignment="Stretch" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox x:Name="judgeListBox" Margin="520,43,10,0" Height="248" VerticalAlignment="Top" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="2,3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="400" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Grid.Column="1" Text="{Binding SSN}" TextAlignment="Right" HorizontalAlignment="Stretch" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button x:Name="saveBtn" Content="Save" HorizontalAlignment="Left" Margin="965,0,0,10" VerticalAlignment="Bottom" Width="75" />
+        <Label x:Name="jumperLabel" Content="Add Jumper" HorizontalAlignment="Left" Margin="24,291,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="jumpsLabel" Content="Jumps" HorizontalAlignment="Left" Margin="24,368,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="numberOfJumpsLabel" Content="Number of jumps" HorizontalAlignment="Left" Margin="24,93,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="competitionNameLabel" Content="Competition name" HorizontalAlignment="Left" Margin="23,16,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBox6_Copy" HorizontalAlignment="Left" Height="23" Margin="24,450,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
+        <TextBox x:Name="textBox6_Copy1" HorizontalAlignment="Left" Height="23" Margin="24,478,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
+        <TextBox x:Name="textBox6_Copy2" HorizontalAlignment="Left" Height="23" Margin="24,506,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
+        <TextBox x:Name="textBox6_Copy3" HorizontalAlignment="Left" Height="23" Margin="24,534,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
+        <TextBox x:Name="textBox6_Copy4" HorizontalAlignment="Left" Height="23" Margin="24,562,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
+        <TextBox x:Name="textBox6_Copy5" HorizontalAlignment="Left" Height="23" Margin="24,590,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
+        <TextBox x:Name="textBox6_Copy6" HorizontalAlignment="Left" Height="23" Margin="24,618,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
+        <TextBox x:Name="textBox6_Copy7" HorizontalAlignment="Left" Height="23" Margin="24,646,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
 
     </Grid>
 </Page>

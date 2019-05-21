@@ -20,4 +20,16 @@ namespace Client.services
         public List<User> Judges { get; set; }
 
     }
+
+    public class Jump
+    {
+        public int ID { get; set; }
+        public int CUID { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public float Difficulty { get; set; }
+        public int Number { get; set; }
+        public int GlobalNumber { get; set; }
+        public int Height { get; set; }
+    }
 }
