@@ -173,10 +173,10 @@ namespace Server.services
                 case MessageType.ScoreToJump:
                     rsp.Type = MessageType.ScoreToJump;
 
-                    Result ResultInfo = JsonConvert.DeserializeObject<Result>(this.Data);
-                    if(ResultInfo != null)
+                    Result ScoreInfo = JsonConvert.DeserializeObject<Result>(this.Data);
+                    if(ScoreInfo != null)
                     {
-                        db.SetScoreToJump(ResultInfo);
+                        db.SetScoreToJump(ScoreInfo);
                         //rsp.Data = "Score set";
                     }
                     else
@@ -185,7 +185,6 @@ namespace Server.services
                     }
 
                     break;
-
 
                 default:
                     break;
