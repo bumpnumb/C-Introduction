@@ -174,7 +174,6 @@ namespace Server.services
                         context.Jumps.Add(temp);
                     }
                 }
-
             }
             context.SaveChanges();
         }
@@ -276,15 +275,15 @@ namespace Server.services
             }
         }
 
-        public void SetScoreToJump(Result ResultInfo)
+        public void SetScoreToJump(Result ScoreInfo)
         {
             var context = new DivingCompDbContext();
             context.Database.EnsureCreated();
 
             Result r = new Result();
-            r.JudgeID = ResultInfo.JudgeID;
-            r.JumpID = ResultInfo.JumpID;
-            r.Score = ResultInfo.Score;
+            r.JudgeID = ScoreInfo.JudgeID;
+            r.JumpID = ScoreInfo.JumpID;
+            r.Score = ScoreInfo.Score;
 
             context.Results.Add(r);
             context.SaveChanges();
