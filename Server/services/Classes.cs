@@ -33,6 +33,8 @@ namespace Server.modules
         public string Name { get; set; }
         public float Difficulty { get; set; }
         public int Number { get; set; }
+        public int GlobalNumber { get; set; }
+        public int Height { get; set; }
     }
     public class Result
     {
@@ -56,6 +58,7 @@ namespace Server.modules
         public DateTime Start { get; set; }
         public DateTime Finished { get; set; }
         public int Jumps { get; set; }
+        public int Height { get; set; }
         public List<User> Users { get; set; }
         public List<User> Judges { get; set; }
 

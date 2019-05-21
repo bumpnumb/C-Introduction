@@ -63,6 +63,8 @@ namespace Server.modules
                 entity.Property(e => e.Difficulty).IsRequired();
                 entity.Property(e => e.CUID).IsRequired();
                 entity.Property(e => e.Number).IsRequired();
+                entity.Property(e => e.GlobalNumber).IsRequired();
+                entity.Property(e => e.Height).IsRequired();
             });
             modelBuilder.Entity<Result>(entity =>
             {
