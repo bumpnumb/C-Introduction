@@ -13,13 +13,12 @@
         <ComboBox x:Name="jumpHeight" HorizontalAlignment="Left" Height="23" Margin="24,119,0,0" VerticalAlignment="Top" Width="44" IsEditable="False"
                   ItemsSource="{Binding Items}"
                   SelectedItem="{Binding SelectedItem}"
-                  Text="{Binding NewItem, UpdateSourceTrigger=LostFocus}"/>
+                  Text="{Binding NewItem, UpdateSourceTrigger=LostFocus}" SelectionChanged="JumpHeight_SelectionChanged"/>
         <TextBox x:Name="judgeName" HorizontalAlignment="Left" Height="23" Margin="24,168,0,0" TextWrapping="Wrap" Text="Autocomplete textbox here" VerticalAlignment="Top" Width="194"/>
         <TextBox x:Name="judgeSSN" HorizontalAlignment="Left" Height="23" Margin="24,196,0,0" TextWrapping="Wrap" Text="xxxx-xx-xx-xxxx" VerticalAlignment="Top" Width="102"/>
         <TextBox x:Name="jumperName" HorizontalAlignment="Left" Height="23" Margin="24,317,0,0" TextWrapping="Wrap" Text="Autocomplete textbox here" VerticalAlignment="Top" Width="194"/>
         <TextBox x:Name="jumperSSN" HorizontalAlignment="Left" Height="23" Margin="24,345,0,0" TextWrapping="Wrap" Text="xxxx-xx-xx-xxxx" VerticalAlignment="Top" Width="102"/>
-        <TextBox x:Name="textBox6" HorizontalAlignment="Left" Height="23" Margin="24,422,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox7" HorizontalAlignment="Left" Height="23" Margin="24,394,0,0" TextWrapping="Wrap" Text="J# 6" VerticalAlignment="Top" Width="32"/>
+
         <Button x:Name="cancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Click="CancelBtn_Click"/>
         <DatePicker HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,68,0,0"/>
         <Label x:Name="judgeLabel" Content="Add Judge" HorizontalAlignment="Left" Margin="24,142,0,0" VerticalAlignment="Top"/>
@@ -51,19 +50,32 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button x:Name="saveBtn" Content="Save" HorizontalAlignment="Left" Margin="965,0,0,10" VerticalAlignment="Bottom" Width="75" />
+        <Button x:Name="saveBtn" Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" />
         <Label x:Name="jumperLabel" Content="Add Jumper" HorizontalAlignment="Left" Margin="24,291,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="jumpsLabel" Content="Jumps" HorizontalAlignment="Left" Margin="24,368,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="jumpsComboLabel" Content="Jump combination" HorizontalAlignment="Left" Margin="73,368,0,0" VerticalAlignment="Top" Width="115" ToolTip="Seperate each number and letter with a comma, for example: 2,0,7,B or 2,0,11,A"/>
         <Label x:Name="numberOfJumpsLabel" Content="Number of jumps" HorizontalAlignment="Left" Margin="24,93,0,0" VerticalAlignment="Top"/>
         <Label x:Name="competitionNameLabel" Content="Competition name" HorizontalAlignment="Left" Margin="23,16,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBox6_Copy" HorizontalAlignment="Left" Height="23" Margin="24,450,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox6_Copy1" HorizontalAlignment="Left" Height="23" Margin="24,478,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox6_Copy2" HorizontalAlignment="Left" Height="23" Margin="24,506,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox6_Copy3" HorizontalAlignment="Left" Height="23" Margin="24,534,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox6_Copy4" HorizontalAlignment="Left" Height="23" Margin="24,562,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox6_Copy5" HorizontalAlignment="Left" Height="23" Margin="24,590,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox6_Copy6" HorizontalAlignment="Left" Height="23" Margin="24,618,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
-        <TextBox x:Name="textBox6_Copy7" HorizontalAlignment="Left" Height="23" Margin="24,646,0,0" TextWrapping="Wrap" Text="J# 5" VerticalAlignment="Top" Width="32"/>
+        <TextBox x:Name="jump1" HorizontalAlignment="Left" Height="23" Margin="73,394,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115" Visibility="Visible"/>
+        <TextBox x:Name="jump2" HorizontalAlignment="Left" Height="23" Margin="73,422,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115" Visibility="Visible"/>
+        <TextBox x:Name="jump3" HorizontalAlignment="Left" Height="23" Margin="73,450,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115" Visibility="Visible"/>
+        <TextBox x:Name="jump4" HorizontalAlignment="Left" Height="23" Margin="73,478,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115" Visibility="Visible"/>
+        <TextBox x:Name="jump5" HorizontalAlignment="Left" Height="23" Margin="73,506,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115" Visibility="Visible"/>
+        <TextBox x:Name="jump6" HorizontalAlignment="Left" Height="23" Margin="73,534,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115" Visibility="Visible"/>
+        <TextBox x:Name="jump7" HorizontalAlignment="Left" Height="23" Margin="73,562,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115" Visibility="Visible"/>
+        <TextBox x:Name="jump8" HorizontalAlignment="Left" Height="23" Margin="73,590,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115" Visibility="Visible"/>
+        <TextBox x:Name="jump9" HorizontalAlignment="Left" Height="23" Margin="73,618,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115" Visibility="Visible"/>
+        <TextBox x:Name="jump10" HorizontalAlignment="Left" Height="23" Margin="73,646,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115" Visibility="Visible"/>
+        <TextBox x:Name="jump1Height" HorizontalAlignment="Left" Height="23" Margin="24,394,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Visible"/>
+        <TextBox x:Name="jump2Height" HorizontalAlignment="Left" Height="23" Margin="24,422,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Visible"/>
+        <TextBox x:Name="jump3Height" HorizontalAlignment="Left" Height="23" Margin="24,450,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Visible"/>
+        <TextBox x:Name="jump4Height" HorizontalAlignment="Left" Height="23" Margin="24,478,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Visible"/>
+        <TextBox x:Name="jump5Height" HorizontalAlignment="Left" Height="23" Margin="24,506,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Visible"/>
+        <TextBox x:Name="jump6Height" HorizontalAlignment="Left" Height="23" Margin="24,534,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Visible"/>
+        <TextBox x:Name="jump7Height" HorizontalAlignment="Left" Height="23" Margin="24,562,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Visible"/>
+        <TextBox x:Name="jump8Height" HorizontalAlignment="Left" Height="23" Margin="24,590,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Visible"/>
+        <TextBox x:Name="jump9Height" HorizontalAlignment="Left" Height="23" Margin="24,618,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Visible"/>
+        <TextBox x:Name="jump10Height" HorizontalAlignment="Left" Height="23" Margin="24,646,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Visible"/>
+        <Label x:Name="jumpHeightLable" Content="Height" HorizontalAlignment="Left" Margin="24,368,0,0" VerticalAlignment="Top" Width="49"/>
 
     </Grid>
 </Page>

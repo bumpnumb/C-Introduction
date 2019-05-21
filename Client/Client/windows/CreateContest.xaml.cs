@@ -23,9 +23,9 @@ namespace Client.windows
     /// </summary>
     public partial class CreateContest : Page
     {
-        private string _selectedItem;
+        private string selectedHeigt;
 
-        private ObservableCollection<string> _items = new ObservableCollection<string>()
+        private ObservableCollection<string> items = new ObservableCollection<string>()
         {
             "4",
             "5",
@@ -47,14 +47,14 @@ namespace Client.windows
         }
 
         public IEnumerable Items {
-            get { return _items; }
+            get { return items; }
         }
 
         public string SelectedItem {
-            get { return _selectedItem; }
+            get { return selectedHeigt; }
             set {
-                _selectedItem = value;
-                OnPropertyChanged("SelectedItem");
+                selectedHeigt = value;
+                OnPropertyChanged("SelectedHeight");
             }
         }
 
@@ -66,7 +66,7 @@ namespace Client.windows
                 }
                 if (!string.IsNullOrEmpty(value))
                 {
-                    _items.Add(value);
+                    items.Add(value);
                     SelectedItem = value;
                 }
             }
@@ -82,6 +82,167 @@ namespace Client.windows
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void JumpHeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (SelectedItem)
+            {
+                case "4":
+                    jump1.Visibility = Visibility.Visible;
+                    jump2.Visibility = Visibility.Visible;
+                    jump3.Visibility = Visibility.Visible;
+                    jump4.Visibility = Visibility.Visible;
+                    jump5.Visibility = Visibility.Hidden;
+                    jump6.Visibility = Visibility.Hidden;
+                    jump7.Visibility = Visibility.Hidden;
+                    jump8.Visibility = Visibility.Hidden;
+                    jump9.Visibility = Visibility.Hidden;
+                    jump10.Visibility = Visibility.Hidden;
+                    jump1Height.Visibility = Visibility.Visible;
+                    jump2Height.Visibility = Visibility.Visible;
+                    jump3Height.Visibility = Visibility.Visible;
+                    jump4Height.Visibility = Visibility.Visible;
+                    jump5Height.Visibility = Visibility.Hidden;
+                    jump6Height.Visibility = Visibility.Hidden;
+                    jump7Height.Visibility = Visibility.Hidden;
+                    jump8Height.Visibility = Visibility.Hidden;
+                    jump9Height.Visibility = Visibility.Hidden;
+                    jump10Height.Visibility = Visibility.Hidden;
+                    break;
+                case "5":
+                    jump1.Visibility = Visibility.Visible;
+                    jump2.Visibility = Visibility.Visible;
+                    jump3.Visibility = Visibility.Visible;
+                    jump4.Visibility = Visibility.Visible;
+                    jump5.Visibility = Visibility.Visible;
+                    jump6.Visibility = Visibility.Hidden;
+                    jump7.Visibility = Visibility.Hidden;
+                    jump8.Visibility = Visibility.Hidden;
+                    jump9.Visibility = Visibility.Hidden;
+                    jump10.Visibility = Visibility.Hidden;
+                    jump1Height.Visibility = Visibility.Visible;
+                    jump2Height.Visibility = Visibility.Visible;
+                    jump3Height.Visibility = Visibility.Visible;
+                    jump4Height.Visibility = Visibility.Visible;
+                    jump5Height.Visibility = Visibility.Visible;
+                    jump6Height.Visibility = Visibility.Hidden;
+                    jump7Height.Visibility = Visibility.Hidden;
+                    jump8Height.Visibility = Visibility.Hidden;
+                    jump9Height.Visibility = Visibility.Hidden;
+                    jump10Height.Visibility = Visibility.Hidden;
+                    break;
+                case "6":
+                    jump1.Visibility = Visibility.Visible;
+                    jump2.Visibility = Visibility.Visible;
+                    jump3.Visibility = Visibility.Visible;
+                    jump4.Visibility = Visibility.Visible;
+                    jump5.Visibility = Visibility.Visible;
+                    jump6.Visibility = Visibility.Visible;
+                    jump7.Visibility = Visibility.Hidden;
+                    jump8.Visibility = Visibility.Hidden;
+                    jump9.Visibility = Visibility.Hidden;
+                    jump10.Visibility = Visibility.Hidden;
+                    jump1Height.Visibility = Visibility.Visible;
+                    jump2Height.Visibility = Visibility.Visible;
+                    jump3Height.Visibility = Visibility.Visible;
+                    jump4Height.Visibility = Visibility.Visible;
+                    jump5Height.Visibility = Visibility.Visible;
+                    jump6Height.Visibility = Visibility.Visible;
+                    jump7Height.Visibility = Visibility.Hidden;
+                    jump8Height.Visibility = Visibility.Hidden;
+                    jump9Height.Visibility = Visibility.Hidden;
+                    jump10Height.Visibility = Visibility.Hidden;
+                    break;
+                case "7":
+                    jump1.Visibility = Visibility.Visible;
+                    jump2.Visibility = Visibility.Visible;
+                    jump3.Visibility = Visibility.Visible;
+                    jump4.Visibility = Visibility.Visible;
+                    jump5.Visibility = Visibility.Visible;
+                    jump6.Visibility = Visibility.Visible;
+                    jump7.Visibility = Visibility.Visible;
+                    jump8.Visibility = Visibility.Hidden;
+                    jump9.Visibility = Visibility.Hidden;
+                    jump10.Visibility = Visibility.Hidden;
+                    jump1Height.Visibility = Visibility.Visible;
+                    jump2Height.Visibility = Visibility.Visible;
+                    jump3Height.Visibility = Visibility.Visible;
+                    jump4Height.Visibility = Visibility.Visible;
+                    jump5Height.Visibility = Visibility.Visible;
+                    jump6Height.Visibility = Visibility.Visible;
+                    jump7Height.Visibility = Visibility.Visible;
+                    jump8Height.Visibility = Visibility.Hidden;
+                    jump9Height.Visibility = Visibility.Hidden;
+                    jump10Height.Visibility = Visibility.Hidden;
+                    break;
+                case "8":
+                    jump1.Visibility = Visibility.Visible;
+                    jump2.Visibility = Visibility.Visible;
+                    jump3.Visibility = Visibility.Visible;
+                    jump4.Visibility = Visibility.Visible;
+                    jump5.Visibility = Visibility.Visible;
+                    jump6.Visibility = Visibility.Visible;
+                    jump7.Visibility = Visibility.Visible;
+                    jump8.Visibility = Visibility.Visible;
+                    jump9.Visibility = Visibility.Hidden;
+                    jump10.Visibility = Visibility.Hidden;
+                    jump1Height.Visibility = Visibility.Visible;
+                    jump2Height.Visibility = Visibility.Visible;
+                    jump3Height.Visibility = Visibility.Visible;
+                    jump4Height.Visibility = Visibility.Visible;
+                    jump5Height.Visibility = Visibility.Visible;
+                    jump6Height.Visibility = Visibility.Visible;
+                    jump7Height.Visibility = Visibility.Visible;
+                    jump8Height.Visibility = Visibility.Visible;
+                    jump9Height.Visibility = Visibility.Hidden;
+                    jump10Height.Visibility = Visibility.Hidden;
+                    break;
+                case "9":
+                    jump1.Visibility = Visibility.Visible;
+                    jump2.Visibility = Visibility.Visible;
+                    jump3.Visibility = Visibility.Visible;
+                    jump4.Visibility = Visibility.Visible;
+                    jump5.Visibility = Visibility.Visible;
+                    jump6.Visibility = Visibility.Visible;
+                    jump7.Visibility = Visibility.Visible;
+                    jump8.Visibility = Visibility.Visible;
+                    jump9.Visibility = Visibility.Visible;
+                    jump10.Visibility = Visibility.Hidden;
+                    jump1Height.Visibility = Visibility.Visible;
+                    jump2Height.Visibility = Visibility.Visible;
+                    jump3Height.Visibility = Visibility.Visible;
+                    jump4Height.Visibility = Visibility.Visible;
+                    jump5Height.Visibility = Visibility.Visible;
+                    jump6Height.Visibility = Visibility.Visible;
+                    jump7Height.Visibility = Visibility.Visible;
+                    jump8Height.Visibility = Visibility.Visible;
+                    jump9Height.Visibility = Visibility.Visible;
+                    jump10Height.Visibility = Visibility.Hidden;
+                    break;
+                case "10":
+                    jump1.Visibility = Visibility.Visible;
+                    jump2.Visibility = Visibility.Visible;
+                    jump3.Visibility = Visibility.Visible;
+                    jump4.Visibility = Visibility.Visible;
+                    jump5.Visibility = Visibility.Visible;
+                    jump6.Visibility = Visibility.Visible;
+                    jump7.Visibility = Visibility.Visible;
+                    jump8.Visibility = Visibility.Visible;
+                    jump9.Visibility = Visibility.Visible;
+                    jump10.Visibility = Visibility.Visible;
+                    jump1Height.Visibility = Visibility.Visible;
+                    jump2Height.Visibility = Visibility.Visible;
+                    jump3Height.Visibility = Visibility.Visible;
+                    jump4Height.Visibility = Visibility.Visible;
+                    jump5Height.Visibility = Visibility.Visible;
+                    jump6Height.Visibility = Visibility.Visible;
+                    jump7Height.Visibility = Visibility.Visible;
+                    jump8Height.Visibility = Visibility.Visible;
+                    jump9Height.Visibility = Visibility.Visible;
+                    jump10Height.Visibility = Visibility.Visible;
+                    break;
+            }
+        }
     }
 }
 
