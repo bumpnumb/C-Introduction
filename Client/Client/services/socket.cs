@@ -10,10 +10,11 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Windows.Documents;
 using Client.windows;
+using System.Windows.Controls;
 
 namespace Client.services
 {
-    public enum MessageType { NoType, Login, Register, Competition }
+    public enum MessageType { NoType, Login, Register, Competition, ScoreToJump, Result, Judges, Jumpers }
     public enum GroupType { User, Judge, Admin }
 
     public class Competition
@@ -23,16 +24,9 @@ namespace Client.services
         public string Ended { get; set; }
     }
 
-    public class User
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Salt { get; set; }
-        public string Hash { get; set; }
-        public GroupType Group { get; set; }
-        public string SSN { get; set; }
+    
 
-    }
+
     public class Response
     {
         public MessageType Type { get; set; }
@@ -107,12 +101,29 @@ namespace Client.services
                     //    List<User> judges = comp.Judges;
                     //}
 
-
-                    AdminMainPage.FillCompetitionListBox(competitions);
-
-
+                    App.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        string currentpage = App.MainWindowRef.Main.Content.ToString();
+                        AdminMainPage.FillCompetitionListBox(competitions);
+                    });
 
                     //AdminMainPage.FillCompetitionDataBox(this.Data); //Removed this textbox
+                    break;
+                case MessageType.Judges:
+                    List<User> judges = JsonConvert.DeserializeObject<List<User>>(this.Data);
+                    App.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        string currentpage = App.MainWindowRef.Main.Content.ToString();
+                        CreateContest.FillUserDatabase(judges);
+                    });
+                    break;
+                case MessageType.Jumpers:
+                    List<User> jumpers = JsonConvert.DeserializeObject<List<User>>(this.Data);
+                    App.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        string currentpage = App.MainWindowRef.Main.Content.ToString();
+                        CreateContest.FillUserDatabase(jumpers);
+                    });
                     break;
                 default:
                     break;

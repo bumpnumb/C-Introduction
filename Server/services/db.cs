@@ -213,7 +213,6 @@ namespace Server.services
             {
                 List<CompetitionWithUser> result = new List<CompetitionWithUser>();
                 List<Competition> c = context.Competitions.ToList<Competition>();
-                int i = 0;
                 foreach (Competition comp in c)
                 {
                     CompetitionWithUser temp = new CompetitionWithUser();
@@ -291,6 +290,21 @@ namespace Server.services
 
         }
 
+        public List<User> GetAllJudges()
+        {
+            using (var context = new DivingCompDbContext())
+            {
+                return context.Users.Where(x => x.Group == 1).ToList();
+            }
+        }
+
+        public List<User> GetAllJumpers()
+        {
+            using (var context = new DivingCompDbContext())
+            {
+                return context.Users.Where(x => x.Group == 0).ToList();
+            }
+        }
     }
 }
 
