@@ -186,6 +186,22 @@ namespace Server.services
 
                     break;
 
+                case MessageType.Judges:
+                    rsp.Type = MessageType.Judges;
+
+                    List<User> AllJudges =  db.GetAllJudges();
+                    rsp.Data = JsonConvert.SerializeObject(AllJudges);
+
+                    break;
+
+                case MessageType.Jumpers:
+                    rsp.Type = MessageType.Jumpers;
+
+                    List<User> AllJumpers = db.GetAllJumpers();
+                    rsp.Data = JsonConvert.SerializeObject(AllJumpers);
+
+                    break;
+
                 default:
                     break;
             }

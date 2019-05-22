@@ -289,6 +289,57 @@ namespace Server.services
 
         }
 
+        public List<User> GetAllJudges()
+        {
+            using (var context = new DivingCompDbContext())
+            {
+                List<User> AllJudges = new List<User>();
+                List<User> users = context.Users.ToList<User>();
+
+                foreach (User u in users)
+                {
+                    User temp = new User();
+                    if(temp.Group == 1)
+                    {
+                        temp.ID = u.ID;
+                        temp.Name = u.Name;
+                        temp.SSN = u.SSN;
+                        temp.Group = u.Group;
+                        temp.Salt = u.Salt;
+                        temp.Hash = u.Hash;
+
+                        AllJudges.Add(temp);
+                    }
+                }
+                return AllJudges;
+            }
+        }
+
+        public List<User> GetAllJumpers()
+        {
+            using (var context = new DivingCompDbContext())
+            {
+                List<User> AllJumpers = new List<User>();
+                List<User> users = context.Users.ToList<User>();
+
+                foreach (User u in users)
+                {
+                    User temp = new User();
+                    if (temp.Group == 0)
+                    {
+                        temp.ID = u.ID;
+                        temp.Name = u.Name;
+                        temp.SSN = u.SSN;
+                        temp.Group = u.Group;
+                        temp.Salt = u.Salt;
+                        temp.Hash = u.Hash;
+
+                        AllJumpers.Add(temp);
+                    }
+                }
+                return AllJumpers;
+            }
+        }
     }
 }
 
