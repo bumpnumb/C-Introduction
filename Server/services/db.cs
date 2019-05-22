@@ -212,7 +212,6 @@ namespace Server.services
             {
                 List<CompetitionWithUser> result = new List<CompetitionWithUser>();
                 List<Competition> c = context.Competitions.ToList<Competition>();
-                int i = 0;
                 foreach (Competition comp in c)
                 {
                     CompetitionWithUser temp = new CompetitionWithUser();

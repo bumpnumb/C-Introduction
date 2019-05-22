@@ -39,6 +39,10 @@ namespace Server.services
                     {
                         CodeString += "1 1/2 Somersaults";  //113
                     }
+                    else if (chars[2] == 4)
+                    {
+                        CodeString += "2 Somersaults";     //114
+                    }
                     else if (chars[2] == 5)
                     {
                         CodeString += "2 1/2 Somersaults";     //115
@@ -49,6 +53,10 @@ namespace Server.services
                     if (chars[2] == 1)
                     {
                         CodeString += "Dive";   //101
+                        if (chars[3] == 1){
+                            CodeString = "";
+                            CodeString = "Forward 5 1/2 Somerasaults";  //1011
+                        }
                     }
                     else if (chars[2] == 2)
                     {
@@ -219,27 +227,35 @@ namespace Server.services
                     {
                         CodeString += "Dive";   //401
                     }
-                    else if (chars[2] == 1)
+                    else if (chars[2] == 2)
                     {
                         CodeString += "Somersaults";    //402
                     }
-                    else if (chars[2] == 1)
+                    else if (chars[2] == 3)
                     {
                         CodeString += "1 1/2 Somersaults";  //403
                     }
-                    else if (chars[2] == 1)
+                    else if (chars[2] == 4)
                     {
                         CodeString += "2 Somersaults";  //404
                     }
-                    else if (chars[2] == 1)
+                    else if (chars[2] == 5)
                     {
                         CodeString += "2 1/2 Somersaults";  //405
                     }
-                    else if (chars[2] == 1)
+                    else if (chars[2] == 6)
+                    {
+                        CodeString += "3 Somersaults";  //406
+                    }
+                    else if (chars[2] == 7)
                     {
                         CodeString += "3 1/2 Somersaults";  //407
                     }
-                    else if (chars[2] == 1)
+                    else if (chars[2] == 8)
+                    {
+                        CodeString += "4 Somersaults";  //408
+                    }
+                    else if (chars[2] == 9)
                     {
                         CodeString += "4 1/2 Somersaults";  //409
                     }
@@ -420,6 +436,22 @@ namespace Server.services
                         {
                             CodeString += "2 1/2 Twists";   //5255
                         }
+                        else if (chars[3] == 7)
+                        {
+                            CodeString += "3 1/2 Twists";   //5257
+                        }
+                    }
+                    else if (chars[2] == 7){
+                        CodeString += "3 1/2 Somersaults ";
+                        if(chars[3] == 1){
+                            CodeString += "1/2 Twist";
+                        }
+                        else if (chars[3] == 3){
+                            CodeString += "1 1/2 Twists";
+                        }
+                        else if (chars[3] == 5){
+                            CodeString += "2 1/2 Twists";
+                        }
                     }
                 }
                 else if (chars[1] == 3)
@@ -510,7 +542,7 @@ namespace Server.services
                         }
                         if (chars[3] == 5)
                         {
-                            CodeString += "2 1/2 Twists";   ////5375
+                            CodeString += "2 1/2 Twists";   //5375
                         }
                     }
                 }
@@ -537,14 +569,117 @@ namespace Server.services
                     if (chars[2] == 3){
                         CodeString += "1 1/2 Somersaults ";
                         if(chars[3] == 2){
-                            CodeString += "1 Twist";
+                            CodeString += "1 Twist";    //5432
                         }
                         if (chars[3] == 4){
-                            CodeString += "2 Twist";
+                            CodeString += "2 Twist";    //5434
                         }
                         if (chars[3] == 6){
-                            CodeString += "3 Twist";
+                            CodeString += "3 Twist";    //5436
                         }
+                    }
+                }
+            }
+            else if(chars[0] == 6)
+            {
+                CodeString += "Armstand ";
+                if(chars[1] == 0){
+                    CodeString += "Dive";   //600
+                }
+                else if (chars[1] == 1){
+                    CodeString += "Forward ";
+                    if(chars[2] == 1){
+                        CodeString += "1/2 Somersault"; //611
+                    }
+                    else if(chars[2] == 2){
+                        CodeString += "1 Somersault ";  //612
+                        if(chars[3] == 2){
+                            CodeString += "1 Twist";    //6122
+                        }
+                        else if (chars[3] == 4){
+                            CodeString += "2 Twists";   //6124
+                        }
+                    }
+                    else if (chars[2] == 4){
+                        CodeString += "2 Somersaults "; //614
+                        if(chars[3] == 2){
+                            CodeString += "1 Twist";    //6142
+                        }
+                        else if (chars[3] == 2){
+                            CodeString += "2 Twists";   //6144
+                        }
+                    }
+                    else if (chars[2] == 6){
+                        CodeString += "3 Somersaults "; //616
+                        if(chars[3] == 2){
+                            CodeString += "1 Twist";    //6162
+                        }
+                    }
+                }
+                else if (chars[1] == 2){
+                    CodeString += "Back ";
+                    if(chars[2] == 1){
+                        CodeString += "1/2 Somersault"; //621
+                    }
+                    else if (chars[2] == 2){
+                        CodeString += "1 Somersault ";  //622
+                        if(chars[3] == 1){
+                            CodeString += "1/2 Twist";    //6221
+                        }
+                    }
+                    else if (chars[2] == 3){
+                        CodeString += "1 1/2 Somersaults";  //623
+                    }
+                    else if (chars[2] == 4){
+                        CodeString += "2 Somersaults "; //624
+                        if(chars[3] == 1){
+                            CodeString += "1/2 Twist";  //6241
+                        }
+                        else if (chars[3] == 3){
+                            CodeString += "1 1/2 Twists";   //6243
+                        }
+                        else if (chars[3] == 5){
+                            CodeString += "2 1/2 Twists";   //6245
+                        }
+                        else if (chars[3] == 7){
+                            CodeString += "3 1/2 Twists";//6247
+                        }
+                    }
+                    else if (chars[2] == 6){
+                        CodeString += "3 Somersaults "; //626
+                        if(chars[3] == 1){
+                            CodeString += "1/2 Twist";  //6261
+                        }
+                        else if (chars[3] == 3){
+                            CodeString += "1 1/2 Twists";   //6263
+                        }
+                        else if (chars[3] == 5){
+                            CodeString += "2 1/2 Twists";   //6265
+                        }
+                    }
+                    else if (chars[2] == 8){
+                        CodeString += "4 Somersaults";  //628
+                    }
+                }
+                else if (chars[1] == 3){
+                    CodeString += "Reverse ";
+                    if(chars[2] == 1){
+                        CodeString += "1/2 Somersault";
+                    }
+                    if (chars[2] == 2){
+                        CodeString += "1 Somersault";
+                    }
+                    if (chars[2] == 3){
+                        CodeString += "1 1/2 Somersaults";
+                    }
+                    if (chars[2] == 4){
+                        CodeString += "2 Somersaults";
+                    }
+                    if (chars[2] == 6){
+                        CodeString += "3 Somersaults";
+                    }
+                    if (chars[2] == 8){
+                        CodeString += "4 Somersaults";
                     }
                 }
             }
