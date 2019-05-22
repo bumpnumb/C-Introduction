@@ -26,6 +26,8 @@ namespace Client.windows
     {
         private string selectedHeigt;
         CompetitionWithUser newCompetition = new CompetitionWithUser();
+        List<User> users = new List<User>();
+        List<User> judges = new List<User>();
         List<User> judgeDatabase = new List<User>();
         List<User> jumperDatabase = new List<User>();
 
@@ -45,6 +47,8 @@ namespace Client.windows
             this.DataContext = this;
             GetJudges();
             GetJumpers();
+            newCompetition.Users = users;
+            newCompetition.Judges = judges;
         }
 
         private void GetJudges()
@@ -284,11 +288,11 @@ namespace Client.windows
             App.Current.Dispatcher.Invoke((Action)delegate
             {
                 CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
-                dynamic judges = currentPage.judgeDatabase;
+                List<User> judges = currentPage.judgeDatabase;
                 foreach (User judge in judges)
                     if (judgeName.Text + judgeSSN.Text == judge.Name + judge.SSN)
                         newCompetition.Judges.Add(judge);
-                FillUsersListBox(newCompetition.Judges);
+                FillJudgesListBox(newCompetition.Judges);
 
             });
 
@@ -299,7 +303,7 @@ namespace Client.windows
             App.Current.Dispatcher.Invoke((Action)delegate
             {
                 CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
-                dynamic jumpers = currentPage.jumperDatabase;
+                List<User> jumpers = currentPage.jumperDatabase;
                 foreach (User jumper in jumpers)
                     if (jumperName.Text + jumperSSN.Text == jumper.Name + jumper.SSN)
                         newCompetition.Judges.Add(jumper);
@@ -312,7 +316,7 @@ namespace Client.windows
 
             App.Current.Dispatcher.Invoke((Action)delegate
             {
-                AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
+                CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
                 if (judges != null)
                     currentPage.judgeListBox.ItemsSource = judges;
             });
@@ -322,7 +326,7 @@ namespace Client.windows
 
             App.Current.Dispatcher.Invoke((Action)delegate
             {
-                AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
+                CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
                 if (jumpers != null)
                     currentPage.usersListBox.ItemsSource = jumpers;
             });

@@ -76,8 +76,8 @@
         <TextBox x:Name="jump9Height" HorizontalAlignment="Left" Height="23" Margin="24,618,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Visible"/>
         <TextBox x:Name="jump10Height" HorizontalAlignment="Left" Height="23" Margin="24,646,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Visible"/>
         <Label x:Name="jumpHeightLable" Content="Height" HorizontalAlignment="Left" Margin="24,368,0,0" VerticalAlignment="Top" Width="49"/>
-        <Button x:Name="addJumperBtn" Content="Add" HorizontalAlignment="Left" Margin="188,0,0,482" VerticalAlignment="Bottom" Width="30" Click="AddJumperBtn_Click" />
-        <Button x:Name="addJudgeBtn" Content="Add" HorizontalAlignment="Left" Margin="188,0,0,631" VerticalAlignment="Bottom" Width="30" Click="AddJudgeBtn_Click" />
+        <Button x:Name="addJumperBtn" Content="Add" HorizontalAlignment="Left" Margin="188,345,0,0" VerticalAlignment="Top" Width="30" Click="AddJumperBtn_Click" />
+        <Button x:Name="addJudgeBtn" Content="Add" HorizontalAlignment="Left" Margin="188,196,0,0" VerticalAlignment="Top" Width="30" Click="AddJudgeBtn_Click" />
 
     </Grid>
 </Page>
