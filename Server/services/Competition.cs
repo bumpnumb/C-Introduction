@@ -16,23 +16,6 @@ namespace Server.services
 {
     public class JumpHelper
     {
-        /// <summary>
-        /// Uses String Code and Height To calculate Jump Name
-        /// </summary>
-        public static string GenerateJumpNameFromCode(string code, int height)
-        {
-            Jump j = ParseDifficulty(code, height);
-
-            return "hello";
-        }
-
-
-        public static float GenerateJumpDifficultyFromCode(string code, int height)
-        {
-
-
-            return 1.0f;
-        }
 
         /// <summary>
         /// Uses String Code and Height To fetch jump stats
@@ -42,8 +25,32 @@ namespace Server.services
             string[] letters = code.Split(',');
             float A = 0, B = 0, C = 0, D = 0, E = 0;
 
-            //A: Somersaults
-            switch (Int32.Parse(letters[2]))
+            int position = Int32.Parse(letters[0]);
+            int letter2 = Int32.Parse(letters[1]);
+            int somersaults = Int32.Parse(letters[2]);
+            string group = letters[3];
+            int twists = 0;
+            if (position == 5)
+            {
+                twists = Int32.Parse(letters[3]);
+                group = letters[4];
+            }
+
+            A = CalculateA(somersaults, height);
+            B = CalculateB(position, letter2, somersaults, group, height);
+            C = CalculateC(position, letter2, somersaults, twists, height);
+            D = CalculateD(position, letter2, somersaults, height, twists);
+            E = CalculateE(position, letter2, somersaults, height, twists);
+
+            Jump j = new Jump();
+            j.Difficulty = A + B + C + D + E;
+            return j;
+        }
+
+        private static float CalculateA(int somersaults, int height)
+        {
+            float A = 0f;
+            switch (somersaults)
             {
                 case 0:
                     if (height == 1)
@@ -174,136 +181,142 @@ namespace Server.services
 
             }
 
-            if (letters[1] == "1" && Int32.Parse(letters[0]) <= 4) //if flying action
+            return A;
+        }
+        private static float CalculateB(int position, int letter2, int somersaults, string group, int height)
+        {
+            float B = 0f;
+            if (height == 1 || height == 3)
             {
-                switch (Int32.Parse(letters[0])) //what group
+                if (letter2 == 1 && position <= 4) //if flying action
                 {
-                    case 1: //front
-                        switch (Int32.Parse(letters[2])) //number of somersaults
-                        {
-                            case 0:
-                            case 1:
-                            case 2:
-                                B = 0.2f;
-                                break;
-                            case 3:
-                            case 4:
-                                B = 0.2f;
-                                break;
-                            case 5:
-                                B = 0.3f;
-                                break;
-                            case 6:
-                            case 7:
-                                B = 0.4f;
-                                break;
-                            case 8:
-                            case 9:
-                                B = -1f;
-                                break;
-                        }
+                    switch (position) //what group
+                    {
+                        case 1: //front
+                            switch (somersaults) //number of somersaults
+                            {
+                                case 0:
+                                case 1:
+                                case 2:
+                                    B = 0.2f;
+                                    break;
+                                case 3:
+                                case 4:
+                                    B = 0.2f;
+                                    break;
+                                case 5:
+                                    B = 0.3f;
+                                    break;
+                                case 6:
+                                case 7:
+                                    B = 0.4f;
+                                    break;
+                                case 8:
+                                case 9:
+                                    B = -1f;
+                                    break;
+                            }
 
-                        break;
-                    case 2: //back
-                        switch (Int32.Parse(letters[2])) //number of somersaults
-                        {
-                            case 0:
-                            case 1:
-                            case 2:
-                                B = 0.1f;
-                                break;
-                            case 3:
-                            case 4:
-                                B = 0.2f;
-                                break;
-                            case 5:
-                                B = 0.3f;
-                                break;
-                            case 6:
-                            case 7:
-                                B = -1f;
-                                break;
-                            case 8:
-                            case 9:
-                                B = -1f;
-                                break;
-                        }
+                            break;
+                        case 2: //back
+                            switch (somersaults) //number of somersaults
+                            {
+                                case 0:
+                                case 1:
+                                case 2:
+                                    B = 0.1f;
+                                    break;
+                                case 3:
+                                case 4:
+                                    B = 0.2f;
+                                    break;
+                                case 5:
+                                    B = 0.3f;
+                                    break;
+                                case 6:
+                                case 7:
+                                    B = -1f;
+                                    break;
+                                case 8:
+                                case 9:
+                                    B = -1f;
+                                    break;
+                            }
 
-                        break;
-                    case 3: //reverse
-                        switch (Int32.Parse(letters[2])) //number of somersaults
-                        {
-                            case 0:
-                            case 1:
-                            case 2:
-                                B = 0.1f;
-                                break;
-                            case 3:
-                            case 4:
-                                B = 0.2f;
-                                break;
-                            case 5:
-                                B = 0.3f;
-                                break;
-                            case 6:
-                            case 7:
-                                B = -1f;
-                                break;
-                            case 8:
-                            case 9:
-                                B = -1f;
-                                break;
-                        }
+                            break;
+                        case 3: //reverse
+                            switch (somersaults) //number of somersaults
+                            {
+                                case 0:
+                                case 1:
+                                case 2:
+                                    B = 0.1f;
+                                    break;
+                                case 3:
+                                case 4:
+                                    B = 0.2f;
+                                    break;
+                                case 5:
+                                    B = 0.3f;
+                                    break;
+                                case 6:
+                                case 7:
+                                    B = -1f;
+                                    break;
+                                case 8:
+                                case 9:
+                                    B = -1f;
+                                    break;
+                            }
 
-                        break;
-                    case 4: //inward
-                        switch (Int32.Parse(letters[2])) //number of somersaults
-                        {
-                            case 0:
-                            case 1:
-                            case 2:
-                                B = 0.4f;
-                                break;
-                            case 3:
-                            case 4:
-                                B = 0.5f;
-                                break;
-                            case 5:
-                                B = 0.7f;
-                                break;
-                            case 6:
-                            case 7:
-                                B = -1f;
-                                break;
-                            case 8:
-                            case 9:
-                                B = -1f;
-                                break;
-                        }
+                            break;
+                        case 4: //inward
+                            switch (somersaults) //number of somersaults
+                            {
+                                case 0:
+                                case 1:
+                                case 2:
+                                    B = 0.4f;
+                                    break;
+                                case 3:
+                                case 4:
+                                    B = 0.5f;
+                                    break;
+                                case 5:
+                                    B = 0.7f;
+                                    break;
+                                case 6:
+                                case 7:
+                                    B = -1f;
+                                    break;
+                                case 8:
+                                case 9:
+                                    B = -1f;
+                                    break;
+                            }
 
-                        break;
-                    default:
-                        break;
+                            break;
+                        default:
+                            break;
+                    }
+
                 }
 
-            }
-            else //if dive was not 1,2,3,4 with letter 1 not being 1 (all jumps where B is based of letter)
-            {
-                switch (letters[0])
+                switch (position)
                 {
-                    case "1": //front
-                        switch (Int32.Parse(letters[2])) //number of somersaults
+                    case 1: //front
+                        switch (somersaults) //number of somersaults
                         {
                             case 0:
                             case 1:
                             case 2:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0.1f;
+                                        B += 0.1f;
                                         break;
                                     case "B":
-                                        B = 0.2f;
+                                        B += 0.2f;
                                         break;
                                     case "A":
                                         B = 0.3f;
@@ -318,13 +331,13 @@ namespace Server.services
                                 break;
                             case 3:
                             case 4:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0f;
+                                        B += 0f;
                                         break;
                                     case "B":
-                                        B = 0.1f;
+                                        B += 0.1f;
                                         break;
                                     case "A":
                                         B = 0.4f;
@@ -338,13 +351,13 @@ namespace Server.services
 
                                 break;
                             case 5:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0f;
+                                        B += 0f;
                                         break;
                                     case "B":
-                                        B = 0.2f;
+                                        B += 0.2f;
                                         break;
                                     case "A":
                                         B = 0.6f;
@@ -359,13 +372,13 @@ namespace Server.services
                                 break;
                             case 6:
                             case 7:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0f;
+                                        B += 0f;
                                         break;
                                     case "B":
-                                        B = 0.3f;
+                                        B += 0.3f;
                                         break;
                                     case "A":
                                         B = -1f;
@@ -380,13 +393,13 @@ namespace Server.services
                                 break;
                             case 8:
                             case 9:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0f;
+                                        B += 0f;
                                         break;
                                     case "B":
-                                        B = 0.4f;
+                                        B += 0.4f;
                                         break;
                                     case "A":
                                         B = -1f;
@@ -402,19 +415,19 @@ namespace Server.services
                         }
 
                         break;
-                    case "2": //back
-                        switch (Int32.Parse(letters[2])) //number of somersaults
+                    case 2: //back
+                        switch (somersaults) //number of somersaults
                         {
                             case 0:
                             case 1:
                             case 2:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0.1f;
+                                        B += 0.1f;
                                         break;
                                     case "B":
-                                        B = 0.2f;
+                                        B += 0.2f;
                                         break;
                                     case "A":
                                         B = 0.3f;
@@ -429,13 +442,13 @@ namespace Server.services
                                 break;
                             case 3:
                             case 4:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0f;
+                                        B += 0f;
                                         break;
                                     case "B":
-                                        B = 0.3f;
+                                        B += 0.3f;
                                         break;
                                     case "A":
                                         B = 0.5f;
@@ -449,13 +462,13 @@ namespace Server.services
 
                                 break;
                             case 5:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0.1f;
+                                        B += 0.1f;
                                         break;
                                     case "B":
-                                        B = 0.3f;
+                                        B += 0.3f;
                                         break;
                                     case "A":
                                         B = 0.7f;
@@ -470,13 +483,13 @@ namespace Server.services
                                 break;
                             case 6:
                             case 7:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0f;
+                                        B += 0f;
                                         break;
                                     case "B":
-                                        B = 0.3f;
+                                        B += 0.3f;
                                         break;
                                     case "A":
                                         B = -1f;
@@ -491,13 +504,13 @@ namespace Server.services
                                 break;
                             case 8:
                             case 9:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0.1f;
+                                        B += 0.1f;
                                         break;
                                     case "B":
-                                        B = 0.4f;
+                                        B += 0.4f;
                                         break;
                                     case "A":
                                         B = -1f;
@@ -513,19 +526,19 @@ namespace Server.services
                         }
 
                         break;
-                    case "3": //reversed
-                        switch (Int32.Parse(letters[2])) //number of somersaults
+                    case 3: //reversed
+                        switch (somersaults) //number of somersaults
                         {
                             case 0:
                             case 1:
                             case 2:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0.1f;
+                                        B += 0.1f;
                                         break;
                                     case "B":
-                                        B = 0.2f;
+                                        B += 0.2f;
                                         break;
                                     case "A":
                                         B = 0.3f;
@@ -540,13 +553,13 @@ namespace Server.services
                                 break;
                             case 3:
                             case 4:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0f;
+                                        B += 0f;
                                         break;
                                     case "B":
-                                        B = 0.3f;
+                                        B += 0.3f;
                                         break;
                                     case "A":
                                         B = 0.6f;
@@ -560,13 +573,13 @@ namespace Server.services
 
                                 break;
                             case 5:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0f;
+                                        B += 0f;
                                         break;
                                     case "B":
-                                        B = 0.2f;
+                                        B += 0.2f;
                                         break;
                                     case "A":
                                         B = 0.6f;
@@ -581,13 +594,13 @@ namespace Server.services
                                 break;
                             case 6:
                             case 7:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0f;
+                                        B += 0f;
                                         break;
                                     case "B":
-                                        B = 0.3f;
+                                        B += 0.3f;
                                         break;
                                     case "A":
                                         B = -1f;
@@ -602,13 +615,13 @@ namespace Server.services
                                 break;
                             case 8:
                             case 9:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0.2f;
+                                        B += 0.2f;
                                         break;
                                     case "B":
-                                        B = 0.5f;
+                                        B += 0.5f;
                                         break;
                                     case "A":
                                         B = -1f;
@@ -624,19 +637,19 @@ namespace Server.services
                         }
 
                         break;
-                    case "4": //inward
-                        switch (Int32.Parse(letters[2])) //number of somersaults
+                    case 4: //inward
+                        switch (somersaults) //number of somersaults
                         {
                             case 0:
                             case 1:
                             case 2:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = -0.3f;
+                                        B += -0.3f;
                                         break;
                                     case "B":
-                                        B = -0.2f;
+                                        B += -0.2f;
                                         break;
                                     case "A":
                                         B = 0.1f;
@@ -651,13 +664,13 @@ namespace Server.services
                                 break;
                             case 3:
                             case 4:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0.1f;
+                                        B += 0.1f;
                                         break;
                                     case "B":
-                                        B = 0.3f;
+                                        B += 0.3f;
                                         break;
                                     case "A":
                                         B = 0.8f;
@@ -671,13 +684,13 @@ namespace Server.services
 
                                 break;
                             case 5:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0.2f;
+                                        B += 0.2f;
                                         break;
                                     case "B":
-                                        B = 0.5f;
+                                        B += 0.5f;
                                         break;
                                     case "A":
                                         B = -1f;
@@ -692,13 +705,13 @@ namespace Server.services
                                 break;
                             case 6:
                             case 7:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0.3f;
+                                        B += 0.3f;
                                         break;
                                     case "B":
-                                        B = 0.6f;
+                                        B += 0.6f;
                                         break;
                                     case "A":
                                         B = -1f;
@@ -713,13 +726,13 @@ namespace Server.services
                                 break;
                             case 8:
                             case 9:
-                                switch (letters[3]) //flight position
+                                switch (group) //flight position
                                 {
                                     case "C":
-                                        B = 0.4f;
+                                        B += 0.4f;
                                         break;
                                     case "B":
-                                        B = 0.8f;
+                                        B += 0.8f;
                                         break;
                                     case "A":
                                         B = -1f;
@@ -735,16 +748,17 @@ namespace Server.services
                         }
 
                         break;
-                    case "5": //twisting
-                        switch (Int32.Parse(letters[1]))
+                    case 5: //twisting
+                    case 6:
+                        switch (letter2)
                         {
                             case 1: //front
-                                switch (Int32.Parse(letters[2])) //number of somersaults
+                                switch (somersaults) //number of somersaults
                                 {
                                     case 0:
                                     case 1:
                                     case 2:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0.1f;
@@ -765,7 +779,7 @@ namespace Server.services
                                         break;
                                     case 3:
                                     case 4:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0f;
@@ -785,7 +799,7 @@ namespace Server.services
 
                                         break;
                                     case 5:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0f;
@@ -806,7 +820,7 @@ namespace Server.services
                                         break;
                                     case 6:
                                     case 7:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0f;
@@ -827,7 +841,7 @@ namespace Server.services
                                         break;
                                     case 8:
                                     case 9:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0f;
@@ -850,12 +864,12 @@ namespace Server.services
 
                                 break;
                             case 2: //back
-                                switch (Int32.Parse(letters[2])) //number of somersaults
+                                switch (somersaults) //number of somersaults
                                 {
                                     case 0:
                                     case 1:
                                     case 2:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0.1f;
@@ -876,7 +890,7 @@ namespace Server.services
                                         break;
                                     case 3:
                                     case 4:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0f;
@@ -896,7 +910,7 @@ namespace Server.services
 
                                         break;
                                     case 5:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0.1f;
@@ -917,7 +931,7 @@ namespace Server.services
                                         break;
                                     case 6:
                                     case 7:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0f;
@@ -938,7 +952,7 @@ namespace Server.services
                                         break;
                                     case 8:
                                     case 9:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0.1f;
@@ -961,12 +975,12 @@ namespace Server.services
 
                                 break;
                             case 3: //reversed
-                                switch (Int32.Parse(letters[2])) //number of somersaults
+                                switch (somersaults) //number of somersaults
                                 {
                                     case 0:
                                     case 1:
                                     case 2:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0.1f;
@@ -987,7 +1001,7 @@ namespace Server.services
                                         break;
                                     case 3:
                                     case 4:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0f;
@@ -1007,7 +1021,7 @@ namespace Server.services
 
                                         break;
                                     case 5:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0f;
@@ -1028,7 +1042,7 @@ namespace Server.services
                                         break;
                                     case 6:
                                     case 7:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0f;
@@ -1049,7 +1063,7 @@ namespace Server.services
                                         break;
                                     case 8:
                                     case 9:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0.2f;
@@ -1072,12 +1086,12 @@ namespace Server.services
 
                                 break;
                             case 4: //inward
-                                switch (Int32.Parse(letters[2])) //number of somersaults
+                                switch (somersaults) //number of somersaults
                                 {
                                     case 0:
                                     case 1:
                                     case 2:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = -0.3f;
@@ -1098,7 +1112,7 @@ namespace Server.services
                                         break;
                                     case 3:
                                     case 4:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0.1f;
@@ -1118,7 +1132,7 @@ namespace Server.services
 
                                         break;
                                     case 5:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0.2f;
@@ -1139,7 +1153,7 @@ namespace Server.services
                                         break;
                                     case 6:
                                     case 7:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0.3f;
@@ -1160,7 +1174,7 @@ namespace Server.services
                                         break;
                                     case 8:
                                     case 9:
-                                        switch (letters[4]) //flight position
+                                        switch (group) //flight position
                                         {
                                             case "C":
                                                 B = 0.4f;
@@ -1182,1056 +1196,2688 @@ namespace Server.services
                                 }
 
                                 break;
-                            case 6: //armstand
-                                switch (Int32.Parse(letters[1]))
-                                {
-                                    case 1: //front
-                                        switch (Int32.Parse(letters[2])) //number of somersaults
-                                        {
-                                            case 0:
-                                            case 1:
-                                            case 2:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0.1f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.2f;
-                                                        break;
-                                                    case "A":
-                                                        B = 0.3f;
-                                                        break;
-                                                    case "D":
-                                                        B = 0.1f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                            case 3:
-                                            case 4:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.1f;
-                                                        break;
-                                                    case "A":
-                                                        B = 0.4f;
-                                                        break;
-                                                    case "D":
-                                                        B = 0f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                            case 5:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.2f;
-                                                        break;
-                                                    case "A":
-                                                        B = 0.6f;
-                                                        break;
-                                                    case "D":
-                                                        B = 0f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                            case 6:
-                                            case 7:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.3f;
-                                                        break;
-                                                    case "A":
-                                                        B = -1f;
-                                                        break;
-                                                    case "D":
-                                                        B = 0f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                            case 8:
-                                            case 9:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.4f;
-                                                        break;
-                                                    case "A":
-                                                        B = -1f;
-                                                        break;
-                                                    case "D":
-                                                        B = -1f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                        }
-
-                                        break;
-                                    case 2: //back
-                                        switch (Int32.Parse(letters[2])) //number of somersaults
-                                        {
-                                            case 0:
-                                            case 1:
-                                            case 2:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0.1f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.2f;
-                                                        break;
-                                                    case "A":
-                                                        B = 0.3f;
-                                                        break;
-                                                    case "D":
-                                                        B = 0.1f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                            case 3:
-                                            case 4:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.3f;
-                                                        break;
-                                                    case "A":
-                                                        B = 0.5f;
-                                                        break;
-                                                    case "D":
-                                                        B = -0.1f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                            case 5:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0.1f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.3f;
-                                                        break;
-                                                    case "A":
-                                                        B = 0.7f;
-                                                        break;
-                                                    case "D":
-                                                        B = -0.1f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                            case 6:
-                                            case 7:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.3f;
-                                                        break;
-                                                    case "A":
-                                                        B = -1f;
-                                                        break;
-                                                    case "D":
-                                                        B = 0f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                            case 8:
-                                            case 9:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0.1f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.4f;
-                                                        break;
-                                                    case "A":
-                                                        B = -1f;
-                                                        break;
-                                                    case "D":
-                                                        B = -1f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                        }
-
-                                        break;
-                                    case 3: //reversed
-                                        switch (Int32.Parse(letters[2])) //number of somersaults
-                                        {
-                                            case 0:
-                                            case 1:
-                                            case 2:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0.1f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.2f;
-                                                        break;
-                                                    case "A":
-                                                        B = 0.3f;
-                                                        break;
-                                                    case "D":
-                                                        B = 0.1f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                            case 3:
-                                            case 4:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.3f;
-                                                        break;
-                                                    case "A":
-                                                        B = 0.6f;
-                                                        break;
-                                                    case "D":
-                                                        B = -0.1f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                            case 5:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.2f;
-                                                        break;
-                                                    case "A":
-                                                        B = 0.6f;
-                                                        break;
-                                                    case "D":
-                                                        B = -0.2f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                            case 6:
-                                            case 7:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.3f;
-                                                        break;
-                                                    case "A":
-                                                        B = -1f;
-                                                        break;
-                                                    case "D":
-                                                        B = 0f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                            case 8:
-                                            case 9:
-                                                switch (letters[4]) //flight position
-                                                {
-                                                    case "C":
-                                                        B = 0.2f;
-                                                        break;
-                                                    case "B":
-                                                        B = 0.5f;
-                                                        break;
-                                                    case "A":
-                                                        B = -1f;
-                                                        break;
-                                                    case "D":
-                                                        B = -1f;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                break;
-                                        }
-
-                                        break;
-                                }
-
-                                break;
-                            default:
-                                break;
                         }
 
                         break;
                 }
             }
-
-            if (letters[0] == "5" || letters[0] == "6")
+            else
             {
-                switch (Int32.Parse(letters[3]))
+                if (letter2 == 1 && position <= 4) //if flying action
                 {
-                    case 1: //number of half twists
-                        switch (Int32.Parse(letters[2]))
-                        {
-                            case 1:
-                            case 2:
-                                switch (Int32.Parse(letters[1])) //position
-                                {
-                                    case 1:
-                                        C = 0.4f;
-                                        break;
-                                    case 2:
-                                        C = 0.2f;
-                                        break;
-                                    case 3:
-                                        C = 0.2f;
-                                        break;
-                                    case 4:
-                                        C = 0.2f;
-                                        break;
-                                }
-                                break;
-                            case 3:
-                            case 4:
-                                switch (Int32.Parse(letters[1])) //position
-                                {
-                                    case 1:
-                                        C = 0.4f;
-                                        break;
-                                    case 2:
-                                        C = 0.4f;
-                                        break;
-                                    case 3:
-                                        C = 0.4f;
-                                        break;
-                                    case 4:
-                                        C = 0.4f;
-                                        break;
-                                }
-                                break;
-                            case 5:
-                                switch (Int32.Parse(letters[1])) //position
-                                {
-                                    case 1:
-                                        C = 0.4f;
-                                        break;
-                                    case 2:
-                                        C = 0f;
-                                        break;
-                                    case 3:
-                                        C = 0f;
-                                        break;
-                                    case 4:
-                                        C = 0.2f;
-                                        break;
-                                }
-                                break;
-                            case 6:
-                            case 7:
-                                switch (Int32.Parse(letters[1])) //position
-                                {
-                                    case 1:
-                                        C = 0.4f;
-                                        break;
-                                    case 2:
-                                        C = 0f;
-                                        break;
-                                    case 3:
-                                        C = 0f;
-                                        break;
-                                    case 4:
-                                        C = 0.4f;
-                                        break;
-                                }
-                                break;
-                        }
-                        break;
-                    case 2:
-                        switch (Int32.Parse(letters[2]))
+                    switch (position) //what group
+                    {
+                        case 1: //front
+                            switch (somersaults) //number of somersaults
+                            {
+                                case 0:
+                                case 1:
+                                case 2:
+                                    B = 0.2f;
+                                    break;
+                                case 3:
+                                case 4:
+                                    B = 0.2f;
+                                    break;
+                                case 5:
+                                    B = 0.3f;
+                                    break;
+                                case 6:
+                                case 7:
+                                    B = 0.4f;
+                                    break;
+                                case 8:
+                                case 9:
+                                    B = -1f;
+                                    break;
+                            }
+
+                            break;
+                        case 2: //back
+                            switch (somersaults) //number of somersaults
+                            {
+                                case 0:
+                                case 1:
+                                case 2:
+                                    B = 0.1f;
+                                    break;
+                                case 3:
+                                case 4:
+                                    B = 0.2f;
+                                    break;
+                                case 5:
+                                    B = 0.3f;
+                                    break;
+                                case 6:
+                                case 7:
+                                    B = -1f;
+                                    break;
+                                case 8:
+                                case 9:
+                                    B = -1f;
+                                    break;
+                            }
+
+                            break;
+                        case 3: //reverse
+                            switch (somersaults) //number of somersaults
+                            {
+                                case 0:
+                                case 1:
+                                case 2:
+                                    B = 0.1f;
+                                    break;
+                                case 3:
+                                case 4:
+                                    B = 0.2f;
+                                    break;
+                                case 5:
+                                    B = 0.3f;
+                                    break;
+                                case 6:
+                                case 7:
+                                    B = -1f;
+                                    break;
+                                case 8:
+                                case 9:
+                                    B = -1f;
+                                    break;
+                            }
+
+                            break;
+                        case 4: //inward
+                            switch (somersaults) //number of somersaults
+                            {
+                                case 0:
+                                case 1:
+                                case 2:
+                                    B = 0.4f;
+                                    break;
+                                case 3:
+                                case 4:
+                                    B = 0.5f;
+                                    break;
+                                case 5:
+                                    B = 0.7f;
+                                    break;
+                                case 6:
+                                case 7:
+                                    B = -1f;
+                                    break;
+                                case 8:
+                                case 9:
+                                    B = -1f;
+                                    break;
+                            }
+
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+
+                switch (position)
+                {
+                    case 1: //front
+                        switch (somersaults) //number of somersaults
                         {
                             case 0:
-                                switch (Int32.Parse(letters[1])) //position
-                                {
-                                    case 1:
-                                        C = 0.6f;
-                                        break;
-                                    case 2:
-                                        C = 0.4f;
-                                        break;
-                                    case 3:
-                                        C = 0.4f;
-                                        break;
-                                    case 4:
-                                        C = 0.4f;
-                                        break;
-                                }
-                                break;
-                        }
-                        break;
-                    case 3:
-                        switch (Int32.Parse(letters[2]))
-                        {
                             case 1:
                             case 2:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.1f;
+                                        break;
+                                    case "B":
+                                        B += 0.2f;
+                                        break;
+                                    case "A":
+                                        B = 0.3f;
+                                        break;
+                                    case "D":
+                                        B = 0.1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
                             case 3:
                             case 4:
-                                switch (Int32.Parse(letters[1])) //position
+                                switch (group) //flight position
                                 {
-                                    case 1:
-                                        C = 0.8f;
+                                    case "C":
+                                        B += 0f;
                                         break;
-                                    case 2:
-                                        C = 0.8f;
+                                    case "B":
+                                        B += 0.1f;
                                         break;
-                                    case 3:
-                                        C = 0.8f;
+                                    case "A":
+                                        B = 0.4f;
                                         break;
-                                    case 4:
-                                        C = 0.8f;
+                                    case "D":
+                                        B = 0f;
+                                        break;
+                                    default:
                                         break;
                                 }
 
                                 break;
                             case 5:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0f;
+                                        break;
+                                    case "B":
+                                        B += 0.2f;
+                                        break;
+                                    case "A":
+                                        B = 0.6f;
+                                        break;
+                                    case "D":
+                                        B = 0f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
                             case 6:
                             case 7:
-                                switch (Int32.Parse(letters[1])) //position
+                                switch (group) //flight position
                                 {
-                                    case 1:
-                                        C = 0.8f;
+                                    case "C":
+                                        B += 0f;
                                         break;
-                                    case 2:
-                                        C = 0.7f;
+                                    case "B":
+                                        B += 0.3f;
                                         break;
-                                    case 3:
-                                        C = 0.6f;
+                                    case "A":
+                                        B = -1f;
                                         break;
-                                    case 4:
-                                        C = 0.8f;
+                                    case "D":
+                                        B = 0f;
+                                        break;
+                                    default:
                                         break;
                                 }
 
                                 break;
-
-                        }
-                        break;
-                    case 4:
-                        switch (Int32.Parse(letters[1])) //position
-                        {
-                            case 1:
-                                C = 1.0f;
-                                break;
-                            case 2:
-                                C = 0.8f;
-                                break;
-                            case 3:
-                                C = 0.8f;
-                                break;
-                            case 4:
-                                C = 0.8f;
-                                break;
-                        }
-                        break;
-                    case 5:
-                        switch (Int32.Parse(letters[2]))
-                        {
-                            case 1:
-                            case 2:
-                            case 3:
-                            case 4:
-                                switch (Int32.Parse(letters[1])) //position
+                            case 8:
+                            case 9:
+                                switch (group) //flight position
                                 {
-                                    case 1:
-                                        C = 1.2f;
+                                    case "C":
+                                        B += 0f;
                                         break;
-                                    case 2:
-                                        C = 1.2f;
+                                    case "B":
+                                        B += 0.4f;
                                         break;
-                                    case 3:
-                                        C = 1.2f;
+                                    case "A":
+                                        B = -1f;
                                         break;
-                                    case 4:
-                                        C = 1.2f;
+                                    case "D":
+                                        B = -1f;
+                                        break;
+                                    default:
                                         break;
                                 }
+
+                                break;
+                            case 11:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0f;
+                                        break;
+                                    case "B":
+                                        B += -1f;
+                                        break;
+                                    case "A":
+                                        B = -1f;
+                                        break;
+                                    case "D":
+                                        B = -1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                        }
+
+                        break;
+                    case 2: //back
+                        switch (somersaults) //number of somersaults
+                        {
+                            case 0:
+                            case 1:
+                            case 2:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.1f;
+                                        break;
+                                    case "B":
+                                        B += 0.2f;
+                                        break;
+                                    case "A":
+                                        B = 0.3f;
+                                        break;
+                                    case "D":
+                                        B = 0.1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                            case 3:
+                            case 4:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0f;
+                                        break;
+                                    case "B":
+                                        B += 0.3f;
+                                        break;
+                                    case "A":
+                                        B = 0.5f;
+                                        break;
+                                    case "D":
+                                        B = -0.1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
                                 break;
                             case 5:
-                            case 6:
-                            case 7:
-                                switch (Int32.Parse(letters[1])) //position
+                                switch (group) //flight position
                                 {
-                                    case 1:
-                                        C = 1.2f;
+                                    case "C":
+                                        B += 0.1f;
                                         break;
-                                    case 2:
-                                        C = 1.1f;
+                                    case "B":
+                                        B += 0.3f;
                                         break;
-                                    case 3:
-                                        C = 1.0f;
+                                    case "A":
+                                        B = 0.7f;
                                         break;
-                                    case 4:
-                                        C = 1.2f;
+                                    case "D":
+                                        B = -0.1f;
+                                        break;
+                                    default:
                                         break;
                                 }
+
+                                break;
+                            case 6:
+                            case 7:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0f;
+                                        break;
+                                    case "B":
+                                        B += 0.3f;
+                                        break;
+                                    case "A":
+                                        B = -1f;
+                                        break;
+                                    case "D":
+                                        B = 0f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                            case 8:
+                            case 9:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.1f;
+                                        break;
+                                    case "B":
+                                        B += 0.4f;
+                                        break;
+                                    case "A":
+                                        B = -1f;
+                                        break;
+                                    case "D":
+                                        B = -1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
                                 break;
                         }
+
+                        break;
+                    case 3: //reversed
+                        switch (somersaults) //number of somersaults
+                        {
+                            case 0:
+                            case 1:
+                            case 2:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.1f;
+                                        break;
+                                    case "B":
+                                        B += 0.2f;
+                                        break;
+                                    case "A":
+                                        B = 0.3f;
+                                        break;
+                                    case "D":
+                                        B = 0.1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                            case 3:
+                            case 4:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0f;
+                                        break;
+                                    case "B":
+                                        B += 0.3f;
+                                        break;
+                                    case "A":
+                                        B = 0.6f;
+                                        break;
+                                    case "D":
+                                        B = -0.1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                            case 5:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0f;
+                                        break;
+                                    case "B":
+                                        B += 0.2f;
+                                        break;
+                                    case "A":
+                                        B = 0.6f;
+                                        break;
+                                    case "D":
+                                        B = -0.2f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                            case 6:
+                            case 7:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0f;
+                                        break;
+                                    case "B":
+                                        B += 0.3f;
+                                        break;
+                                    case "A":
+                                        B = -1f;
+                                        break;
+                                    case "D":
+                                        B = 0f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                            case 8:
+                            case 9:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.3f;
+                                        break;
+                                    case "B":
+                                        B += 0.6f;
+                                        break;
+                                    case "A":
+                                        B = -1f;
+                                        break;
+                                    case "D":
+                                        B = -1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                        }
+
+                        break;
+                    case 4: //inward
+                        switch (somersaults) //number of somersaults
+                        {
+                            case 0:
+                            case 1:
+                            case 2:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += -0.3f;
+                                        break;
+                                    case "B":
+                                        B += -0.2f;
+                                        break;
+                                    case "A":
+                                        B = 0.1f;
+                                        break;
+                                    case "D":
+                                        B = -0.1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                            case 3:
+                            case 4:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.1f;
+                                        break;
+                                    case "B":
+                                        B += 0.3f;
+                                        break;
+                                    case "A":
+                                        B = 0.8f;
+                                        break;
+                                    case "D":
+                                        B = 0.2f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                            case 5:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.2f;
+                                        break;
+                                    case "B":
+                                        B += 0.5f;
+                                        break;
+                                    case "A":
+                                        B = -1f;
+                                        break;
+                                    case "D":
+                                        B = 0.4f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                            case 6:
+                            case 7:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.3f;
+                                        break;
+                                    case "B":
+                                        B += 0.6f;
+                                        break;
+                                    case "A":
+                                        B = -1f;
+                                        break;
+                                    case "D":
+                                        B = -1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                            case 8:
+                            case 9:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.4f;
+                                        break;
+                                    case "B":
+                                        B += 0.7f;
+                                        break;
+                                    case "A":
+                                        B = -1f;
+                                        break;
+                                    case "D":
+                                        B = -1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                        }
+
+                        break;
+                    case 5: //twisting
+                        switch (letter2)
+                        {
+                            case 1: //front
+                                switch (somersaults) //number of somersaults
+                                {
+                                    case 0:
+                                    case 1:
+                                    case 2:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0.1f;
+                                                break;
+                                            case "B":
+                                                B = 0.2f;
+                                                break;
+                                            case "A":
+                                                B = 0.3f;
+                                                break;
+                                            case "D":
+                                                B = 0.1f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 3:
+                                    case 4:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0f;
+                                                break;
+                                            case "B":
+                                                B = 0.1f;
+                                                break;
+                                            case "A":
+                                                B = 0.4f;
+                                                break;
+                                            case "D":
+                                                B = 0f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 5:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0f;
+                                                break;
+                                            case "B":
+                                                B = 0.2f;
+                                                break;
+                                            case "A":
+                                                B = 0.6f;
+                                                break;
+                                            case "D":
+                                                B = 0f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 6:
+                                    case 7:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0f;
+                                                break;
+                                            case "B":
+                                                B = 0.3f;
+                                                break;
+                                            case "A":
+                                                B = -1f;
+                                                break;
+                                            case "D":
+                                                B = 0f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 8:
+                                    case 9:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0f;
+                                                break;
+                                            case "B":
+                                                B = 0.4f;
+                                                break;
+                                            case "A":
+                                                B = -1f;
+                                                break;
+                                            case "D":
+                                                B = -1f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                }
+
+                                break;
+                            case 2: //back
+                                switch (somersaults) //number of somersaults
+                                {
+                                    case 0:
+                                    case 1:
+                                    case 2:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0.1f;
+                                                break;
+                                            case "B":
+                                                B = 0.2f;
+                                                break;
+                                            case "A":
+                                                B = 0.3f;
+                                                break;
+                                            case "D":
+                                                B = 0.1f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 3:
+                                    case 4:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0f;
+                                                break;
+                                            case "B":
+                                                B = 0.3f;
+                                                break;
+                                            case "A":
+                                                B = 0.5f;
+                                                break;
+                                            case "D":
+                                                B = -0.1f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 5:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0.1f;
+                                                break;
+                                            case "B":
+                                                B = 0.3f;
+                                                break;
+                                            case "A":
+                                                B = 0.7f;
+                                                break;
+                                            case "D":
+                                                B = -0.1f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 6:
+                                    case 7:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0f;
+                                                break;
+                                            case "B":
+                                                B = 0.3f;
+                                                break;
+                                            case "A":
+                                                B = -1f;
+                                                break;
+                                            case "D":
+                                                B = 0f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 8:
+                                    case 9:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0.1f;
+                                                break;
+                                            case "B":
+                                                B = 0.4f;
+                                                break;
+                                            case "A":
+                                                B = -1f;
+                                                break;
+                                            case "D":
+                                                B = -1f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                }
+
+                                break;
+                            case 3: //reversed
+                                switch (somersaults) //number of somersaults
+                                {
+                                    case 0:
+                                    case 1:
+                                    case 2:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0.1f;
+                                                break;
+                                            case "B":
+                                                B = 0.2f;
+                                                break;
+                                            case "A":
+                                                B = 0.3f;
+                                                break;
+                                            case "D":
+                                                B = 0.1f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 3:
+                                    case 4:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0f;
+                                                break;
+                                            case "B":
+                                                B = 0.3f;
+                                                break;
+                                            case "A":
+                                                B = 0.6f;
+                                                break;
+                                            case "D":
+                                                B = -0.1f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 5:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0f;
+                                                break;
+                                            case "B":
+                                                B = 0.2f;
+                                                break;
+                                            case "A":
+                                                B = 0.6f;
+                                                break;
+                                            case "D":
+                                                B = -0.2f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 6:
+                                    case 7:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0f;
+                                                break;
+                                            case "B":
+                                                B = 0.3f;
+                                                break;
+                                            case "A":
+                                                B = -1f;
+                                                break;
+                                            case "D":
+                                                B = 0f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 8:
+                                    case 9:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0.2f;
+                                                break;
+                                            case "B":
+                                                B = 0.5f;
+                                                break;
+                                            case "A":
+                                                B = -1f;
+                                                break;
+                                            case "D":
+                                                B = -1f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                }
+
+                                break;
+                            case 4: //inward
+                                switch (somersaults) //number of somersaults
+                                {
+                                    case 0:
+                                    case 1:
+                                    case 2:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = -0.3f;
+                                                break;
+                                            case "B":
+                                                B = -0.2f;
+                                                break;
+                                            case "A":
+                                                B = 0.1f;
+                                                break;
+                                            case "D":
+                                                B = -0.1f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 3:
+                                    case 4:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0.1f;
+                                                break;
+                                            case "B":
+                                                B = 0.3f;
+                                                break;
+                                            case "A":
+                                                B = 0.8f;
+                                                break;
+                                            case "D":
+                                                B = 0.2f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 5:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0.2f;
+                                                break;
+                                            case "B":
+                                                B = 0.5f;
+                                                break;
+                                            case "A":
+                                                B = -1f;
+                                                break;
+                                            case "D":
+                                                B = 0.4f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 6:
+                                    case 7:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0.3f;
+                                                break;
+                                            case "B":
+                                                B = 0.6f;
+                                                break;
+                                            case "A":
+                                                B = -1f;
+                                                break;
+                                            case "D":
+                                                B = -1f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 8:
+                                    case 9:
+                                        switch (group) //flight position
+                                        {
+                                            case "C":
+                                                B = 0.4f;
+                                                break;
+                                            case "B":
+                                                B = 0.8f;
+                                                break;
+                                            case "A":
+                                                B = -1f;
+                                                break;
+                                            case "D":
+                                                B = -1f;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                }
+
+                                break;
+                        }
+
                         break;
                     case 6:
-                        switch (Int32.Parse(letters[1])) //position
+                        switch (somersaults) //number of somersaults
                         {
+                            case 0:
                             case 1:
-                                C = 1.5f;
-                                break;
                             case 2:
-                                C = 1.4f;
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.1f;
+                                        break;
+                                    case "B":
+                                        B += 0.3f;
+                                        break;
+                                    case "A":
+                                        B = 0.4f;
+                                        break;
+                                    case "D":
+                                        B = 0f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
                                 break;
                             case 3:
-                                C = 1.4f;
-                                break;
                             case 4:
-                                C = 1.5f;
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0f;
+                                        break;
+                                    case "B":
+                                        B += 0.3f;
+                                        break;
+                                    case "A":
+                                        B = 0.5f;
+                                        break;
+                                    case "D":
+                                        B = 0f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
                                 break;
-                        }
-                        break;
-                    case 7:
-                        switch (Int32.Parse(letters[1])) //position
-                        {
-                            case 1:
-                                C = 1.6f;
+                            case 5:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.1f;
+                                        break;
+                                    case "B":
+                                        B += 0f;
+                                        break;
+                                    case "A":
+                                        B = -1f;
+                                        break;
+                                    case "D":
+                                        B = 0f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
                                 break;
-                            case 2:
-                                C = 1.7f;
+                            case 6:
+                            case 7:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.2f;
+                                        break;
+                                    case "B":
+                                        B += 0.4f;
+                                        break;
+                                    case "A":
+                                        B = -1f;
+                                        break;
+                                    case "D":
+                                        B = -1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
                                 break;
-                            case 3:
-                                C = 1.8f;
-                                break;
-                            case 4:
-                                C = 1.6f;
-                                break;
-                        }
-                        break;
-                    case 8:
-                        switch (Int32.Parse(letters[1])) //position
-                        {
-                            case 1:
-                                C = 1.9f;
-                                break;
-                            case 2:
-                                C = 1.8f;
-                                break;
-                            case 3:
-                                C = 1.8f;
-                                break;
-                            case 4:
-                                C = 1.9f;
-                                break;
-                        }
-                        break;
-                    case 9:
-                        switch (Int32.Parse(letters[1])) //position
-                        {
-                            case 1:
-                                C = 2.0f;
-                                break;
-                            case 2:
-                                C = 2.1f;
-                                break;
-                            case 3:
-                                C = 2.1f;
-                                break;
-                            case 4:
-                                C = 2.0f;
+                            case 8:
+                            case 9:
+                                switch (group) //flight position
+                                {
+                                    case "C":
+                                        B += 0.3f;
+                                        break;
+                                    case "B":
+                                        B += 0.5f;
+                                        break;
+                                    case "A":
+                                        B = -1f;
+                                        break;
+                                    case "D":
+                                        B = -1f;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
                                 break;
                         }
                         break;
                 }
             }
+            return B;
+        }
 
+        private static float CalculateC(int position, int letter2, int somersaults, int twists, int height)
+        {
+            float C = 0f;
+            if (height == 1 || height == 3)
+            {
+                if (position == 5 || position == 6)
+                {
+                    switch (twists)
+                    {
+                        case 1: //number of half twists
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.4f;
+                                            break;
+                                        case 2:
+                                            C = 0.2f;
+                                            break;
+                                        case 3:
+                                            C = 0.2f;
+                                            break;
+                                        case 4:
+                                            C = 0.2f;
+                                            break;
+                                    }
 
-            switch (Int32.Parse(letters[0]))
+                                    break;
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.4f;
+                                            break;
+                                        case 2:
+                                            C = 0.4f;
+                                            break;
+                                        case 3:
+                                            C = 0.4f;
+                                            break;
+                                        case 4:
+                                            C = 0.4f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 5:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.4f;
+                                            break;
+                                        case 2:
+                                            C = 0f;
+                                            break;
+                                        case 3:
+                                            C = 0f;
+                                            break;
+                                        case 4:
+                                            C = 0.2f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.4f;
+                                            break;
+                                        case 2:
+                                            C = 0f;
+                                            break;
+                                        case 3:
+                                            C = 0f;
+                                            break;
+                                        case 4:
+                                            C = 0.4f;
+                                            break;
+                                    }
+
+                                    break;
+                            }
+
+                            break;
+                        case 2:
+                            switch (letter2) //position
+                            {
+                                case 1:
+                                    C = 0.6f;
+                                    break;
+                                case 2:
+                                    C = 0.4f;
+                                    break;
+                                case 3:
+                                    C = 0.4f;
+                                    break;
+                                case 4:
+                                    C = 0.4f;
+                                    break;
+                            }
+                            break;
+                        case 3:
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.8f;
+                                            break;
+                                        case 2:
+                                            C = 0.8f;
+                                            break;
+                                        case 3:
+                                            C = 0.8f;
+                                            break;
+                                        case 4:
+                                            C = 0.8f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 5:
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.8f;
+                                            break;
+                                        case 2:
+                                            C = 0.7f;
+                                            break;
+                                        case 3:
+                                            C = 0.6f;
+                                            break;
+                                        case 4:
+                                            C = 0.8f;
+                                            break;
+                                    }
+
+                                    break;
+
+                            }
+
+                            break;
+                        case 4:
+                            switch (letter2) //position
+                            {
+                                case 1:
+                                    C = 1.0f;
+                                    break;
+                                case 2:
+                                    C = 0.8f;
+                                    break;
+                                case 3:
+                                    C = 0.8f;
+                                    break;
+                                case 4:
+                                    C = 0.8f;
+                                    break;
+                            }
+
+                            break;
+                        case 5:
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 1.2f;
+                                            break;
+                                        case 2:
+                                            C = 1.2f;
+                                            break;
+                                        case 3:
+                                            C = 1.2f;
+                                            break;
+                                        case 4:
+                                            C = 1.2f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 5:
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 1.2f;
+                                            break;
+                                        case 2:
+                                            C = 1.1f;
+                                            break;
+                                        case 3:
+                                            C = 1.0f;
+                                            break;
+                                        case 4:
+                                            C = 1.2f;
+                                            break;
+                                    }
+
+                                    break;
+                            }
+
+                            break;
+                        case 6:
+                            switch (letter2) //position
+                            {
+                                case 1:
+                                    C = 1.5f;
+                                    break;
+                                case 2:
+                                    C = 1.4f;
+                                    break;
+                                case 3:
+                                    C = 1.4f;
+                                    break;
+                                case 4:
+                                    C = 1.5f;
+                                    break;
+                            }
+
+                            break;
+                        case 7:
+                            switch (letter2) //position
+                            {
+                                case 1:
+                                    C = 1.6f;
+                                    break;
+                                case 2:
+                                    C = 1.7f;
+                                    break;
+                                case 3:
+                                    C = 1.8f;
+                                    break;
+                                case 4:
+                                    C = 1.6f;
+                                    break;
+                            }
+
+                            break;
+                        case 8:
+                            switch (letter2) //position
+                            {
+                                case 1:
+                                    C = 1.9f;
+                                    break;
+                                case 2:
+                                    C = 1.8f;
+                                    break;
+                                case 3:
+                                    C = 1.8f;
+                                    break;
+                                case 4:
+                                    C = 1.9f;
+                                    break;
+                            }
+
+                            break;
+                        case 9:
+                            switch (letter2) //position
+                            {
+                                case 1:
+                                    C = 2.0f;
+                                    break;
+                                case 2:
+                                    C = 2.1f;
+                                    break;
+                                case 3:
+                                    C = 2.1f;
+                                    break;
+                                case 4:
+                                    C = 2.0f;
+                                    break;
+                            }
+
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                if (position == 5)
+                {
+                    switch (twists)
+                    {
+                        case 1: //number of half twists
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.4f;
+                                            break;
+                                        case 2:
+                                            C = 0.2f;
+                                            break;
+                                        case 3:
+                                            C = 0.2f;
+                                            break;
+                                        case 4:
+                                            C = 0.2f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.4f;
+                                            break;
+                                        case 2:
+                                            C = 0.4f;
+                                            break;
+                                        case 3:
+                                            C = 0.4f;
+                                            break;
+                                        case 4:
+                                            C = 0.4f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 5:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.4f;
+                                            break;
+                                        case 2:
+                                            C = 0f;
+                                            break;
+                                        case 3:
+                                            C = 0f;
+                                            break;
+                                        case 4:
+                                            C = 0.2f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.4f;
+                                            break;
+                                        case 2:
+                                            C = 0f;
+                                            break;
+                                        case 3:
+                                            C = 0f;
+                                            break;
+                                        case 4:
+                                            C = 0.4f;
+                                            break;
+                                    }
+
+                                    break;
+                            }
+
+                            break;
+                        case 2:
+                            switch (somersaults)
+                            {
+                                case 0:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.6f;
+                                            break;
+                                        case 2:
+                                            C = 0.4f;
+                                            break;
+                                        case 3:
+                                            C = 0.4f;
+                                            break;
+                                        case 4:
+                                            C = 0.4f;
+                                            break;
+                                    }
+
+                                    break;
+                            }
+
+                            break;
+                        case 3:
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.8f;
+                                            break;
+                                        case 2:
+                                            C = 0.8f;
+                                            break;
+                                        case 3:
+                                            C = 0.8f;
+                                            break;
+                                        case 4:
+                                            C = 0.8f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 5:
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.8f;
+                                            break;
+                                        case 2:
+                                            C = 0.6f;
+                                            break;
+                                        case 3:
+                                            C = 0.6f;
+                                            break;
+                                        case 4:
+                                            C = 0.8f;
+                                            break;
+                                    }
+
+                                    break;
+
+                            }
+
+                            break;
+                        case 4:
+                            switch (somersaults) //position
+                            {
+                                case 1:
+                                    C = 1.0f;
+                                    break;
+                                case 2:
+                                    C = 0.8f;
+                                    break;
+                                case 3:
+                                    C = 0.8f;
+                                    break;
+                                case 4:
+                                    C = 0.8f;
+                                    break;
+                            }
+
+                            break;
+                        case 5:
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 1.2f;
+                                            break;
+                                        case 2:
+                                            C = 1.2f;
+                                            break;
+                                        case 3:
+                                            C = 1.2f;
+                                            break;
+                                        case 4:
+                                            C = 1.2f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 5:
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 1.2f;
+                                            break;
+                                        case 2:
+                                            C = 1.0f;
+                                            break;
+                                        case 3:
+                                            C = 1.0f;
+                                            break;
+                                        case 4:
+                                            C = 1.2f;
+                                            break;
+                                    }
+
+                                    break;
+                            }
+
+                            break;
+                        case 6:
+                            switch (letter2) //position
+                            {
+                                case 1:
+                                    C = 1.5f;
+                                    break;
+                                case 2:
+                                    C = 1.4f;
+                                    break;
+                                case 3:
+                                    C = 1.4f;
+                                    break;
+                                case 4:
+                                    C = 1.5f;
+                                    break;
+                            }
+
+                            break;
+                        case 7:
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 1.6f;
+                                            break;
+                                        case 2:
+                                            C = 1.7f;
+                                            break;
+                                        case 3:
+                                            C = 1.7f;
+                                            break;
+                                        case 4:
+                                            C = 1.6f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 5:
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 1.6f;
+                                            break;
+                                        case 2:
+                                            C = 1.5f;
+                                            break;
+                                        case 3:
+                                            C = 1.5f;
+                                            break;
+                                        case 4:
+                                            C = 1.6f;
+                                            break;
+                                    }
+
+                                    break;
+                            }
+
+                            break;
+                        case 8:
+                            switch (letter2) //position
+                            {
+                                case 1:
+                                    C = 1.9f;
+                                    break;
+                                case 2:
+                                    C = 1.8f;
+                                    break;
+                                case 3:
+                                    C = 1.8f;
+                                    break;
+                                case 4:
+                                    C = 1.9f;
+                                    break;
+                            }
+
+                            break;
+                        case 9:
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 2.0f;
+                                            break;
+                                        case 2:
+                                            C = 2.1f;
+                                            break;
+                                        case 3:
+                                            C = 2.1f;
+                                            break;
+                                        case 4:
+                                            C = 2.0f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 5:
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 2.0f;
+                                            break;
+                                        case 2:
+                                            C = 1.9f;
+                                            break;
+                                        case 3:
+                                            C = 1.9f;
+                                            break;
+                                        case 4:
+                                            C = 2.0f;
+                                            break;
+                                    }
+
+                                    break;
+                            }
+
+                            break;
+                    }
+                }
+                else if (position == 6)
+                {
+                    switch (twists)
+                    {
+                        case 1: //number of half twists
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.4f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 0.4f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.5f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 0.5f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 5:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.5f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 0.5f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 0.4f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 0.5f;
+                                            break;
+                                    }
+
+                                    break;
+                            }
+
+                            break;
+                        case 2:
+                            switch (somersaults)
+                            {
+                                case 0:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 1.2f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 1.2f;
+                                            break;
+                                    }
+                                    break;
+                            }
+                            break;
+                        case 3:
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 1.3f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 1.3f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 5:
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 1.3f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 1.3f;
+                                            break;
+                                    }
+                                    break;
+                            }
+                            break;
+                        case 4:
+                            switch (somersaults) //position
+                            {
+                                case 1:
+                                    C = 1.5f;
+                                    break;
+                                case 2:
+                                case 3:
+                                    C = 1.3f;
+                                    break;
+                            }
+                            break;
+                        case 5:
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 1.7f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 1.7f;
+                                            break;
+                                    }
+                                    break;
+                                case 5:
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 1.7f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 1.7f;
+                                            break;
+                                    }
+                                    break;
+                            }
+                            break;
+                        case 6:
+                            switch (letter2) //position
+                            {
+                                case 1:
+                                    C = 1.9f;
+                                    break;
+                                case 2:
+                                case 3:
+                                    C = 1.9f;
+                                    break;
+                            }
+                            break;
+                        case 7:
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 2.1f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 2.1f;
+                                            break;
+                                    }
+                                    break;
+                                case 5:
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 2.1f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 2.1f;
+                                            break;
+                                    }
+                                    break;
+                            }
+                            break;
+                        case 8:
+                            switch (letter2) //position
+                            {
+                                case 1:
+                                    C = 2.3f;
+                                    break;
+                                case 2:
+                                case 3:
+                                    C = 2.3f;
+                                    break;
+                            }
+                            break;
+                        case 9:
+                            switch (somersaults)
+                            {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 2.5f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 2.5f;
+                                            break;
+                                    }
+
+                                    break;
+                                case 5:
+                                case 6:
+                                case 7:
+                                    switch (letter2) //position
+                                    {
+                                        case 1:
+                                            C = 2.5f;
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            C = 2.5f;
+                                            break;
+                                    }
+                                    break;
+                            }
+                            break;
+                    }
+                }
+            }
+            return C;
+        }
+        private static float CalculateD(int position, int letter2, int somersaults, int height, int twists)
+        {
+            float D = 0f;
+            switch (position)
             {
                 case 1:
-                    if (height == 1)
+                    switch (height)
                     {
-                        if (Int32.Parse(letters[2]) < 8)
-                        {
+                        case 1 when somersaults < 8:
                             D = 0f;
-                        }
-                        else
-                        {
+                            break;
+                        case 1:
                             D = 0.5f;
-                        }
-                    }
-                    else if (height == 3)
-                    {
-                        if (Int32.Parse(letters[2]) < 8)
-                        {
+                            break;
+                        case 3 when somersaults < 8:
                             D = 0f;
-                        }
-                        else
-                        {
+                            break;
+                        case 3:
                             D = 0.3f;
-                        }
-
+                            break;
+                        case 5 when somersaults < 8:
+                            D = 0f;
+                            break;
+                        case 5:
+                            D = 0.5f;
+                            break;
+                        case 7 when somersaults < 8:
+                            D = 0f;
+                            break;
+                        case 7:
+                            D = 0.3f;
+                            break;
+                        case 10 when somersaults < 8:
+                            D = 0f;
+                            break;
+                        case 10:
+                            D = 0.2f;
+                            break;
                     }
                     break;
                 case 2:
-                    if (height == 1)
+                    switch (height)
                     {
-                        if (Int32.Parse(letters[2]) < 7)
-                        {
+                        case 1 when somersaults < 7:
                             D = 0.2f;
-                        }
-                        else
-                        {
+                            break;
+                        case 1:
                             D = 0.6f;
-                        }
-                    }
-                    else if (height == 3)
-                    {
-                        if (Int32.Parse(letters[2]) < 7)
-                        {
+                            break;
+                        case 3 when somersaults < 7:
                             D = 0.2f;
-                        }
-                        else
-                        {
+                            break;
+                        case 3:
                             D = 0.4f;
-                        }
-
+                            break;
+                        case 5 when somersaults < 7:
+                            D = 0.2f;
+                            break;
+                        case 5:
+                            D = 0.5f;
+                            break;
+                        case 7 when somersaults < 7:
+                            D = 0.2f;
+                            break;
+                        case 7:
+                            D = 0.3f;
+                            break;
+                        case 10 when somersaults < 7:
+                            D = 0.2f;
+                            break;
+                        case 10:
+                            D = 0.2f;
+                            break;
                     }
                     break;
                 case 3:
-                    if (height == 1)
+                    switch (height)
                     {
-                        if (Int32.Parse(letters[2]) < 7)
-                        {
+                        case 1 when somersaults < 7:
                             D = 0.3f;
-                        }
-                        else
-                        {
+                            break;
+                        case 1:
                             D = 0.5f;
-                        }
-                    }
-                    else if (height == 3)
-                    {
-                        if (Int32.Parse(letters[2]) < 7)
-                        {
+                            break;
+                        case 3 when somersaults < 7:
+                        case 3:
                             D = 0.3f;
-                        }
-                        else
-                        {
+                            break;
+                        case 5 when somersaults < 5:
                             D = 0.3f;
-                        }
-
+                            break;
+                        case 5 when somersaults < 7:
+                            D = 0.4f;
+                            break;
+                        case 5:
+                            D = 0.6f;
+                            break;
+                        case 7 when somersaults < 5:
+                            D = 0.3f;
+                            break;
+                        case 7 when somersaults < 7:
+                            D = 0.4f;
+                            break;
+                        case 7:
+                            D = 0.4f;
+                            break;
+                        case 10 when somersaults < 5:
+                            D = 0.3f;
+                            break;
+                        case 10 when somersaults < 7:
+                            D = 0.4f;
+                            break;
+                        case 10:
+                            D = 0.3f;
+                            break;
                     }
                     break;
                 case 4:
-                    if (height == 1)
+                    switch (height)
                     {
-                        if (Int32.Parse(letters[2]) < 3)
-                        {
+                        case 1 when somersaults < 3:
                             D = 0.6f;
-                        }
-                        else
-                        {
+                            break;
+                        case 1:
                             D = 0.5f;
-                        }
-                    }
-                    else if (height == 3)
-                    {
-                        if (Int32.Parse(letters[2]) < 3)
-                        {
+                            break;
+                        case 3 when somersaults < 3:
+                        case 3:
                             D = 0.3f;
-                        }
-                        else
-                        {
+                            break;
+                        case 5 when somersaults < 3:
+                            D = 0.6f;
+                            break;
+                        case 5:
+                            D = 0.5f;
+                            break;
+                        case 7 when somersaults < 3:
                             D = 0.3f;
-                        }
-
+                            break;
+                        case 7:
+                            D = 0.3f;
+                            break;
+                        case 10 when somersaults < 3:
+                            D = 0.3f;
+                            break;
+                        case 10:
+                            D = 0.2f;
+                            break;
                     }
                     break;
                 case 5:
-                    switch (Int32.Parse(letters[2]))
+                case 6 when twists != 0:
+
+                    switch (letter2)
                     {
                         case 1:
-                            if (height == 1)
+                            switch (height)
                             {
-                                if (Int32.Parse(letters[2]) < 8)
-                                {
+                                case 1 when somersaults < 8:
                                     D = 0f;
-                                }
-                                else
-                                {
+                                    break;
+                                case 1:
                                     D = 0.5f;
-                                }
-                            }
-                            else if (height == 3)
-                            {
-                                if (Int32.Parse(letters[2]) < 8)
-                                {
+                                    break;
+                                case 3 when somersaults < 8:
                                     D = 0f;
-                                }
-                                else
-                                {
+                                    break;
+                                case 3:
                                     D = 0.3f;
-                                }
-
+                                    break;
+                                case 5 when somersaults < 8:
+                                    D = 0f;
+                                    break;
+                                case 5:
+                                    D = 0.5f;
+                                    break;
+                                case 7 when somersaults < 8:
+                                    D = 0f;
+                                    break;
+                                case 7:
+                                    D = 0.3f;
+                                    break;
+                                case 10 when somersaults < 8:
+                                    D = 0f;
+                                    break;
+                                case 10:
+                                    D = 0.2f;
+                                    break;
                             }
+
                             break;
                         case 2:
-                            if (height == 1)
+                            switch (height)
                             {
-                                if (Int32.Parse(letters[2]) < 7)
-                                {
+                                case 1 when somersaults < 7:
                                     D = 0.2f;
-                                }
-                                else
-                                {
+                                    break;
+                                case 1:
                                     D = 0.6f;
-                                }
-                            }
-                            else if (height == 3)
-                            {
-                                if (Int32.Parse(letters[2]) < 7)
-                                {
+                                    break;
+                                case 3 when somersaults < 7:
                                     D = 0.2f;
-                                }
-                                else
-                                {
+                                    break;
+                                case 3:
                                     D = 0.4f;
-                                }
-
+                                    break;
+                                case 5 when somersaults < 7:
+                                    D = 0.2f;
+                                    break;
+                                case 5:
+                                    D = 0.5f;
+                                    break;
+                                case 7 when somersaults < 7:
+                                    D = 0.2f;
+                                    break;
+                                case 7:
+                                    D = 0.3f;
+                                    break;
+                                case 10 when somersaults < 7:
+                                    D = 0.2f;
+                                    break;
+                                case 10:
+                                    D = 0.2f;
+                                    break;
                             }
+
                             break;
                         case 3:
-                            if (height == 1)
+                            switch (height)
                             {
-                                if (Int32.Parse(letters[2]) < 7)
-                                {
+                                case 1 when somersaults < 7:
                                     D = 0.3f;
-                                }
-                                else
-                                {
+                                    break;
+                                case 1:
                                     D = 0.5f;
-                                }
+                                    break;
+                                case 3 when somersaults < 7:
+                                case 3:
+                                    D = 0.3f;
+                                    break;
+                                case 5 when somersaults < 5:
+                                    D = 0.3f;
+                                    break;
+                                case 5 when somersaults < 7:
+                                    D = 0.4f;
+                                    break;
+                                case 5:
+                                    D = 0.6f;
+                                    break;
+                                case 7 when somersaults < 5:
+                                    D = 0.3f;
+                                    break;
+                                case 7 when somersaults < 7:
+                                    D = 0.4f;
+                                    break;
+                                case 7:
+                                    D = 0.4f;
+                                    break;
+                                case 10 when somersaults < 5:
+                                    D = 0.3f;
+                                    break;
+                                case 10 when somersaults < 7:
+                                    D = 0.4f;
+                                    break;
+                                case 10:
+                                    D = 0.3f;
+                                    break;
                             }
-                            else if (height == 3)
-                            {
-                                if (Int32.Parse(letters[2]) < 7)
-                                {
-                                    D = 0.3f;
-                                }
-                                else
-                                {
-                                    D = 0.3f;
-                                }
 
-                            }
                             break;
                         case 4:
-                            if (height == 1)
+                            switch (height)
                             {
-                                if (Int32.Parse(letters[2]) < 3)
-                                {
+                                case 1 when somersaults < 3:
                                     D = 0.6f;
-                                }
-                                else
-                                {
+                                    break;
+                                case 1:
                                     D = 0.5f;
-                                }
+                                    break;
+                                case 3 when somersaults < 3:
+                                case 3:
+                                    D = 0.3f;
+                                    break;
+                                case 5 when somersaults < 3:
+                                    D = 0.6f;
+                                    break;
+                                case 5:
+                                    D = 0.5f;
+                                    break;
+                                case 7 when somersaults < 3:
+                                    D = 0.3f;
+                                    break;
+                                case 7:
+                                    D = 0.3f;
+                                    break;
+                                case 10 when somersaults < 3:
+                                    D = 0.3f;
+                                    break;
+                                case 10:
+                                    D = 0.2f;
+                                    break;
                             }
-                            else if (height == 3)
-                            {
-                                if (Int32.Parse(letters[2]) < 3)
-                                {
-                                    D = 0.3f;
-                                }
-                                else
-                                {
-                                    D = 0.3f;
-                                }
 
-                            }
                             break;
                     }
                     break;
                 case 6:
-                    switch (Int32.Parse(letters[2]))
+                    switch (letter2)
                     {
                         case 1:
-                            if (height == 1)
-                            {
-                                if (Int32.Parse(letters[2]) < 8)
-                                {
-                                    D = 0f;
-                                }
-                                else
-                                {
-                                    D = 0.5f;
-                                }
-                            }
-                            else if (height == 3)
-                            {
-                                if (Int32.Parse(letters[2]) < 8)
-                                {
-                                    D = 0f;
-                                }
-                                else
-                                {
-                                    D = 0.3f;
-                                }
-
-                            }
+                            if (somersaults < 5)
+                                D = 0.2f;
+                            else
+                                D = 0.4f;
                             break;
                         case 2:
-                            if (height == 1)
-                            {
-                                if (Int32.Parse(letters[2]) < 7)
-                                {
-                                    D = 0.2f;
-                                }
-                                else
-                                {
-                                    D = 0.6f;
-                                }
-                            }
-                            else if (height == 3)
-                            {
-                                if (Int32.Parse(letters[2]) < 7)
-                                {
-                                    D = 0.2f;
-                                }
-                                else
-                                {
-                                    D = 0.4f;
-                                }
-
-                            }
+                            if (somersaults < 2)
+                                D = 0.2f;
+                            else
+                                D = 0.4f;
                             break;
                         case 3:
-                            if (height == 1)
-                            {
-                                if (Int32.Parse(letters[2]) < 7)
-                                {
-                                    D = 0.3f;
-                                }
-                                else
-                                {
-                                    D = 0.5f;
-                                }
-                            }
-                            else if (height == 3)
-                            {
-                                if (Int32.Parse(letters[2]) < 7)
-                                {
-                                    D = 0.3f;
-                                }
-                                else
-                                {
-                                    D = 0.3f;
-                                }
-
-                            }
-                            break;
-                        case 4:
-                            if (height == 1)
-                            {
-                                if (Int32.Parse(letters[2]) < 3)
-                                {
-                                    D = 0.6f;
-                                }
-                                else
-                                {
-                                    D = 0.5f;
-                                }
-                            }
-                            else if (height == 3)
-                            {
-                                if (Int32.Parse(letters[2]) < 3)
-                                {
-                                    D = 0.3f;
-                                }
-                                else
-                                {
-                                    D = 0.3f;
-                                }
-
-                            }
+                            if (somersaults < 2)
+                                D = 0.3f;
+                            else
+                                D = 0.5f;
                             break;
                     }
                     break;
             }
+            return D;
+        }
 
-            switch (Int32.Parse(letters[0]))
+        private static float CalculateE(int position, int letter2, int somersaults, int height, int twists)
+        {
+            float E = 0f;
+            if (height < 4)
             {
-                case 1:
-                case 4:
-                    switch (Int32.Parse(letters[2]))
-                    {
-                        case 1:
-                        case 3:
-                        case 5:
-                        case 7:
-                        case 9:
-                            E = 0f;
-                            break;
-                        case 2:
-                            E = 0.1f;
-                            break;
-                        case 4:
-                        case 6:
-                        case 8:
-                            E = 0.2f;
-                            break;
-                    }
+                switch (position)
+                {
+                    case 1:
+                    case 4:
+                        switch (somersaults)
+                        {
+                            case 1:
+                            case 3:
+                            case 5:
+                            case 7:
+                            case 9:
+                                E = 0f;
+                                break;
+                            case 2:
+                                E = 0.1f;
+                                break;
+                            case 4:
+                            case 6:
+                            case 8:
+                                E = 0.2f;
+                                break;
+                        }
 
-                    break;
-                case 2:
-                case 3:
-                    switch (Int32.Parse(letters[2]))
-                    {
-                        case 1:
-                            E = 0.1f;
-                            break;
-                        case 3:
-                            E = 0.2f;
-                            break;
-                        case 5:
-                            E = 0.3f;
-                            break;
-                        case 7:
-                        case 9:
-                            E = 0.4f;
-                            break;
-                        case 2:
-                        case 4:
-                        case 6:
-                        case 8:
-                            E = 0f;
-                            break;
-                    }
+                        break;
+                    case 2:
+                    case 3:
+                        switch (somersaults)
+                        {
+                            case 1:
+                                E = 0.1f;
+                                break;
+                            case 3:
+                                E = 0.2f;
+                                break;
+                            case 5:
+                                E = 0.3f;
+                                break;
+                            case 7:
+                            case 9:
+                                E = 0.4f;
+                                break;
+                            case 2:
+                            case 4:
+                            case 6:
+                            case 8:
+                                E = 0f;
+                                break;
+                        }
 
-                    break;
-                case 6:
-                    switch (Int32.Parse(letters[1]))
-                    {
-                        case 1:
-                        case 4:
-                            switch (Int32.Parse(letters[2]))
-                            {
-                                case 1:
-                                case 3:
-                                case 5:
-                                case 7:
-                                case 9:
-                                    E = 0f;
-                                    break;
-                                case 2:
-                                    E = 0.1f;
-                                    break;
-                                case 4:
-                                case 6:
-                                case 8:
-                                    E = 0.2f;
-                                    break;
-                            }
+                        break;
+                    //does not apply to twisting dives. (5)
+                    case 6:
+                        switch (letter2) //for dives 5 & 6, letter 2 is position value
+                        {
+                            case 1:
+                            case 4:
+                                switch (somersaults)
+                                {
+                                    case 1:
+                                    case 3:
+                                    case 5:
+                                    case 7:
+                                    case 9:
+                                        E = 0f;
+                                        break;
+                                    case 2:
+                                        E = 0.1f;
+                                        break;
+                                    case 4:
+                                    case 6:
+                                    case 8:
+                                        E = 0.2f;
+                                        break;
+                                }
 
-                            break;
-                        case 2:
-                        case 3:
-                            switch (Int32.Parse(letters[2]))
-                            {
-                                case 1:
-                                    E = 0.1f;
-                                    break;
-                                case 3:
-                                    E = 0.2f;
-                                    break;
-                                case 5:
-                                    E = 0.3f;
-                                    break;
-                                case 7:
-                                case 9:
-                                    E = 0.4f;
-                                    break;
-                                case 2:
-                                case 4:
-                                case 6:
-                                case 8:
-                                    E = 0f;
-                                    break;
-                            }
-                            break;
-                    }
-                    break;
+                                break;
+                            case 2:
+                            case 3:
+                                switch (somersaults)
+                                {
+                                    case 1:
+                                        E = 0.1f;
+                                        break;
+                                    case 3:
+                                        E = 0.2f;
+                                        break;
+                                    case 5:
+                                        E = 0.3f;
+                                        break;
+                                    case 7:
+                                    case 9:
+                                        E = 0.4f;
+                                        break;
+                                    case 2:
+                                    case 4:
+                                    case 6:
+                                    case 8:
+                                        E = 0f;
+                                        break;
+                                }
+
+                                break;
+                        }
+
+                        break;
+                }
             }
+            else
+            {
+                switch (position)
+                {
+                    case 1:
+                    case 4:
+                        switch (somersaults)
+                        {
+                            case 1:
+                            case 3:
+                            case 5:
+                            case 7:
+                            case 8:
+                            case 9:
+                            case 11:
+                                E = 0f;
+                                break;
+                            case 2:
+                                E = 0.1f;
+                                break;
+                            case 4:
+                            case 6:
+                                E = 0.2f;
+                                break;
+                        }
 
-            Jump j = new Jump();
-            j.Difficulty = A + B + C + D + E;
-            return j;
+                        break;
+                    case 2:
+                    case 3:
+                        switch (somersaults)
+                        {
+                            case 1:
+                                E = 0.1f;
+                                break;
+                            case 3:
+                                E = 0.2f;
+                                break;
+                            case 5:
+                                E = 0.3f;
+                                break;
+                            case 7:
+                            case 9:
+                                E = 0.4f;
+                                break;
+                            case 2:
+                            case 4:
+                            case 6:
+                            case 8:
+                            case 11:
+                                E = 0f;
+                                break;
+                        }
+
+                        break;
+                    case 5:
+                        if (twists == 0)
+                        {
+                            switch (letter2)
+                            {
+                                case 1:
+                                    switch (somersaults)
+                                    {
+                                        case 1:
+                                            E = 0.1f;
+                                            break;
+                                        case 3:
+                                            E = 0.2f;
+                                            break;
+                                        case 5:
+                                            E = 0.3f;
+                                            break;
+                                        case 7:
+                                        case 9:
+                                            E = 0.4f;
+                                            break;
+                                        case 2:
+                                        case 4:
+                                        case 6:
+                                        case 8:
+                                        case 11:
+                                            E = 0f;
+                                            break;
+                                    }
+                                    break;
+                                case 2:
+                                case 3:
+                                    switch (somersaults)
+                                    {
+                                        case 1:
+                                        case 3:
+                                        case 5:
+                                        case 7:
+                                        case 9:
+                                        case 11:
+                                            E = 0f;
+                                            break;
+                                        case 2:
+                                            E = 0.1f;
+                                            break;
+                                        case 4:
+                                        case 6:
+                                            E = 0.2f;
+                                            break;
+                                        case 8:
+                                            E = 0.3f;
+                                            break;
+                                    }
+                                    break;
+                            }
+                        }
+
+                        break;
+                    //does not apply to twisting dives. (5)
+                    case 6:
+                        switch (letter2) //for dives 5 & 6, letter 2 is position value
+                        {
+                            case 1:
+                            case 4:
+                                switch (somersaults)
+                                {
+                                    case 1:
+                                        E = 0.1f;
+                                        break;
+                                    case 3:
+                                        E = 0.2f;
+                                        break;
+                                    case 5:
+                                        E = 0.3f;
+                                        break;
+                                    case 7:
+                                    case 9:
+                                        E = 0.4f;
+                                        break;
+                                    case 2:
+                                    case 4:
+                                    case 6:
+                                    case 8:
+                                    case 11:
+                                        E = 0f;
+                                        break;
+                                }
+
+                                break;
+                            case 2:
+                            case 3:
+
+
+
+                                switch (somersaults)
+                                {
+                                    case 1:
+                                    case 3:
+                                    case 5:
+                                    case 7:
+                                    case 8:
+                                    case 9:
+                                    case 11:
+                                        E = 0f;
+                                        break;
+                                    case 2:
+                                        E = 0.1f;
+                                        break;
+                                    case 4:
+                                    case 6:
+                                        E = 0.2f;
+                                        break;
+                                }
+                                break;
+                        }
+                        break;
+                }
+            }
+            return E;
         }
 
     }

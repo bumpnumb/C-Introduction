@@ -169,8 +169,9 @@ namespace Server.services
                         temp.CUID = ID;
                         temp.Code = j.Code;
                         temp.Number = j.Number;
-                        temp.Name = JumpHelper.GenerateJumpNameFromCode(j.Code, j.Height);
-                        temp.Difficulty = JumpHelper.GenerateJumpDifficultyFromCode(j.Code, j.Height);
+                        Jump t = JumpHelper.ParseDifficulty(j.Code, j.Height);
+                        temp.Name = t.Name;
+                        temp.Difficulty = t.Difficulty;
                         context.Jumps.Add(temp);
                     }
                 }
