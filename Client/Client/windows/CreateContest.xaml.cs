@@ -44,6 +44,7 @@ namespace Client.windows
             InitializeComponent();
             this.DataContext = this;
             GetJudges();
+            GetJumpers();
         }
 
         private void GetJudges()
