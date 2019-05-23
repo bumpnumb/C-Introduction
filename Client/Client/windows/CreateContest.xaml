@@ -9,15 +9,15 @@
       Title="CreateContest">
 
     <Grid>
-        <TextBox x:Name="competitionTitle" HorizontalAlignment="Left" Height="21" Margin="24,42,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194"/>
+        <TextBox x:Name="competitionTitle" HorizontalAlignment="Left" Height="21" Margin="24,42,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" LostFocus="CompetitionTitle_LostFocus"/>
         <ComboBox x:Name="jumpHeight" HorizontalAlignment="Left" Height="23" Margin="24,119,0,0" VerticalAlignment="Top" Width="44" IsEditable="False"
                   ItemsSource="{Binding Items}"
                   SelectedItem="{Binding SelectedItem}"
                   Text="{Binding NewItem, UpdateSourceTrigger=LostFocus}" SelectionChanged="JumpHeight_SelectionChanged"/>
-        <TextBox x:Name="judgeName" HorizontalAlignment="Left" Height="23" Margin="24,168,0,0" TextWrapping="Wrap" Text="Autocomplete textbox here" VerticalAlignment="Top" Width="194"/>
-        <TextBox x:Name="judgeSSN" HorizontalAlignment="Left" Height="23" Margin="24,196,0,0" TextWrapping="Wrap" Text="xxxx-xx-xx-xxxx" VerticalAlignment="Top" Width="102"/>
-        <TextBox x:Name="jumperName" HorizontalAlignment="Left" Height="23" Margin="24,317,0,0" TextWrapping="Wrap" Text="Autocomplete textbox here" VerticalAlignment="Top" Width="194"/>
-        <TextBox x:Name="jumperSSN" HorizontalAlignment="Left" Height="23" Margin="24,345,0,0" TextWrapping="Wrap" Text="xxxx-xx-xx-xxxx" VerticalAlignment="Top" Width="102"/>
+        <TextBox x:Name="judgeName" HorizontalAlignment="Left" Height="23" Margin="24,168,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="194" GotFocus="JudgeName_GotFocus"/>
+        <TextBox x:Name="judgeSSN" HorizontalAlignment="Left" Height="23" Margin="24,196,0,0" TextWrapping="Wrap" Text="xxxx-xx-xx-xxxx" VerticalAlignment="Top" Width="102" GotFocus="JudgeSSN_GotFocus"/>
+        <TextBox x:Name="jumperName" HorizontalAlignment="Left" Height="23" Margin="24,317,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="194" GotFocus="JumperName_GotFocus"/>
+        <TextBox x:Name="jumperSSN" HorizontalAlignment="Left" Height="23" Margin="24,345,0,0" TextWrapping="Wrap" Text="xxxx-xx-xx-xxxx" VerticalAlignment="Top" Width="102" GotFocus="JumperSSN_GotFocus"/>
 
         <Button x:Name="cancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Click="CancelBtn_Click"/>
         <DatePicker HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,68,0,0"/>
@@ -28,10 +28,50 @@
                     <Grid Margin="2,3" HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="400" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Name}" />
-                        <TextBlock Grid.Column="1" Text="{Binding SSN}" TextAlignment="Right" HorizontalAlignment="Stretch" />
+                        <TextBlock Text="{Binding JumperName}" />
+                        <TextBlock Grid.Column="1" Text="{Binding JumperSSN}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="2" Text="{Binding Height1}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="3" Text="{Binding Code1}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="4" Text="{Binding Height2}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="5" Text="{Binding Code2}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="6" Text="{Binding Height3}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="7" Text="{Binding Code3}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="8" Text="{Binding Height4}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="9" Text="{Binding Code4}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="10" Text="{Binding Height5}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="11" Text="{Binding Code5}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="12" Text="{Binding Height6}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="13" Text="{Binding Code6}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="14" Text="{Binding Height7}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="15" Text="{Binding Code7}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="16" Text="{Binding Height8}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="17" Text="{Binding Code8}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="18" Text="{Binding Height9}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="19" Text="{Binding Code9}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="20" Text="{Binding Height10}" TextAlignment="Center" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Column="21" Text="{Binding Code10}" TextAlignment="Center" HorizontalAlignment="Stretch" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -78,6 +118,7 @@
         <Label x:Name="jumpHeightLable" Content="Height" HorizontalAlignment="Left" Margin="24,368,0,0" VerticalAlignment="Top" Width="49"/>
         <Button x:Name="addJumperBtn" Content="Add" HorizontalAlignment="Left" Margin="188,345,0,0" VerticalAlignment="Top" Width="30" Click="AddJumperBtn_Click" />
         <Button x:Name="addJudgeBtn" Content="Add" HorizontalAlignment="Left" Margin="188,196,0,0" VerticalAlignment="Top" Width="30" Click="AddJudgeBtn_Click" />
+        <Label x:Name="competitionHeadline" Content="Competition name" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
 
     </Grid>
 </Page>

@@ -22,12 +22,41 @@ namespace Client.windows
     /// <summary>
     /// Interaction logic for Create.xaml
     /// </summary>
+    /// 
+    //public class JumperViewer
+    //{
+    //    public string JumperName { get; set; }
+    //    public string JumperSSN { get; set; }
+    //    public int Heigt1 { get; set; }
+    //    public string Code1 { get; set; }
+    //    public int Heigt2 { get; set; }
+    //    public string Code2 { get; set; }
+    //    public int Heigt3 { get; set; }
+    //    public string Code3 { get; set; }
+    //    public int Heigt4 { get; set; }
+    //    public string Code4 { get; set; }
+    //    public int Heigt5 { get; set; }
+    //    public string Code5 { get; set; }
+    //    public int Heigt6 { get; set; }
+    //    public string Code6 { get; set; }
+    //    public int Heigt7 { get; set; }
+    //    public string Code7 { get; set; }
+    //    public int Heigt8 { get; set; }
+    //    public string Code8 { get; set; }
+    //    public int Heigt9 { get; set; }
+    //    public string Code9 { get; set; }
+    //    public int Heigt10 { get; set; }
+    //    public string Code10 { get; set; }
+    //}
+
     public partial class CreateContest : Page
     {
         private string selectedHeigt;
         CompetitionWithUser newCompetition = new CompetitionWithUser();
         List<User> users = new List<User>();
         List<User> judges = new List<User>();
+        List<Jump> alljumps = new List<Jump>();
+        //List<JumperViewer> allJumpersWithJumps = new List<JumperViewer>();
         List<User> judgeDatabase = new List<User>();
         List<User> jumperDatabase = new List<User>();
 
@@ -287,12 +316,28 @@ namespace Client.windows
         {
             App.Current.Dispatcher.Invoke((Action)delegate
             {
+                bool found = false;
                 CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
                 List<User> judges = currentPage.judgeDatabase;
+                User tempjudge = new User();
                 foreach (User judge in judges)
                     if (judgeName.Text + judgeSSN.Text == judge.Name + judge.SSN)
-                        newCompetition.Judges.Add(judge);
-                FillJudgesListBox(newCompetition.Judges);
+                    {
+                        foreach (User judge2 in newCompetition.Judges)
+                        {
+                            if (judgeName.Text + judgeSSN.Text == judge2.Name + judge2.SSN)
+                                found = true;
+                        }
+                        tempjudge = judge;
+                    }
+                if (!found)
+                {
+                    newCompetition.Judges.Add(tempjudge);
+                    FillJudgesListBox(newCompetition.Judges);
+                    judgeName.Text = "Name";
+                    judgeSSN.Text = "xxxx-xx-xx-xxxx";
+                }
+
 
             });
 
@@ -302,13 +347,132 @@ namespace Client.windows
         {
             App.Current.Dispatcher.Invoke((Action)delegate
             {
+
+                bool found = false;
                 CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
                 List<User> jumpers = currentPage.jumperDatabase;
+                User tempjumper = new User();
                 foreach (User jumper in jumpers)
                     if (jumperName.Text + jumperSSN.Text == jumper.Name + jumper.SSN)
-                        newCompetition.Judges.Add(jumper);
-                FillUsersListBox(newCompetition.Users);
+                    {
+                        foreach (User jumper2 in newCompetition.Users)
+                        {
+                            if (jumperName.Text + jumperSSN.Text == jumper2.Name + jumper2.SSN)
+                                found = true;
+                        }
+                        tempjumper = jumper;
+                    }
+                if (!found)
+                {
+                    newCompetition.Users.Add(tempjumper);
+                    FillUsersListBox(newCompetition.Users);
+                    SaveJumps(tempjumper.ID);
+                    jumperName.Text = "Name";
+                    jumperSSN.Text = "xxxx-xx-xx-xxxx";
+                }
+
             });
+        }
+
+        private void SaveJumps(int jumperid)
+        {
+            //    public class Jump{
+            //    public int CUID { get; set; } (Ett user id)
+            //    public string Code { get; set; }
+            //    public int Number { get; set; }
+            //    public int Height { get; set; }
+            //}
+            if (jump1.Visibility != Visibility.Hidden && jump1.Text != "" && jump1Height.Text != "")
+            {
+                Jump tempjump1 = new Jump();
+                tempjump1.CUID = jumperid;
+                tempjump1.Code = jump1.Text;
+                tempjump1.Number = 1;
+                tempjump1.Height = Convert.ToInt32(jump1Height.Text);
+                alljumps.Add(tempjump1);
+
+                if (jump2.Visibility != Visibility.Hidden && jump2.Text != "" && jump2Height.Text != "")
+                {
+                    Jump tempjump2 = new Jump();
+                    tempjump2.CUID = jumperid;
+                    tempjump2.Code = jump2.Text;
+                    tempjump2.Number = 1;
+                    tempjump2.Height = Convert.ToInt32(jump2Height.Text);
+                    alljumps.Add(tempjump2);
+                }
+                if (jump3.Visibility != Visibility.Hidden && jump3.Text != "" && jump3Height.Text != "")
+                {
+                    Jump tempjump3 = new Jump();
+                    tempjump3.CUID = jumperid;
+                    tempjump3.Code = jump3.Text;
+                    tempjump3.Number = 1;
+                    tempjump3.Height = Convert.ToInt32(jump3Height.Text);
+                    alljumps.Add(tempjump3);
+                }
+                if (jump4.Visibility != Visibility.Hidden && jump4.Text != "" && jump4Height.Text != "")
+                {
+                    Jump tempjump4 = new Jump();
+                    tempjump4.CUID = jumperid;
+                    tempjump4.Code = jump4.Text;
+                    tempjump4.Number = 1;
+                    tempjump4.Height = Convert.ToInt32(jump4Height.Text);
+                    alljumps.Add(tempjump4);
+                }
+                if (jump5.Visibility != Visibility.Hidden && jump5.Text != "" && jump5Height.Text != "")
+                {
+                    Jump tempjump5 = new Jump();
+                    tempjump5.CUID = jumperid;
+                    tempjump5.Code = jump5.Text;
+                    tempjump5.Number = 1;
+                    tempjump5.Height = Convert.ToInt32(jump5Height.Text);
+                    alljumps.Add(tempjump5);
+                }
+                if (jump6.Visibility != Visibility.Hidden && jump6.Text != "" && jump6Height.Text != "")
+                {
+                    Jump tempjump6 = new Jump();
+                    tempjump6.CUID = jumperid;
+                    tempjump6.Code = jump6.Text;
+                    tempjump6.Number = 1;
+                    tempjump6.Height = Convert.ToInt32(jump6Height.Text);
+                    alljumps.Add(tempjump6);
+                }
+                if (jump7.Visibility != Visibility.Hidden && jump7.Text != "" && jump7Height.Text != "")
+                {
+                    Jump tempjump7 = new Jump();
+                    tempjump7.CUID = jumperid;
+                    tempjump7.Code = jump7.Text;
+                    tempjump7.Number = 1;
+                    tempjump7.Height = Convert.ToInt32(jump7Height.Text);
+                    alljumps.Add(tempjump7);
+                }
+                if (jump8.Visibility != Visibility.Hidden && jump8.Text != "" && jump8Height.Text != "")
+                {
+                    Jump tempjump8 = new Jump();
+                    tempjump8.CUID = jumperid;
+                    tempjump8.Code = jump8.Text;
+                    tempjump8.Number = 1;
+                    tempjump8.Height = Convert.ToInt32(jump8Height.Text);
+                    alljumps.Add(tempjump8);
+                }
+                if (jump9.Visibility != Visibility.Hidden && jump9.Text != "" && jump9Height.Text != "")
+                {
+                    Jump tempjump9 = new Jump();
+                    tempjump9.CUID = jumperid;
+                    tempjump9.Code = jump9.Text;
+                    tempjump9.Number = 1;
+                    tempjump9.Height = Convert.ToInt32(jump9Height.Text);
+                    alljumps.Add(tempjump9);
+                }
+                if (jump10.Visibility != Visibility.Hidden && jump10.Text != "" && jump10Height.Text != "")
+                {
+                    Jump tempjump10 = new Jump();
+                    tempjump10.CUID = jumperid;
+                    tempjump10.Code = jump10.Text;
+                    tempjump10.Number = 1;
+                    tempjump10.Height = Convert.ToInt32(jump10Height.Text);
+                    alljumps.Add(tempjump10);
+                }
+            }
         }
 
         public static void FillJudgesListBox(List<User> judges)
@@ -317,8 +481,11 @@ namespace Client.windows
             App.Current.Dispatcher.Invoke((Action)delegate
             {
                 CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
-                if (judges != null)
-                    currentPage.judgeListBox.ItemsSource = judges;
+                //if (judges != null)
+                //currentPage.judgeListBox.ItemsSource = null;
+                //currentPage.judgeListBox.ItemsSource = judges;
+
+                currentPage.judgeListBox.Items.Add(judges);
             });
         }
         public static void FillUsersListBox(List<User> jumpers)
@@ -328,9 +495,42 @@ namespace Client.windows
             {
                 CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
                 if (jumpers != null)
-                    currentPage.usersListBox.ItemsSource = jumpers;
-            });
+                    currentPage.usersListBox.ItemsSource = null;
+                currentPage.usersListBox.ItemsSource = jumpers;
+                    //currentPage.usersListBox.ItemsSource = jumps;
+                });
+        }
+
+        private void JudgeSSN_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (judgeSSN.Text == "xxxx-xx-xx-xxxx")
+                judgeSSN.Text = "";
+        }
+
+        private void JumperSSN_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (jumperSSN.Text == "xxxx-xx-xx-xxxx")
+                jumperSSN.Text = "";
+        }
+
+        private void JudgeName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (judgeName.Text == "Name")
+                judgeName.Text = "";
+        }
+
+        private void CompetitionTitle_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (competitionTitle.Text != "")
+                competitionHeadline.Content = competitionTitle.Text;
+        }
+
+        private void JumperName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (jumperName.Text == "Name")
+                jumperName.Text = "";
         }
     }
 }
+
 
