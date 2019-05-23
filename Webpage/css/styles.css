@@ -23,8 +23,8 @@
     text-align: center;
 }
 
-    .comp_item :hover {
-        background-color: #C1F5D0;
+    .comp_item:hover {
+        background-color: red;
     }
 
 .active {

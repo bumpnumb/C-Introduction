@@ -775,124 +775,194 @@ namespace Server.services
             switch (somersaults)
             {
                 case 0:
-                    if (height == 1)
-                        A = 0.9f;
-                    else if (height == 3)
-                        A = 1.0f;
-                    else if (height == 5)
-                        A = 0.9f;
-                    else if (height == 7)
-                        A = 1.0f;
-                    else if (height == 10)
-                        A = 1.0f;
+                    switch (height)
+                    {
+                        case 1:
+                            A = 0.9f;
+                            break;
+                        case 3:
+                            A = 1.0f;
+                            break;
+                        case 5:
+                            A = 0.9f;
+                            break;
+                        case 7:
+                        case 10:
+                            A = 1.0f;
+                            break;
+                    }
                     break;
                 case 1:
-                    if (height == 1)
-                        A = 1.1f;
-                    else if (height == 3)
-                        A = 1.3f;
-                    else if (height == 5)
-                        A = 1.1f;
-                    else if (height == 7)
-                        A = 1.3f;
-                    else if (height == 10)
-                        A = 1.3f;
+                    switch (height)
+                    {
+                        case 1:
+                            A = 1.1f;
+                            break;
+                        case 3:
+                            A = 1.3f;
+                            break;
+                        case 5:
+                            A = 1.1f;
+                            break;
+                        case 7:
+                        case 10:
+                            A = 1.3f;
+                            break;
+                    }
                     break;
                 case 2:
-                    if (height == 1)
-                        A = 1.2f;
-                    else if (height == 3)
-                        A = 1.3f;
-                    else if (height == 5)
-                        A = 1.2f;
-                    else if (height == 7)
-                        A = 1.3f;
-                    else if (height == 10)
-                        A = 1.4f;
+                    switch (height)
+                    {
+                        case 1:
+                            A = 1.2f;
+                            break;
+                        case 3:
+                            A = 1.3f;
+                            break;
+                        case 5:
+                            A = 1.2f;
+                            break;
+                        case 7:
+                            A = 1.3f;
+                            break;
+                        case 10:
+                            A = 1.4f;
+                            break;
+                    }
                     break;
                 case 3:
-                    if (height == 1)
-                        A = 1.6f;
-                    else if (height == 3)
-                        A = 1.5f;
-                    else if (height == 5)
-                        A = 1.6f;
-                    else if (height == 7)
-                        A = 1.5f;
-                    else if (height == 10)
-                        A = 1.5f;
+                    switch (height)
+                    {
+                        case 1:
+                            A = 1.6f;
+                            break;
+                        case 3:
+                            A = 1.5f;
+                            break;
+                        case 5:
+                            A = 1.6f;
+                            break;
+                        case 7:
+                        case 10:
+                            A = 1.5f;
+                            break;
+                    }
                     break;
                 case 4:
-                    if (height == 1)
-                        A = 2.0f;
-                    else if (height == 3)
-                        A = 1.8f;
-                    else if (height == 5)
-                        A = 2.0f;
-                    else if (height == 7)
-                        A = 1.8f;
-                    else if (height == 10)
-                        A = 1.9f;
+                    switch (height)
+                    {
+                        case 1:
+                            A = 2.0f;
+                            break;
+                        case 3:
+                            A = 1.8f;
+                            break;
+                        case 5:
+                            A = 2.0f;
+                            break;
+                        case 7:
+                            A = 1.8f;
+                            break;
+                        case 10:
+                            A = 1.9f;
+                            break;
+                    }
                     break;
                 case 5:
-                    if (height == 1)
-                        A = 2.4f;
-                    else if (height == 3)
-                        A = 2.2f;
-                    else if (height == 5)
-                        A = 2.4f;
-                    else if (height == 7)
-                        A = 2.2f;
-                    else if (height == 10)
-                        A = 2.1f;
+                    switch (height)
+                    {
+                        case 1:
+                            A = 2.4f;
+                            break;
+                        case 3:
+                            A = 2.2f;
+                            break;
+                        case 5:
+                            A = 2.4f;
+                            break;
+                        case 7:
+                            A = 2.2f;
+                            break;
+                        case 10:
+                            A = 2.1f;
+                            break;
+                    }
                     break;
                 case 6:
-                    if (height == 1)
-                        A = 2.7f;
-                    else if (height == 3)
-                        A = 2.3f;
-                    else if (height == 5)
-                        A = 2.7f;
-                    else if (height == 7)
-                        A = 2.3f;
-                    else if (height == 10)
-                        A = 2.5f;
+                    switch (height)
+                    {
+                        case 1:
+                            A = 2.7f;
+                            break;
+                        case 3:
+                            A = 2.3f;
+                            break;
+                        case 5:
+                            A = 2.7f;
+                            break;
+                        case 7:
+                            A = 2.3f;
+                            break;
+                        case 10:
+                            A = 2.5f;
+                            break;
+                    }
                     break;
                 case 7:
-                    if (height == 1)
-                        A = 3.0f;
-                    else if (height == 3)
-                        A = 2.8f;
-                    else if (height == 5)
-                        A = 3.0f;
-                    else if (height == 7)
-                        A = 2.8f;
-                    else if (height == 10)
-                        A = 2.7f;
+                    switch (height)
+                    {
+                        case 1:
+                            A = 3.0f;
+                            break;
+                        case 3:
+                            A = 2.8f;
+                            break;
+                        case 5:
+                            A = 3.0f;
+                            break;
+                        case 7:
+                            A = 2.8f;
+                            break;
+                        case 10:
+                            A = 2.7f;
+                            break;
+                    }
                     break;
                 case 8:
-                    if (height == 1)
-                        A = 3.3f;
-                    else if (height == 3)
-                        A = 2.9f;
-                    else if (height == 5)
-                        A = 0f;
-                    else if (height == 7)
-                        A = 3.5f;
-                    else if (height == 10)
-                        A = 3.5f;
+                    switch (height)
+                    {
+                        case 1:
+                            A = 3.3f;
+                            break;
+                        case 3:
+                            A = 2.9f;
+                            break;
+                        case 5:
+                            A = 0f;
+                            break;
+                        case 7:
+                        case 10:
+                            A = 3.5f;
+                            break;
+                    }
                     break;
                 case 9:
-                    if (height == 1)
-                        A = 3.8f;
-                    else if (height == 3)
-                        A = 3.5f;
-                    else if (height == 5)
-                        A = 0f;
-                    else if (height == 7)
-                        A = 3.5f;
-                    else if (height == 10)
-                        A = 3.5f;
+                    switch (height)
+                    {
+                        case 1:
+                            A = 3.8f;
+                            break;
+                        case 3:
+                            A = 3.5f;
+                            break;
+                        case 5:
+                            A = 0f;
+                            break;
+                        case 7:
+                        case 10:
+                            A = 3.5f;
+                            break;
+                    }
                     break;
                 case 11:
                     A = height == 10 ? 4.5f : 0f;

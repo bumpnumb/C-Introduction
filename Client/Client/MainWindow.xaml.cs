@@ -23,7 +23,7 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        public static int ID;
 
         public MainWindow()
         {
@@ -60,6 +60,7 @@ namespace Client
 
         public void setActiveUser(Response activeUser)
         {
+            ID = activeUser.user.ID;
             this.activeAs.Content = "Active as: ";
             this.loggedInLabel.Content = "Logout";
             this.usernameLabel.Content = activeUser.user.Name;

@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
 
 namespace Client.windows
 {
@@ -26,10 +28,13 @@ namespace Client.windows
     {
         private string selectedHeigt;
         CompetitionWithUser newCompetition = new CompetitionWithUser();
+        List<Jump> newJumps = new List<Jump>();
         List<User> users = new List<User>();
         List<User> judges = new List<User>();
-        List<User> judgeDatabase = new List<User>();
-        List<User> jumperDatabase = new List<User>();
+        static List<User> judgeDatabase = new List<User>();
+        static List<string> judgeDatabaseName = new List<string>();
+        static List<User> jumperDatabase = new List<User>();
+        static List<string> jumperDatabaseName = new List<string>();
 
         private ObservableCollection<string> items = new ObservableCollection<string>()
         {
@@ -71,12 +76,20 @@ namespace Client.windows
         {
             App.Current.Dispatcher.Invoke((Action)delegate
             {
-                CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
-                if (users[0].Group == 0)
-                    currentPage.jumperDatabase = users;
-                else
-                    currentPage.judgeDatabase = users;
+                foreach (User u in users)
+                {
+                    if (u.Group == GroupType.User)
+                    {
+                        jumperDatabase.Add(u);
+                        jumperDatabaseName.Add(u.Name);
 
+                    }
+                    else if (u.Group == GroupType.Judge)
+                    {
+                        judgeDatabase.Add(u);
+                        judgeDatabaseName.Add(u.Name);
+                    }
+                }
             });
         }
 
@@ -85,20 +98,25 @@ namespace Client.windows
             App.MainWindowRef.Main.Navigate(new AdminMainPage());
         }
 
-        public IEnumerable Items {
+        public IEnumerable Items
+        {
             get { return items; }
         }
 
-        public string SelectedItem {
+        public string SelectedItem
+        {
             get { return selectedHeigt; }
-            set {
+            set
+            {
                 selectedHeigt = value;
                 OnPropertyChanged("SelectedHeight");
             }
         }
 
-        public string NewItem {
-            set {
+        public string NewItem
+        {
+            set
+            {
                 if (SelectedItem != null)
                 {
                     return;
@@ -124,6 +142,8 @@ namespace Client.windows
 
         private void JumpHeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            jumpHeightLable.Visibility = Visibility.Visible;
+            addJumperBtn.Visibility = Visibility.Visible;
             switch (SelectedItem)
             {
                 case "4":
@@ -283,53 +303,322 @@ namespace Client.windows
             }
         }
 
-        private void AddJudgeBtn_Click(object sender, RoutedEventArgs e)
+        private List<string> ReadJumps()
         {
-            App.Current.Dispatcher.Invoke((Action)delegate
+            List<string> jumps = new List<string>();
+            int j = Int32.Parse(jumpHeight.SelectedItem.ToString());
+            if (j >= 4)
             {
-                CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
-                List<User> judges = currentPage.judgeDatabase;
-                foreach (User judge in judges)
-                    if (judgeName.Text + judgeSSN.Text == judge.Name + judge.SSN)
-                        newCompetition.Judges.Add(judge);
-                FillJudgesListBox(newCompetition.Judges);
+                jumps.Add(jump1.Text.ToString() + "%" + jump1Height.Text.ToString());
+                jumps.Add(jump2.Text.ToString() + "%" + jump2Height.Text.ToString());
+                jumps.Add(jump3.Text.ToString() + "%" + jump3Height.Text.ToString());
+                jumps.Add(jump4.Text.ToString() + "%" + jump4Height.Text.ToString());
+            }
+            if (j >= 5)
+                jumps.Add(jump5.Text.ToString() + "%" + jump5Height.Text.ToString());
+            if (j >= 6)
+                jumps.Add(jump6.Text.ToString() + "%" + jump6Height.Text.ToString());
+            if (j >= 7)
+                jumps.Add(jump7.Text.ToString() + "%" + jump7Height.Text.ToString());
+            if (j >= 8)
+                jumps.Add(jump8.Text.ToString() + "%" + jump8Height.Text.ToString());
+            if (j >= 9)
+                jumps.Add(jump9.Text.ToString() + "%" + jump9Height.Text.ToString());
+            if (j >= 10)
+                jumps.Add(jump10.Text.ToString() + "%" + jump10Height.Text.ToString());
 
-            });
+            foreach (string jt in jumps)
+            {
+                if (jt == "%")
+                    jumps.Remove(jt);
+            }
 
+            return jumps;
         }
-
         private void AddJumperBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.Current.Dispatcher.Invoke((Action)delegate
+            List<string> jumps = new List<string>();
+            jumps.AddRange(ReadJumps());
+            List<Jump> addJumps = new List<Jump>();
+            string visibleString = "";
+            foreach (string j in jumps)
             {
-                CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
-                List<User> jumpers = currentPage.jumperDatabase;
-                foreach (User jumper in jumpers)
-                    if (jumperName.Text + jumperSSN.Text == jumper.Name + jumper.SSN)
-                        newCompetition.Judges.Add(jumper);
-                FillUsersListBox(newCompetition.Users);
-            });
+                visibleString += j + "   ";
+                Jump temp = new Jump();
+                temp.Code = j.Split('%')[0];
+                temp.Height = Int32.Parse(j.Split('%')[1]);
+
+                newJumps.Add(temp);
+            }
+
         }
 
-        public static void FillJudgesListBox(List<User> judges)
+        private void JudgeName_TextChanged(object sender, TextChangedEventArgs e)
         {
-
-            App.Current.Dispatcher.Invoke((Action)delegate
+            judgeNameDropdown.Items.Clear();
+            if (judgeName.Text.Trim() != "")
             {
-                CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
-                if (judges != null)
-                    currentPage.judgeListBox.ItemsSource = judges;
-            });
+                string regexPattern = (judgeName.Text.ToString()) + "\\w*";
+                regexPattern = char.ToUpper(regexPattern[0]) + regexPattern.Substring(1); //prvo slovo veliko
+                foreach (User u in judgeDatabase)
+                {
+                    Match match = Regex.Match(u.Name, regexPattern, RegexOptions.IgnoreCase);
+                    if (match.Success && match.Value != "")
+                    {
+                        int index = match.Index; //where in original this was found.
+                        judgeNameDropdown.Items.Add(match.Value.ToString() + "    " + judgeDatabase[index].SSN.ToString());
+                        judgeNameDropdown.Visibility = Visibility.Visible;
+                        int height = judgeNameDropdown.Items.Count * 21;
+                        if (height > 200)
+                            height = 200;
+                        judgeNameDropdown.Height = height;
+                        judgeNameDropdown.SelectedItem = judgeNameDropdown.Items.GetItemAt(0);
+                    }
+                }
+            }
+
+            if (judgeNameDropdown.Items.IsEmpty || judgeNameDropdown.Items.Count == judgeDatabase.Count)
+            {
+                judgeNameDropdown.Visibility = Visibility.Collapsed;
+                if (judgeNameDropdown.Items.Count == judgeDatabase.Count) judgeNameDropdown.Items.Clear();
+            }
         }
-        public static void FillUsersListBox(List<User> jumpers)
+        private void judgeNameDropdown_KeyDown(object sender, KeyEventArgs e)
         {
-
-            App.Current.Dispatcher.Invoke((Action)delegate
+            if (e.Key == Key.Tab)
             {
-                CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
-                if (jumpers != null)
-                    currentPage.usersListBox.ItemsSource = jumpers;
-            });
+                string text = judgeNameDropdown.SelectedItem as string;
+                judgeNameDropdown.Visibility = Visibility.Collapsed;
+                judgeNameDropdown.Items.Clear();
+
+                string[] arr = text.Split(new string[] { "    " }, StringSplitOptions.None);
+
+                judgeName.Text = "";
+                User u = judgeDatabase.FirstOrDefault(x => x.SSN == arr[1].Trim());
+                newCompetition.Judges.Add(u);
+                judgeListBox.Items.Add("" + u.Name + "    " + u.SSN);
+
+            }
+
+        }
+        private void JumperName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            jumperNameDropdown.Items.Clear();
+            if (jumperName.Text.Trim() != "")
+            {
+                string regexPattern = (jumperName.Text.ToString()) + "\\w*";
+                regexPattern = char.ToUpper(regexPattern[0]) + regexPattern.Substring(1); //prvo slovo veliko
+                foreach (User u in jumperDatabase)
+                {
+                    Match match = Regex.Match(u.Name, regexPattern, RegexOptions.IgnoreCase);
+                    if (match.Success && match.Value != "")
+                    {
+                        int index = match.Index; //where in original this was found.
+                        jumperNameDropdown.Items.Add(match.Value.ToString() + "    " + jumperDatabase[index].SSN.ToString());
+                        jumperNameDropdown.Visibility = Visibility.Visible;
+                        int height = jumperNameDropdown.Items.Count * 21;
+                        if (height > 200)
+                            height = 200;
+                        jumperNameDropdown.Height = height;
+                        jumperNameDropdown.SelectedItem = jumperNameDropdown.Items.GetItemAt(0);
+                    }
+                }
+            }
+
+            if (jumperNameDropdown.Items.IsEmpty || jumperNameDropdown.Items.Count == jumperDatabase.Count)
+            {
+                jumperNameDropdown.Visibility = Visibility.Collapsed;
+                if (jumperNameDropdown.Items.Count == jumperDatabase.Count) jumperNameDropdown.Items.Clear();
+            }
+        }
+        private void jumperNameDropdown_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab)
+            {
+                if (usersListBox.Items.Count > 0)
+                {
+                    string[] jumps = usersListBox.Items[usersListBox.Items.Count - 1].ToString()
+                        .Split(new string[] { "    " }, StringSplitOptions.None);
+
+                    if (jumpHeight.SelectedItem == null)
+                    {
+                        SetJumpNumberColor(210, 167, 167);
+                        return;
+                    }
+
+                    if (jumps.Length < Int32.Parse(jumpHeight.SelectedItem.ToString()))
+                    {
+                        SetJumpBackgroundColor(210, 167, 167);
+                        return;
+                    }
+                }
+
+                string text = jumperNameDropdown.SelectedItem as string;
+                jumperNameDropdown.Visibility = Visibility.Collapsed;
+                jumperNameDropdown.Items.Clear();
+
+                string[] arr = text.Split(new string[] { "    " }, StringSplitOptions.None);
+
+                jumperName.Text = "";
+                User u = jumperDatabase.FirstOrDefault(x => x.SSN == arr[1].Trim());
+                newCompetition.Users.Add(u);
+                usersListBox.Items.Add("" + u.Name + "    " + u.SSN);
+
+            }
+
+        }
+
+        private void SetJumpNumberColor(int R, int G, int B)
+        {
+            jumpHeight.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+        }
+
+        private void SetJumpBackgroundColor(int R, int G, int B)
+        {
+            jump1.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump2.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump3.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump4.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump5.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump6.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump7.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump8.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump9.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump10.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump1Height.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump2Height.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump3Height.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump4Height.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump5Height.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump6Height.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump7Height.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump8Height.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump9Height.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+            jump10Height.Background = new SolidColorBrush(Color.FromRgb((byte)R, (byte)G, (byte)B));
+        }
+
+        private void ClearJumps()
+        {
+            jump1.Text = "";
+            jump2.Text = "";
+            jump3.Text = "";
+            jump4.Text = "";
+            jump5.Text = "";
+            jump6.Text = "";
+            jump7.Text = "";
+            jump8.Text = "";
+            jump9.Text = "";
+            jump10.Text = "";
+            jump1Height.Text = "";
+            jump2Height.Text = "";
+            jump3Height.Text = "";
+            jump4Height.Text = "";
+            jump5Height.Text = "";
+            jump6Height.Text = "";
+            jump7Height.Text = "";
+            jump8Height.Text = "";
+            jump9Height.Text = "";
+            jump10Height.Text = "";
+        }
+        private void RevertColor()
+        {
+            //this.Background = new SolidColorBrush(Color.FromRgb((byte)255, (byte)0, (byte)0));
+            //this.Background = ClearValue(TextBox.BorderBrushProperty);
+            jump1.ClearValue(TextBox.BorderBrushProperty);
+            jump2.ClearValue(TextBox.BorderBrushProperty);
+            jump3.ClearValue(TextBox.BorderBrushProperty);
+            jump4.ClearValue(TextBox.BorderBrushProperty);
+            jump5.ClearValue(TextBox.BorderBrushProperty);
+            jump6.ClearValue(TextBox.BorderBrushProperty);
+            jump7.ClearValue(TextBox.BorderBrushProperty);
+            jump8.ClearValue(TextBox.BorderBrushProperty);
+            jump9.ClearValue(TextBox.BorderBrushProperty);
+            jump10.ClearValue(TextBox.BorderBrushProperty);
+            jump1Height.ClearValue(TextBox.BorderBrushProperty);
+            jump2Height.ClearValue(TextBox.BorderBrushProperty);
+            jump3Height.ClearValue(TextBox.BorderBrushProperty);
+            jump4Height.ClearValue(TextBox.BorderBrushProperty);
+            jump5Height.ClearValue(TextBox.BorderBrushProperty);
+            jump6Height.ClearValue(TextBox.BorderBrushProperty);
+            jump7Height.ClearValue(TextBox.BorderBrushProperty);
+            jump8Height.ClearValue(TextBox.BorderBrushProperty);
+            jump9Height.ClearValue(TextBox.BorderBrushProperty);
+            jump10Height.ClearValue(TextBox.BorderBrushProperty);
+        }
+
+        private void AddJumps(object sender, KeyEventArgs e)
+        {
+            DependencyObject dpobj = sender as DependencyObject;
+            string name = dpobj.GetValue(FrameworkElement.NameProperty) as string;
+            if (e.Key == Key.Tab && name == "jump" + jumpHeight.SelectedItem.ToString())
+            {
+                List<string> jumps = new List<string>();
+                jumps.AddRange(ReadJumps());
+                if (jumps.Count == Int32.Parse(jumpHeight.SelectedItem.ToString()))
+                {
+
+                    List<Jump> addJumps = new List<Jump>();
+                    string visibleString = "";
+                    foreach (string j in jumps)
+                    {
+                        visibleString += j + "    ";
+                        Jump temp = new Jump();
+                        temp.CUID = newCompetition.Users[newCompetition.Users.Count - 1].ID;
+                        temp.Code = j.Split('%')[0];
+                        temp.Height = Int32.Parse(j.Split('%')[1]);
+
+                        newJumps.Add(temp);
+                    }
+
+                    usersListBox.Items.Add(visibleString);
+                    //usersListBox.Items.Add(MainWindow.ID.ToString());
+
+                    ClearJumps();
+                    RevertColor();
+                }
+            }
+            else if (e.Key == Key.Tab && name.EndsWith("t"))
+            {
+                TraversalRequest tRequest = new TraversalRequest(FocusNavigationDirection.Right);
+                UIElement keyboardFocus = Keyboard.FocusedElement as UIElement;
+
+                if (keyboardFocus != null)
+                {
+                    keyboardFocus.MoveFocus(tRequest);
+                }
+
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Tab)
+            {
+                TraversalRequest tRequest = new TraversalRequest(FocusNavigationDirection.Left);
+                UIElement keyboardFocus = Keyboard.FocusedElement as UIElement;
+
+                if (keyboardFocus != null)
+                {
+                    keyboardFocus.MoveFocus(tRequest);
+                }
+
+                tRequest = new TraversalRequest(FocusNavigationDirection.Down);
+                keyboardFocus = Keyboard.FocusedElement as UIElement;
+
+                if (keyboardFocus != null)
+                {
+                    keyboardFocus.MoveFocus(tRequest);
+                }
+
+                e.Handled = true;
+            }
+        }
+
+        private void SaveCompetition(object sender, RoutedEventArgs e)
+        {
+            Message msg = new Message();
+            msg.Type = MessageType.Competition;
+            msg.Data = "CreateCompetition\r\n" + JsonConvert.SerializeObject(newCompetition) + "\r\n" +
+                       JsonConvert.SerializeObject(newJumps);
+
+            ClientControll.Send(msg);
         }
     }
 }
