@@ -278,7 +278,7 @@ namespace Server.services
                             CodeString += "1 Twist";    //5112
                         }
                     }
-                    if (chars[2] == 2)
+                    else if (chars[2] == 2)
                     {
                         CodeString += "Somersault ";
                         if (chars[3] == 1)
@@ -298,7 +298,7 @@ namespace Server.services
                             CodeString += "3 Twists";   //5126
                         }
                     }
-                    if (chars[2] == 3)
+                    else if (chars[2] == 3)
                     {
                         CodeString += "1 1/2 Somersaults ";
                         if (chars[3] == 1)
@@ -322,34 +322,28 @@ namespace Server.services
                             CodeString += "4 Twists";    //5138
                         }
                     }
-                    if (chars[2] == 5)
+                    else if (chars[2] == 5)
                     {
                         CodeString += "2 1/2 Somersaults";
-                        CodeString += "2 1/2 Somersaults ";
                         if (chars[3] == 1)
                         {
-                            CodeString += "1/2 Twist";
                             CodeString += "1/2 Twist";  //5151
                         }
                         else if (chars[3] == 2)
                         {
-                            CodeString += "1 Twist";
                             CodeString += "1 Twist";    //5152
                         }
                         else if (chars[3] == 4)
                         {
-                            CodeString += "2 Twists";
                             CodeString += "2 Twists";   //5154
                         }
                         else if (chars[3] == 6)
                         {
-                            CodeString += "3 Twist";
                             CodeString += "3 Twist";    //5156
                         }
                     }
-                    if (chars[2] == 7)
+                    else if (chars[2] == 7)
                     {
-
                         CodeString += "3 1/2 Somersaults ";
                         if (chars[3] == 2)
                         {
@@ -357,7 +351,7 @@ namespace Server.services
                         }
                     }
                 }
-                if (chars[1] == 2)
+                else if (chars[1] == 2)
                 {
 
                     CodeString += "Back ";
@@ -536,11 +530,11 @@ namespace Server.services
                         {
                             CodeString += "1/2 Twist";  //5371
                         }
-                        if (chars[3] == 3)
+                        else if (chars[3] == 3)
                         {
                             CodeString += "1 1/2 Twists";   //5373
                         }
-                        if (chars[3] == 5)
+                        else if (chars[3] == 5)
                         {
                             CodeString += "2 1/2 Twists";   //5375
                         }
@@ -571,10 +565,10 @@ namespace Server.services
                         if(chars[3] == 2){
                             CodeString += "1 Twist";    //5432
                         }
-                        if (chars[3] == 4){
+                        else if (chars[3] == 4){
                             CodeString += "2 Twist";    //5434
                         }
-                        if (chars[3] == 6){
+                        else if (chars[3] == 6){
                             CodeString += "3 Twist";    //5436
                         }
                     }
