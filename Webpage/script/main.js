@@ -106,9 +106,9 @@ function viewCompetition(data) {
 
         clone.getElementsByClassName("jump_data_holder")[0].innerHTML = data.Comp.Users[j].Name;
         var B = 0;
-        for (var k = 0; k < data.Jumps.Length; k++) {
-            if (data.Jumps[k].CUID == data.Comp.Users[j].ID) {
-                clone.getElementsByClassName("jump_data_holder")[b + 1].innerHTML = data.Jumps[k].Name;
+        for (var k = 0; k < data.Jumps.length; k++) {
+            if (data.Jumps[k].CUID === data.Comp.Users[j].ID) {
+                clone.getElementsByClassName("jump_data_holder")[B + 1].innerHTML = data.Jumps[k].Name;
                 B++;
             }
             //clone.getElementsByClassName("jump_data_holder")[k + 1].innerHTML = getScoreByID(data.Comp.Users[j].ID, k , data.Results, data.Comp.Jumps);
