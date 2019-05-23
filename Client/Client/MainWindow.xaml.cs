@@ -23,7 +23,7 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        public static int ID;
 
         public MainWindow()
         {
@@ -63,6 +63,7 @@ namespace Client
             this.activeAs.Content = "Active as: ";
             this.loggedInLabel.Content = "Logout";
             this.usernameLabel.Content = activeUser.user.Name;
+            ID = activeUser.user.ID;
         }
 
         private void LoggedInLabel_MouseEnter(object sender, MouseEventArgs e)

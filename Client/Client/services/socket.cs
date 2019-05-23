@@ -125,6 +125,14 @@ namespace Client.services
                         CreateContest.FillUserDatabase(jumpers);
                     });
                     break;
+                case MessageType.Result: //actually another message type, Result is a placeholder
+                    CompetitionWithResult data = JsonConvert.DeserializeObject<CompetitionWithResult>(this.Data);
+                    App.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        string currentpage = App.MainWindowRef.Main.Content.ToString();
+                        JudgePage.CompetitionData(data);
+                    });
+                    break;
                 default:
                     break;
             }
