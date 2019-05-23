@@ -119,58 +119,66 @@ namespace Server.services
             c.Jumps = CompInfo.Jumps;
 
             context.Competitions.Add(c);
+            context.SaveChanges();
 
-            List<int> CUIDs = new List<int>();
+
+            List<CompetitionUser> CUIDs = new List<CompetitionUser>();
 
             foreach (User userJumper in CompInfo.Users)
             {
                 CompetitionUser temp = new CompetitionUser();
-                temp.CID = CompInfo.ID;
+                temp.CID = c.ID;
                 temp.UID = userJumper.ID;
                 context.CompetitionUsers.Add(temp);
-                CUIDs.Add(temp.ID);
+                context.SaveChanges();
+                CompetitionUser tmp = new CompetitionUser();
+                tmp.ID = temp.ID;
+                tmp.UID = temp.UID;
+                CUIDs.Add(tmp);
             }
 
             foreach (User userJudge in CompInfo.Judges)
             {
                 CompetitionJudge temp = new CompetitionJudge();
-                temp.CID = CompInfo.ID;
+                temp.CID = c.ID;
                 temp.UID = userJudge.ID;
                 context.CompetitionJudges.Add(temp);
             }
 
-            //....................../´¯/)
-            //....................,/¯../ 
-            //.................../..../ 
-            //............./´¯/'...'/´¯¯`·¸ 
-            //........../'/.../..../......./¨¯\ 
-            //........('(...´...´.... ¯~/'...') 
-            //.........\.................'...../ 
-            //..........''...\.......... _.·´ 
-            //............\..............( 
-            //..............\.............\...
+
+
+            List<Jump> orderedJumps = jumps.OrderBy(o => o.CUID).ToList();
+            int n = 0;
+            for (int i = 0; i < orderedJumps.Count; i++)
+            {
+                if (i % c.Jumps == 0 && i != 0)
+                    n++;
+
+                orderedJumps[i].GlobalNumber = orderedJumps[i].Number * (orderedJumps.Count / c.Jumps) + n;
+
+            }
 
 
 
-            //public int CUID { get; set; } jump.cuid är just nu en id på en person.
-            //public string Code { get; set; }
-            //public string Name { get; set; }
-            //public float Difficulty { get; set; }
-            //public int Number { get; set; }
-
-
-            foreach (Jump j in jumps)
+            foreach (Jump j in orderedJumps)
             {
                 Jump temp = new Jump();
-                foreach (int ID in CUIDs) //cuid is a compuser ID
+
+                for (int i = 0; i < CUIDs.Count; i++) //for all CU stored
+                // CUIDs.ID == compuser.ID, CUIDs.UID == user ID
                 {
-                    if (ID == j.CUID)// this means our jump belongs to this compuser
+                    // currently, j.CUID == compuser.UID but this will be changed to compuser.ID
+                    if (CUIDs[i].UID == j.CUID)// this means our jump belongs to this compuser
                     {
-                        temp.CUID = ID;
+                        temp.CUID = CUIDs[i].ID; //here
                         temp.Code = j.Code;
                         temp.Number = j.Number;
+                        temp.Height = j.Height;
+
+                        temp.GlobalNumber = j.GlobalNumber;
+
                         Jump t = JumpHelper.ParseDifficulty(j.Code, j.Height);  //denna returnerar aldrig t.Name?
-                        temp.Name = t.Name;
+                        temp.Name = "to be fixed";
                         temp.Difficulty = t.Difficulty;
                         context.Jumps.Add(temp);
                     }

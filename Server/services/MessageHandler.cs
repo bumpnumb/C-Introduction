@@ -137,22 +137,6 @@ namespace Server.services
                         case "CreateCompetition":
                             rsp.Type = MessageType.Competition;
 
-                            //this needs a lot of work.
-
-                            //My thoughts:
-                            //part[0] will be "CreateCompetition"
-                            //part[1] will be some json looking like this:
-                            //{"Name": x,
-                            // "somedata": ifneeded, I think start-time and finish-time will be here?
-                            // "Judges":[{"ID": y1, "ID": y2, "ID": y3, "ID": y4, "ID": y5 .....}],
-                            // "Divers":[{"ID": y1, "ID": y2, "ID": y3, "ID": y4, "ID": y5 .....}]
-                            //}
-
-                            //send that from client side
-                            //parse part[1] using jsonconvert
-
-                            //send object to function
-                            //function loops thhrough divers and judges pushing querry to db.
 
                             CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
                             List<Jump> jumps = JsonConvert.DeserializeObject<List<Jump>>(part[2]);

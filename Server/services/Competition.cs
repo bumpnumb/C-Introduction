@@ -20,9 +20,10 @@ namespace Server.services
         /// <summary>
         /// Uses String Code and Height To fetch jump stats
         /// </summary>
-        public static string GenerateJumpNameFromCode(string code, int height)
+        public static string GenerateJumpNameFromCode(string code)
         {
-            Jump j = ParseDifficulty(code, height);
+            //Jump j = ParseDifficulty(code, height);
+
 
             char[] chars = code.ToCharArray();
             string CodeString = "";
@@ -737,7 +738,13 @@ namespace Server.services
 
         public static Jump ParseDifficulty(string code, int height)
         {
-            string[] letters = code.Split(',');
+            Jump j = new Jump();
+
+            j.Name = GenerateJumpNameFromCode(code);
+
+
+
+                string[] letters = code.Split(',');
             float A = 0, B = 0, C = 0, D = 0, E = 0;
 
             int position = Int32.Parse(letters[0]);
@@ -760,7 +767,6 @@ namespace Server.services
             D = CalculateD(position, letter2, somersaults, height, twists);
             E = CalculateE(position, letter2, somersaults, height, twists);
 
-            Jump j = new Jump();
             j.Difficulty = A + B + C + D + E;
             return j;
         }
