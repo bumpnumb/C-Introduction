@@ -118,6 +118,9 @@ namespace Server
             Database db = new Database();
             db.CreateCompetition(c, jumps);
 
+            string test = JumpHelper.GenerateJumpNameFromCode("5,2,3,9,B");
+            Console.WriteLine(test);
+
             //Jump j = JumpHelper.ParseDifficulty("5,3,5,5,B", 3);
             //Console.WriteLine(j.Difficulty);
 

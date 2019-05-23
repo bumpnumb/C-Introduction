@@ -177,7 +177,7 @@ namespace Server.services
 
                         temp.GlobalNumber = j.GlobalNumber;
 
-                        Jump t = JumpHelper.ParseDifficulty(j.Code, j.Height);  //denna returnerar aldrig t.Name?
+                        Jump t = JumpHelper.ParseDifficulty(j.Code, j.Height);  
                         temp.Name = "to be fixed";
                         temp.Difficulty = t.Difficulty;
                         context.Jumps.Add(temp);
