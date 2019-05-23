@@ -43,4 +43,18 @@ namespace Client.services
         public string SSN { get; set; }
 
     }
+
+    public class Result
+    {
+        public int JumpID { get; set; }
+        public int JudgeID { get; set; }
+        public float Score { get; set; }
+    }
+
+    public class CompetitionWithResult
+    {
+        public CompetitionWithUser Comp { get; set; }
+        public List<Jump> Jumps { get; set; }
+        public List<Result> Results { get; set; }
+    }
 }
