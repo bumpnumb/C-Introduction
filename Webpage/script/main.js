@@ -88,7 +88,7 @@ function viewCompetition(data) {
     var clone;
     for (var i = 0; i < data.Comp.Jumps; i++) {
         clone = ghost_item.cloneNode(true);
-        clone.innerHTML = "Jump " + i + 1;
+        clone.innerHTML = "Jump " + (parseInt(i) + 1);
         ghost.appendChild(clone);
     }
 
@@ -99,7 +99,7 @@ function viewCompetition(data) {
         clone.style.borderTop = "1px solid black";
         clone.style.borderLeft = "1px solid black";
         clone.style.borderRight = "1px solid black";
-        if (j == data.Comp.Users.length - 1) {
+        if (j === data.Comp.Users.length - 1) {
             clone.style.borderBottom = "1px solid black";
         }
 
