@@ -30,6 +30,8 @@ function hsvToRgb(h, s, v) {
 
 var host = window.location.origin.replace("http", "ws");
 var socket = new WebSocket("ws://127.0.0.1:80");
+var nIntervId;
+var watchID = -1;
 
 socket.onopen = function (openEvent) {
     console.log("Socket connection is open.");
@@ -70,14 +72,24 @@ function switchWindow(window) {
     switchTo.classList.add("active");
 }
 
+function clearCompetition() {
+    var main = document.getElementById("single_competition_holder");
+    var firstChilds = main.getElementsByClassName("jump_holder");
+    for (var j = firstChilds.length-1; j > 0; j--) {
+
+        main.removeChild(firstChilds[j]);
+    }
+    var firstChildsInner = firstChilds[0].getElementsByClassName("jump_data_holder");
+    for (var k = firstChildsInner.length -1; k > 0; k--) {
+        firstChildsInner[k].parentNode.removeChild(firstChildsInner[k]);
+    }
+}
+
 function viewCompetition(data) {
     console.log(data);
     switchWindow("single_competition_holder");
 
     document.getElementsByClassName("title")[0].innerHTML = data.Comp.Name;
-
-
-
 
     var ghost = document.getElementsByClassName("jump_holder")[0];
     var dest = document.getElementById("single_competition_holder");
@@ -119,15 +131,21 @@ function viewCompetition(data) {
     }
 }
 
-//function getScoreByID(userID, jump, results, jumps) {
-//    var scores;
+function watchComp() {
+    if (watchID !== -1) {
+        sendTextMessage("GET COMPETITION\r\n" + watchID);
+        console.log('Still watching : ' + watchID);
+    }
+}
 
-//    for (var i = 0; i < jumps.length; i++) {
-//        if (jumps[i].CUID == userID) {
-
-//        }
-//    }
-//}
+function watch(ID) {
+    watchID = ID;
+    nIntervId = setInterval(watchComp, 5000);
+}
+function stopWatching() {
+    watchID = -1;
+    switchWindow("overview_competition_holder");
+}
 
 function generateCompetitions(num, data) {
     switchWindow("overview_competition_holder");
@@ -151,11 +169,15 @@ function generateCompetitions(num, data) {
 
 
         clone.value = data[i].ID;
-        clone.onmousedown = function () { sendTextMessage("GET COMPETITION\r\n" + this.value); };
+            
+        clone.onmousedown = function () { watch(this.value), sendTextMessage("GET COMPETITION\r\n" + this.value); };
 
         dest.appendChild(clone);
     }
 }
+
+document.getElementsByClassName("backButton")[0].onmousedown = function () { stopWatching()};
+
 
 function hexDecode(hex) {
     var j;
@@ -197,6 +219,7 @@ function decodeMessage(messageObj) {
             generateCompetitions(messageObj.Num, messageObj.Data);
             break;
         case "SingleCompetition":
+            clearCompetition();
             viewCompetition(messageObj.Data);
             break;
 
