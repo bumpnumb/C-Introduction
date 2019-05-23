@@ -30,6 +30,8 @@ function hsvToRgb(h, s, v) {
 
 var host = window.location.origin.replace("http", "ws");
 var socket = new WebSocket("ws://127.0.0.1:80");
+var nIntervId;
+var watchID = -1;
 
 socket.onopen = function (openEvent) {
     console.log("Socket connection is open.");
@@ -70,14 +72,24 @@ function switchWindow(window) {
     switchTo.classList.add("active");
 }
 
+function clearCompetition() {
+    var main = document.getElementById("single_competition_holder");
+    var firstChilds = main.getElementsByClassName("jump_holder");
+    for (var j = firstChilds.length-1; j > 0; j--) {
+
+        main.removeChild(firstChilds[j]);
+    }
+    var firstChildsInner = firstChilds[0].getElementsByClassName("jump_data_holder");
+    for (var k = firstChildsInner.length -1; k > 0; k--) {
+        firstChildsInner[k].parentNode.removeChild(firstChildsInner[k]);
+    }
+}
+
 function viewCompetition(data) {
     console.log(data);
     switchWindow("single_competition_holder");
 
     document.getElementsByClassName("title")[0].innerHTML = data.Comp.Name;
-
-
-
 
     var ghost = document.getElementsByClassName("jump_holder")[0];
     var dest = document.getElementById("single_competition_holder");
@@ -88,7 +100,7 @@ function viewCompetition(data) {
     var clone;
     for (var i = 0; i < data.Comp.Jumps; i++) {
         clone = ghost_item.cloneNode(true);
-        clone.innerHTML = "Jump " + i + 1;
+        clone.innerHTML = "Jump " + (parseInt(i) + 1);
         ghost.appendChild(clone);
     }
 
@@ -99,13 +111,19 @@ function viewCompetition(data) {
         clone.style.borderTop = "1px solid black";
         clone.style.borderLeft = "1px solid black";
         clone.style.borderRight = "1px solid black";
-        if (j == data.Comp.Users.length - 1) {
+        if (j === data.Comp.Users.length - 1) {
             clone.style.borderBottom = "1px solid black";
         }
 
 
         clone.getElementsByClassName("jump_data_holder")[0].innerHTML = data.Comp.Users[j].Name;
-        for (var k = 0; k < data.Comp.Jumps; k++) {
+        var B = 0;
+        for (var k = 0; k < data.Jumps.length; k++) {
+            if (data.Jumps[k].CUID === data.Comp.Users[j].ID) {
+                clone.getElementsByClassName("jump_data_holder")[B + 1].innerHTML = data.Jumps[k].Name;
+                clone.getElementsByClassName("jump_data_holder")[B + 1].style.breakInside = "avoid";
+                B++;
+            }
             //clone.getElementsByClassName("jump_data_holder")[k + 1].innerHTML = getScoreByID(data.Comp.Users[j].ID, k , data.Results, data.Comp.Jumps);
             //vi behöver hoppnummer också
         }
@@ -113,15 +131,21 @@ function viewCompetition(data) {
     }
 }
 
-//function getScoreByID(userID, jump, results, jumps) {
-//    var scores;
+function watchComp() {
+    if (watchID !== -1) {
+        sendTextMessage("GET COMPETITION\r\n" + watchID);
+        console.log('Still watching : ' + watchID);
+    }
+}
 
-//    for (var i = 0; i < jumps.length; i++) {
-//        if (jumps[i].CUID == userID) {
-
-//        }
-//    }
-//}
+function watch(ID) {
+    watchID = ID;
+    nIntervId = setInterval(watchComp, 5000);
+}
+function stopWatching() {
+    watchID = -1;
+    switchWindow("overview_competition_holder");
+}
 
 function generateCompetitions(num, data) {
     switchWindow("overview_competition_holder");
@@ -145,11 +169,15 @@ function generateCompetitions(num, data) {
 
 
         clone.value = data[i].ID;
-        clone.onmousedown = function () { sendTextMessage("GET COMPETITION\r\n" + this.value); };
+            
+        clone.onmousedown = function () { watch(this.value), sendTextMessage("GET COMPETITION\r\n" + this.value); };
 
         dest.appendChild(clone);
     }
 }
+
+document.getElementsByClassName("backButton")[0].onmousedown = function () { stopWatching()};
+
 
 function hexDecode(hex) {
     var j;
@@ -191,6 +219,7 @@ function decodeMessage(messageObj) {
             generateCompetitions(messageObj.Num, messageObj.Data);
             break;
         case "SingleCompetition":
+            clearCompetition();
             viewCompetition(messageObj.Data);
             break;
 
