@@ -276,6 +276,13 @@ namespace Server.services
                 cwr.Jumps = context.Jumps.Where(jump =>
                     context.CompetitionUsers.Any(cu => jump.CUID == cu.ID && cu.CID == cwr.Comp.ID)).ToList();
 
+                foreach (Jump j in cwr.Jumps)
+                {
+                    CompetitionUser temp = context.CompetitionUsers.FirstOrDefault(x => x.ID == j.CUID);
+                    j.CUID = temp.UID;
+                }
+
+
                 cwr.Results = context.Results.Where(res => cwr.Jumps.Any(jump => res.JumpID == jump.ID)).ToList();
 
 

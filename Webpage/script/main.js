@@ -88,7 +88,7 @@ function viewCompetition(data) {
     var clone;
     for (var i = 0; i < data.Comp.Jumps; i++) {
         clone = ghost_item.cloneNode(true);
-        clone.innerHTML = "Jump " + i + 1;
+        clone.innerHTML = "Jump " + (parseInt(i) + 1);
         ghost.appendChild(clone);
     }
 
@@ -99,13 +99,18 @@ function viewCompetition(data) {
         clone.style.borderTop = "1px solid black";
         clone.style.borderLeft = "1px solid black";
         clone.style.borderRight = "1px solid black";
-        if (j == data.Comp.Users.length - 1) {
+        if (j === data.Comp.Users.length - 1) {
             clone.style.borderBottom = "1px solid black";
         }
 
 
         clone.getElementsByClassName("jump_data_holder")[0].innerHTML = data.Comp.Users[j].Name;
-        for (var k = 0; k < data.Comp.Jumps; k++) {
+        var B = 0;
+        for (var k = 0; k < data.Jumps.length; k++) {
+            if (data.Jumps[k].CUID === data.Comp.Users[j].ID) {
+                clone.getElementsByClassName("jump_data_holder")[B + 1].innerHTML = data.Jumps[k].Name;
+                B++;
+            }
             //clone.getElementsByClassName("jump_data_holder")[k + 1].innerHTML = getScoreByID(data.Comp.Users[j].ID, k , data.Results, data.Comp.Jumps);
             //vi behöver hoppnummer också
         }
