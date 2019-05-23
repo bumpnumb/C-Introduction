@@ -169,7 +169,7 @@ namespace Server.services
                         temp.CUID = ID;
                         temp.Code = j.Code;
                         temp.Number = j.Number;
-                        Jump t = JumpHelper.ParseDifficulty(j.Code, j.Height);
+                        Jump t = JumpHelper.ParseDifficulty(j.Code, j.Height);  //denna returnerar aldrig t.Name?
                         temp.Name = t.Name;
                         temp.Difficulty = t.Difficulty;
                         context.Jumps.Add(temp);
