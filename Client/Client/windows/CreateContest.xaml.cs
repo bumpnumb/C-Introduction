@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.services;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,6 +25,11 @@ namespace Client.windows
     public partial class CreateContest : Page
     {
         private string selectedHeigt;
+        CompetitionWithUser newCompetition = new CompetitionWithUser();
+        List<User> users = new List<User>();
+        List<User> judges = new List<User>();
+        List<User> judgeDatabase = new List<User>();
+        List<User> jumperDatabase = new List<User>();
 
         private ObservableCollection<string> items = new ObservableCollection<string>()
         {
@@ -39,6 +45,39 @@ namespace Client.windows
         {
             InitializeComponent();
             this.DataContext = this;
+            GetJudges();
+            GetJumpers();
+            newCompetition.Users = users;
+            newCompetition.Judges = judges;
+        }
+
+        private void GetJudges()
+        {
+            Message getJudges = new Message();
+            getJudges.Type = MessageType.Judges;
+            getJudges.Data = "getAll";
+            ClientControll.Send(getJudges);
+        }
+
+        private void GetJumpers()
+        {
+            Message getJumpers = new Message();
+            getJumpers.Type = MessageType.Jumpers;
+            getJumpers.Data = "getAll";
+            ClientControll.Send(getJumpers);
+        }
+
+        public static void FillUserDatabase(List<User> users)
+        {
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
+                if (users[0].Group == 0)
+                    currentPage.jumperDatabase = users;
+                else
+                    currentPage.judgeDatabase = users;
+
+            });
         }
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
@@ -242,6 +281,55 @@ namespace Client.windows
                     jump10Height.Visibility = Visibility.Visible;
                     break;
             }
+        }
+
+        private void AddJudgeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
+                List<User> judges = currentPage.judgeDatabase;
+                foreach (User judge in judges)
+                    if (judgeName.Text + judgeSSN.Text == judge.Name + judge.SSN)
+                        newCompetition.Judges.Add(judge);
+                FillJudgesListBox(newCompetition.Judges);
+
+            });
+
+        }
+
+        private void AddJumperBtn_Click(object sender, RoutedEventArgs e)
+        {
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
+                List<User> jumpers = currentPage.jumperDatabase;
+                foreach (User jumper in jumpers)
+                    if (jumperName.Text + jumperSSN.Text == jumper.Name + jumper.SSN)
+                        newCompetition.Judges.Add(jumper);
+                FillUsersListBox(newCompetition.Users);
+            });
+        }
+
+        public static void FillJudgesListBox(List<User> judges)
+        {
+
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
+                if (judges != null)
+                    currentPage.judgeListBox.ItemsSource = judges;
+            });
+        }
+        public static void FillUsersListBox(List<User> jumpers)
+        {
+
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                CreateContest currentPage = App.MainWindowRef.Main.Content as CreateContest;
+                if (jumpers != null)
+                    currentPage.usersListBox.ItemsSource = jumpers;
+            });
         }
     }
 }

@@ -169,8 +169,9 @@ namespace Server.services
                         temp.CUID = ID;
                         temp.Code = j.Code;
                         temp.Number = j.Number;
-                        temp.Name = JumpHelper.GenerateJumpNameFromCode(j.Code, j.Height);
-                        temp.Difficulty = JumpHelper.GenerateJumpDifficultyFromCode(j.Code, j.Height);
+                        Jump t = JumpHelper.ParseDifficulty(j.Code, j.Height);
+                        temp.Name = t.Name;
+                        temp.Difficulty = t.Difficulty;
                         context.Jumps.Add(temp);
                     }
                 }
@@ -293,25 +294,7 @@ namespace Server.services
         {
             using (var context = new DivingCompDbContext())
             {
-                List<User> AllJudges = new List<User>();
-                List<User> users = context.Users.ToList<User>();
-
-                foreach (User u in users)
-                {
-                    User temp = new User();
-                    if(temp.Group == 1)
-                    {
-                        temp.ID = u.ID;
-                        temp.Name = u.Name;
-                        temp.SSN = u.SSN;
-                        temp.Group = u.Group;
-                        temp.Salt = u.Salt;
-                        temp.Hash = u.Hash;
-
-                        AllJudges.Add(temp);
-                    }
-                }
-                return AllJudges;
+                return context.Users.Where(x => x.Group == 1).ToList();
             }
         }
 
@@ -319,25 +302,7 @@ namespace Server.services
         {
             using (var context = new DivingCompDbContext())
             {
-                List<User> AllJumpers = new List<User>();
-                List<User> users = context.Users.ToList<User>();
-
-                foreach (User u in users)
-                {
-                    User temp = new User();
-                    if (temp.Group == 0)
-                    {
-                        temp.ID = u.ID;
-                        temp.Name = u.Name;
-                        temp.SSN = u.SSN;
-                        temp.Group = u.Group;
-                        temp.Salt = u.Salt;
-                        temp.Hash = u.Hash;
-
-                        AllJumpers.Add(temp);
-                    }
-                }
-                return AllJumpers;
+                return context.Users.Where(x => x.Group == 0).ToList();
             }
         }
     }

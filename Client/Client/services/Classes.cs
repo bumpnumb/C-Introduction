@@ -32,4 +32,15 @@ namespace Client.services
         public int GlobalNumber { get; set; }
         public int Height { get; set; }
     }
+
+    public class User
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Salt { get; set; }
+        public string Hash { get; set; }
+        public GroupType Group { get; set; }
+        public string SSN { get; set; }
+
+    }
 }
