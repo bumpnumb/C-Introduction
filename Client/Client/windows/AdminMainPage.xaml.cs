@@ -27,8 +27,7 @@ namespace Client.windows
         {
 
             InitializeComponent();
-            App.MainWindowRef.CenterWindowOnScreen();
-
+            
         }
 
         private void Edit_Create_Btn(object sender, RoutedEventArgs e)
@@ -39,11 +38,16 @@ namespace Client.windows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            App.Current.Dispatcher.Invoke((Action)delegate {
+                App.MainWindowRef.currentpage = App.MainWindowRef.Main.Content.ToString();
+                App.MainWindowRef.CenterWindowOnScreen();
+            });
             //Gets all copmetitions from the database via the server
             Message getCompetitions = new Message();
             getCompetitions.Type = MessageType.Competition;
             getCompetitions.Data = "GetAll";
             ClientControll.Send(getCompetitions);
+            
         }
 
         //public static void FillCompetitionDataBox(string data)

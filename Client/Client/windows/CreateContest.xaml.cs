@@ -619,6 +619,7 @@ namespace Client.windows
 
                 newCompetition.Name = competitionTitle.Text;
                 newCompetition.Start = DateTime.Parse(datePicker.Text);
+                newCompetition.Finished = new DateTime(0001, 1, 1, 0, 0, 0);
                 newCompetition.Jumps = Int32.Parse(SelectedItem);
 
 

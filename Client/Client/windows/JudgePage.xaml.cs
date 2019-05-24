@@ -36,7 +36,7 @@ namespace Client.windows {
         {
             Message getCompetitions = new Message();
             getCompetitions.Type = MessageType.Competition;
-            getCompetitions.Data = "GetCompetitionWithResult";
+            getCompetitions.Data = "GetActive";
             ClientControll.Send(getCompetitions);
         }
 

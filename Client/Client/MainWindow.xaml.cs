@@ -25,6 +25,7 @@ namespace Client
     {
         public static int ID;
         public static GroupType Group;
+        public string currentpage;
 
         public MainWindow()
         {
@@ -56,7 +57,7 @@ namespace Client
             App.MainWindowRef.MinHeight = 850;
             App.MainWindowRef.MinWidth = 1050;
             App.MainWindowRef.CenterWindowOnScreen();
-         
+            
         }
 
         public void setActiveUser(Response activeUser)

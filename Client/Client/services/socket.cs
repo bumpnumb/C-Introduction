@@ -42,9 +42,12 @@ namespace Client.services
                                 App.Current.Dispatcher.Invoke((Action)delegate
                                 {
                                     App.MainWindowRef.pageSwitcher(new AdminMainPage());
+                                    
                                     App.MainWindowRef.setActiveUser(this);
+                                    
 
                                 });
+                                
                                 break;
                             case GroupType.Judge:
                                 App.Current.Dispatcher.Invoke((Action)delegate
@@ -92,7 +95,7 @@ namespace Client.services
                            App.MainWindowRef.Main.Navigate(new CreateContest());
                        });
                     }
-                    else if (stringMessage == "GetAll")
+                    else if ( App.MainWindowRef.currentpage == "Client.windows.AdminMainPage") 
                     {
                         List<CompetitionWithUser> competitions =
                             JsonConvert.DeserializeObject<List<CompetitionWithUser>>(this.Data);
