@@ -22,7 +22,52 @@
                  Height="23" Margin="24,66,0,0" 
                  VerticalAlignment="Top"
                  Width="194"
-                 Visibility="Visible" 
-                 KeyDown="userNameDropDown_KeyDown" />
+                 Visibility="Collapsed" 
+                 KeyDown="userNameDropDown_KeyDown" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+
+        <TextBox
+            x:Name="username"
+            HorizontalAlignment="Left" 
+            Height="23" 
+            Margin="24,175,0,0" 
+            TextWrapping="Wrap" 
+            VerticalAlignment="Top"
+            Width="194" 
+            />
+        <TextBox
+            x:Name="ssn"
+            HorizontalAlignment="Left" 
+            Height="23" 
+            Margin="24,205,0,0" 
+            TextWrapping="Wrap" 
+            VerticalAlignment="Top"
+            Width="194" 
+        />
+        <TextBox
+            x:Name="password"
+            HorizontalAlignment="Left" 
+            Height="23" 
+            Margin="24,235,0,0" 
+            TextWrapping="Wrap" 
+            VerticalAlignment="Top"
+            Width="194" 
+        />
+        <ComboBox
+            x:Name="group"
+            HorizontalAlignment="Left" 
+            Height="23" 
+            Margin="24,265,0,0" 
+            VerticalAlignment="Top"
+            Width="194" 
+            />
+        <Button
+            x:Name="changeButton"
+            Content="Change"
+            HorizontalAlignment="Left" 
+            Height="23" 
+            Margin="174,295,0,0" 
+            VerticalAlignment="Top" Click="ChangeButton_Click"
+            />
     </Grid>
 </Page>
