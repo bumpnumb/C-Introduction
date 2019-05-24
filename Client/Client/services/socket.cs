@@ -92,7 +92,7 @@ namespace Client.services
                             App.MainWindowRef.Main.Navigate(new CreateContest());
                         });
                     }
-                    else
+                    else if (stringMessage == "GetAll")
                     {
                         List<CompetitionWithUser> competitions =
                             JsonConvert.DeserializeObject<List<CompetitionWithUser>>(this.Data);
@@ -111,6 +111,15 @@ namespace Client.services
                            string currentpage = App.MainWindowRef.Main.Content.ToString();
                            AdminMainPage.FillCompetitionListBox(competitions);
                        });
+                    }
+                    else
+                    {
+                        CompetitionWithResult data = JsonConvert.DeserializeObject<CompetitionWithResult>(this.Data);
+                        App.Current.Dispatcher.Invoke((Action)delegate
+                        {
+                            string currentpage = App.MainWindowRef.Main.Content.ToString();
+                            JudgePage.CompetitionData(data);
+                        });
                     }
 
                     //AdminMainPage.FillCompetitionDataBox(this.Data); //Removed this textbox
@@ -131,14 +140,7 @@ namespace Client.services
                         CreateContest.FillUserDatabase(jumpers);
                     });
                     break;
-                case MessageType.Result: //actually another message type, Result is a placeholder
-                    CompetitionWithResult data = JsonConvert.DeserializeObject<CompetitionWithResult>(this.Data);
-                    App.Current.Dispatcher.Invoke((Action)delegate
-                    {
-                        string currentpage = App.MainWindowRef.Main.Content.ToString();
-                        JudgePage.CompetitionData(data);
-                    });
-                    break;
+                
                 default:
                     break;
             }
