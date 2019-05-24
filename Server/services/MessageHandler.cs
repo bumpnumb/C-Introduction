@@ -89,7 +89,7 @@ namespace Server.services
                     else
                     {
                         //Generate some salt and hash
-                        User tempUser = crypto.GenerateSaltHash(registerUser[1]); //split on other separator!!
+                        User tempUser = crypto.GenerateSaltHash(registerUser[2]); //split on other separator!!
                         db.RegisterUser(registerUser[0], registerUser[1], tempUser.Salt, tempUser.Hash);
 
                         //lets not be done here. as is now, we return nothing.
