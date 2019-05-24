@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
+using System.Security.Cryptography;
 using System.Windows.Documents;
 using Client.windows;
 using System.Windows.Controls;
@@ -83,22 +84,34 @@ namespace Client.services
                     //här kanske man kan slänga upp en window i clienten som säger att man har lyckats skapa en user.
                     break;
                 case MessageType.Competition:
-                    List<CompetitionWithUser> competitions = JsonConvert.DeserializeObject<List<CompetitionWithUser>>(this.Data);
-
-                    //foreach (CompetitionWithUser comp in competitions)
-                    //{
-                    //    int id = comp.ID;
-                    //    string name = comp.Name;
-                    //    DateTime stat = comp.Start;
-                    //    List<User> users = comp.Users;
-                    //    List<User> judges = comp.Judges;
-                    //}
-
-                    App.Current.Dispatcher.Invoke((Action)delegate
+                    var stringMessage = this.Data;
+                    if (stringMessage == "Competition created")
                     {
-                        string currentpage = App.MainWindowRef.Main.Content.ToString();
-                        AdminMainPage.FillCompetitionListBox(competitions);
-                    });
+                        App.Current.Dispatcher.Invoke((Action) delegate
+                        {
+                            App.MainWindowRef.Main.Navigate(new CreateContest());
+                        });
+                    }
+                    else
+                    {
+                        List<CompetitionWithUser> competitions =
+                            JsonConvert.DeserializeObject<List<CompetitionWithUser>>(this.Data);
+
+                        //foreach (CompetitionWithUser comp in competitions)
+                        //{
+                        //    int id = comp.ID;
+                        //    string name = comp.Name;
+                        //    DateTime stat = comp.Start;
+                        //    List<User> users = comp.Users;
+                        //    List<User> judges = comp.Judges;
+                        //}
+
+                        App.Current.Dispatcher.Invoke((Action)delegate
+                       {
+                           string currentpage = App.MainWindowRef.Main.Content.ToString();
+                           AdminMainPage.FillCompetitionListBox(competitions);
+                       });
+                    }
 
                     //AdminMainPage.FillCompetitionDataBox(this.Data); //Removed this textbox
                     break;
@@ -170,10 +183,18 @@ namespace Client.services
 
                 do
                 {
-                    bytesRead = Stream.Read(recievedBuffer, 0, recievedBuffer.Length);
-                    msg.AppendFormat("{0}", Encoding.Unicode.GetString(recievedBuffer, 0, bytesRead));
+                    try
+                    {
+                        bytesRead = Stream.Read(recievedBuffer, 0, recievedBuffer.Length);
+                        msg.AppendFormat("{0}", Encoding.Unicode.GetString(recievedBuffer, 0, bytesRead));
+                    }
+                    catch (Exception e)
+                    {
+                        return;
+                    }
+
                 }
-                while (Stream.DataAvailable);
+                while (Stream.DataAvailable && !ct.IsCancellationRequested);
 
                 string readMsg = msg.ToString();
                 Response resp = JsonConvert.DeserializeObject<Response>(readMsg);

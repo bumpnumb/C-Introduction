@@ -140,12 +140,7 @@ namespace Server.services
 
                             CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
                             List<Jump> jumps = JsonConvert.DeserializeObject<List<Jump>>(part[2]);
-
-
-                            //Todo: fixa så namn o saker är rätt från klienten
-                            //samt fixa nummer för hoppen
-
-
+                            
 
                             if (CompInfo != null)
                             {
