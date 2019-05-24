@@ -145,10 +145,23 @@ namespace Client.services
                     break;
                 case MessageType.User:
                     List<User> users = JsonConvert.DeserializeObject<List<User>>(this.Data);
-                    App.Current.Dispatcher.Invoke((Action)delegate
+
+                    switch (App.MainWindowRef.currentpage)
                     {
-                        EditUsers.FillUserDatabase(users);
-                    });
+                        case "Client.windows.CreateContest":
+                            App.Current.Dispatcher.Invoke((Action)delegate
+                            {
+                                CreateContest.FillUserDatabase(users);
+                            });
+                            break;
+                        case "Client.windows.EditUsers":
+                            App.Current.Dispatcher.Invoke((Action)delegate
+                            {
+                                EditUsers.FillUserDatabase(users);
+                            });
+                            break;
+                    }
+
                     break;
                 case MessageType.ChangeUser:
                     List<User> users2 = JsonConvert.DeserializeObject<List<User>>(this.Data); //change list<user> to top of project

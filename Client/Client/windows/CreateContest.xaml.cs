@@ -51,26 +51,17 @@ namespace Client.windows
         {
             InitializeComponent();
             this.DataContext = this;
-            GetJudges();
-            GetJumpers();
+            GetUsers();
             newCompetition.Users = users;
             newCompetition.Judges = judges;
         }
 
-        private void GetJudges()
+        private void GetUsers()
         {
-            Message getJudges = new Message();
-            getJudges.Type = MessageType.Judges;
-            getJudges.Data = "getAll";
-            ClientControll.Send(getJudges);
-        }
-
-        private void GetJumpers()
-        {
-            Message getJumpers = new Message();
-            getJumpers.Type = MessageType.Jumpers;
-            getJumpers.Data = "getAll";
-            ClientControll.Send(getJumpers);
+            Message getUsers = new Message();
+            getUsers.Type = MessageType.User;
+            getUsers.Data = "getAll";
+            ClientControll.Send(getUsers);
         }
 
         public static void FillUserDatabase(List<User> users)
