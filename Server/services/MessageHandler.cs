@@ -91,6 +91,9 @@ namespace Server.services
                     if (rsp.user != null)
                     {
                         rsp.Data = "USER EXISTS!";
+                        rsp.user.Hash = "***";
+                        rsp.user.Salt = "***";
+                        rsp.user.SSN = "YYYY-MM-DD-XXXX";
                     }
                     else
                     {
