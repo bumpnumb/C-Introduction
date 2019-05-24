@@ -70,8 +70,18 @@ namespace Server.services
                 return u;
             }
         }
+        public User GetUserBySSN(string ssn)
+        {
+            using (var context = new DivingCompDbContext())
+            {
+                var u = context.Users.FirstOrDefault(x => x.SSN == ssn);
+                return u;
+            }
+        }
 
-        public void RegisterUser(string name, string salt, string hash)
+
+
+        public void RegisterUser(string name,string ssn, string salt, string hash)
         {
             var context = new DivingCompDbContext(); //är detta en ny "tabell" i databasen? i detta fall en ny user?
             context.Database.EnsureCreated();
@@ -79,11 +89,10 @@ namespace Server.services
             User u = new User
             {
                 Name = name,
+                SSN = ssn,
                 Salt = salt,
                 Hash = hash,
                 Group = 0,
-                //detta ska komma som ett argument!
-                SSN = "temporary",
             };
 
             context.Users.Add(u);

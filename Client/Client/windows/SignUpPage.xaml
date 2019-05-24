@@ -11,10 +11,14 @@
     <Grid KeyDown="Key_Down_Event">
         <Label x:Name="signupLabel" Content="Sign Up" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontFamily="TechnicBold" FontSize="18" FontWeight="Bold" Background="#01FFFFFF" Foreground="#FF2F8321"/>
         <TextBox x:Name="IDBox" HorizontalAlignment="Left" Height="20" Margin="60,100,0,0" Text="Username" VerticalAlignment="Top" Width="120" Background="White" Foreground="#FF766E6E" FontWeight="Bold" FontFamily="Technic" BorderThickness="0,0,0,1" GotFocus="IDBox_GotFocus" LostFocus="IDBox_LostFocus"/>
-        <PasswordBox x:Name="PwBox1" HorizontalAlignment="Left" Margin="60,130,0,0" VerticalAlignment="Top" Width="120" Foreground="#FF060606" Height="20" GotFocus="Pw1GotFocus" LostFocus="Pw1LostFocus" BorderThickness="0,0,0,1" Password="Password"  />
-        <PasswordBox x:Name="PwBox2" HorizontalAlignment="Left" Margin="60,160,0,0" VerticalAlignment="Top" Width="120" Foreground="#FF060606" Height="20" GotFocus="Pw2GotFocus" LostFocus="Pw2LostFocus" BorderThickness="0,0,0,1" Password="Password" />
+
+        <TextBox x:Name="SSNBox" HorizontalAlignment="Left" Height="20" Margin="60,130,0,0" Text="YYYY-MM-DD-XXXX" VerticalAlignment="Top" Width="120" Background="White" Foreground="#FF766E6E" FontWeight="Bold" FontFamily="Technic" BorderThickness="0,0,0,1" GotFocus="SSNBox_GotFocus" LostFocus="SSNBox_LostFocus" TextChanged="SSNBox_TextChanged" />
+
+
+        <PasswordBox x:Name="PwBox1" HorizontalAlignment="Left" Margin="60,160,0,0" VerticalAlignment="Top" Width="120" Foreground="#FF060606" Height="20" GotFocus="Pw1GotFocus" LostFocus="Pw1LostFocus" BorderThickness="0,0,0,1" Password="Password"  />
+        <PasswordBox x:Name="PwBox2" HorizontalAlignment="Left" Margin="60,190,0,0" VerticalAlignment="Top" Width="120" Foreground="#FF060606" Height="20" GotFocus="Pw2GotFocus" LostFocus="Pw2LostFocus" BorderThickness="0,0,0,1" Password="Password" />
         <Label x:Name="loginText" HorizontalContentAlignment="Center" Content="Cancel" HorizontalAlignment="Left" Height="26" Margin="10,283,0,0" VerticalAlignment="Top" Width="54" MouseDown="signinBtn" />
-        <Button x:Name="enterButton" Content="Sign Up" HorizontalAlignment="Left" Margin="105,190,0,0" VerticalAlignment="Top" Width="75" Background="#01FFFFFF" Click="signup"/>
+        <Button x:Name="enterButton" Content="Sign Up" HorizontalAlignment="Left" Margin="105,220,0,0" VerticalAlignment="Top" Width="75" Background="#01FFFFFF" Click="signup"/>
 
     </Grid>
 </Page>
