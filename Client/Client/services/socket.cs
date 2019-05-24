@@ -17,14 +17,7 @@ namespace Client.services
     public enum MessageType { NoType, Login, Register, Competition, ScoreToJump, Result, Judges, Jumpers }
     public enum GroupType { User, Judge, Admin }
 
-    public class Competition
-    {
-        public string Name { get; set; }
-        public string Started { get; set; }
-        public string Ended { get; set; }
-    }
 
-    
 
 
     public class Response

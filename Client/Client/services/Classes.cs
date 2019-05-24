@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace Client.services
 {
-    class Classes
+
+    public class Competition
     {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime Finished { get; set; }
+        public int Jumps { get; set; }
     }
 
     public class CompetitionWithUser
@@ -16,9 +22,18 @@ namespace Client.services
         public string Name { get; set; }
         public DateTime Start { get; set; }
         public DateTime Finished { get; set; }
+        public int Jumps { get; set; }
+        public int Height { get; set; }
         public List<User> Users { get; set; }
         public List<User> Judges { get; set; }
 
+    }
+
+    public class CompetitionWithResult
+    {
+        public CompetitionWithUser Comp { get; set; }
+        public List<Jump> Jumps { get; set; }
+        public List<Result> Results { get; set; }
     }
 
     public class Jump
@@ -49,12 +64,5 @@ namespace Client.services
         public int JumpID { get; set; }
         public int JudgeID { get; set; }
         public float Score { get; set; }
-    }
-
-    public class CompetitionWithResult
-    {
-        public CompetitionWithUser Comp { get; set; }
-        public List<Jump> Jumps { get; set; }
-        public List<Result> Results { get; set; }
     }
 }

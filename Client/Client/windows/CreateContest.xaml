@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Client.windows"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       d:DesignHeight="850" d:DesignWidth="1050"
       Title="CreateContest">
@@ -48,7 +49,8 @@
                  KeyDown="jumperNameDropdown_KeyDown"/>
 
         <Button x:Name="cancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Click="CancelBtn_Click"/>
-        <DatePicker HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,68,0,0"/>
+        <xctk:DateTimePicker x:Name="datePicker" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,68,0,0" Width="194"/>
+        
         <Label x:Name="judgeLabel" Content="Add Judge" HorizontalAlignment="Left" Margin="24,142,0,0" VerticalAlignment="Top"/>
         <ListBox x:Name="usersListBox" Margin="520,317,10,35">
         </ListBox>
@@ -81,7 +83,5 @@
         <TextBox x:Name="jump9Height" HorizontalAlignment="Left" Height="23" Margin="24,618,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Hidden"  KeyDown="AddJumps"/>
         <TextBox x:Name="jump10Height" HorizontalAlignment="Left" Height="23" Margin="24,646,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Hidden" KeyDown="AddJumps" />
         <Label x:Name="jumpHeightLable" Content="Height" HorizontalAlignment="Left" Margin="24,368,0,0" VerticalAlignment="Top" Width="49" Visibility="Hidden"/>
-        <Button x:Name="addJumperBtn" Content="Add" HorizontalAlignment="Left" Margin="188,683,0,0" VerticalAlignment="Top" Width="30" Visibility="Hidden" Click="AddJumperBtn_Click" />
-
     </Grid>
 </Page>

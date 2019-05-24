@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -143,7 +144,6 @@ namespace Client.windows
         private void JumpHeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             jumpHeightLable.Visibility = Visibility.Visible;
-            addJumperBtn.Visibility = Visibility.Visible;
             switch (SelectedItem)
             {
                 case "4":
@@ -334,23 +334,6 @@ namespace Client.windows
             }
 
             return jumps;
-        }
-        private void AddJumperBtn_Click(object sender, RoutedEventArgs e)
-        {
-            List<string> jumps = new List<string>();
-            jumps.AddRange(ReadJumps());
-            List<Jump> addJumps = new List<Jump>();
-            string visibleString = "";
-            foreach (string j in jumps)
-            {
-                visibleString += j + "   ";
-                Jump temp = new Jump();
-                temp.Code = j.Split('%')[0];
-                temp.Height = Int32.Parse(j.Split('%')[1]);
-
-                newJumps.Add(temp);
-            }
-
         }
 
         private void JudgeName_TextChanged(object sender, TextChangedEventArgs e)
@@ -559,10 +542,13 @@ namespace Client.windows
 
                     List<Jump> addJumps = new List<Jump>();
                     string visibleString = "";
+                    int i = 0;
                     foreach (string j in jumps)
                     {
                         visibleString += j + "    ";
                         Jump temp = new Jump();
+                        temp.Number = i;
+                        i++;
                         temp.CUID = newCompetition.Users[newCompetition.Users.Count - 1].ID;
                         temp.Code = j.Split('%')[0];
                         temp.Height = Int32.Parse(j.Split('%')[1]);
@@ -614,11 +600,31 @@ namespace Client.windows
         private void SaveCompetition(object sender, RoutedEventArgs e)
         {
             Message msg = new Message();
-            msg.Type = MessageType.Competition;
-            msg.Data = "CreateCompetition\r\n" + JsonConvert.SerializeObject(newCompetition) + "\r\n" +
-                       JsonConvert.SerializeObject(newJumps);
 
-            ClientControll.Send(msg);
+            if (competitionTitle.Text == "")
+            {
+                competitionTitle.Background = new SolidColorBrush(Color.FromRgb((byte)210, (byte)167, (byte)167));
+            }
+            else if (datePicker.Text == "")
+            {
+            }
+            else
+            {
+
+                newCompetition.Name = competitionTitle.Text;
+                newCompetition.Start = DateTime.Parse(datePicker.Text);
+                newCompetition.Jumps = Int32.Parse(SelectedItem);
+
+
+
+
+
+                msg.Type = MessageType.Competition;
+                msg.Data = "CreateCompetition\r\n" + JsonConvert.SerializeObject(newCompetition) + "\r\n" +
+                           JsonConvert.SerializeObject(newJumps);
+
+                ClientControll.Send(msg);
+            }
         }
     }
 }
