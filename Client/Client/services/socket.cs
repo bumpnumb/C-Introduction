@@ -166,7 +166,6 @@ namespace Client.services
     {
         public MessageType Type { get; set; }
         public string Data { get; set; }
-        public string Cookie { get; set; }
     }
 
 
