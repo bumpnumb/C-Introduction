@@ -10,6 +10,7 @@ using Server.modules;
 using Server.services;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
 namespace Server.services
 {
@@ -210,8 +211,15 @@ namespace Server.services
                             rsp.Data = JsonConvert.SerializeObject(AllUsers);
                             break;
                     }
-
                     break;
+                case MessageType.ChangeUser:
+                    User u = JsonConvert.DeserializeObject<User>(this.Data);
+
+                    db.EditUser(u);
+                    rsp.Type = MessageType.ChangeUser;
+                    rsp.Data = JsonConvert.SerializeObject(db.GetAllUsers());
+                    break;
+
 
                 default:
                     break;

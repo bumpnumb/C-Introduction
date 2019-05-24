@@ -147,6 +147,11 @@ namespace Client.services
                         EditUsers.FillUserDatabase(users);
                     });
                     break;
+                case MessageType.ChangeUser:
+                    List<User> users2 = JsonConvert.DeserializeObject<List<User>>(this.Data); //change list<user> to top of project
+                    EditUsers.FillUserDatabase(users2);
+
+                    break;
 
                 default:
                     break;

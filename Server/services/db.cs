@@ -24,7 +24,27 @@ namespace Server.services
             }
         }
 
+        public void EditUser(User u)
+        {
 
+            string oldSSN = u.SSN.Split('%')[1];
+
+
+            using (var context = new DivingCompDbContext())
+            {
+                User old = context.Users.FirstOrDefault(x => x.SSN == oldSSN);
+                context.Update(old);
+
+                old.SSN = u.SSN.Split('%')[0];
+                old.Group = u.Group;
+                old.Name = u.Name;
+                User tempUser = crypto.GenerateSaltHash(u.Salt);
+                old.Salt = tempUser.Salt;
+                old.Hash = tempUser.Hash;
+
+                context.SaveChanges();
+            }
+        }
         public List<User> GetAllUsers()
         {
             using (var context = new DivingCompDbContext())
