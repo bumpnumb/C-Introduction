@@ -5,10 +5,24 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Client.windows"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="350" d:DesignWidth="250"
       Title="EditUsers">
 
     <Grid>
-        
+        <TextBox x:Name="userNameTextBox"
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="24,38,0,0" 
+                 TextWrapping="Wrap" 
+                 VerticalAlignment="Top"
+                 Width="194" 
+                 TextChanged="userNameTextBox_TextChanged" />
+        <ListBox x:Name="userNameDropDown" 
+                 HorizontalAlignment="Left" 
+                 Height="23" Margin="24,66,0,0" 
+                 VerticalAlignment="Top"
+                 Width="194"
+                 Visibility="Visible" 
+                 KeyDown="userNameDropDown_KeyDown" />
     </Grid>
 </Page>

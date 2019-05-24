@@ -45,6 +45,16 @@ namespace Server.services
                 context.SaveChanges();
             }
         }
+
+
+        public List<User> GetAllUsers()
+        {
+            using (var context = new DivingCompDbContext())
+            {
+                return context.Users.ToList();
+            }
+        }
+
         public void GetUserByID(int ID)
         {
             using (var context = new DivingCompDbContext())

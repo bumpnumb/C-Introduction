@@ -24,6 +24,7 @@ namespace Client
     public partial class MainWindow : Window
     {
         public static int ID;
+        public static GroupType Group;
 
         public MainWindow()
         {
@@ -61,6 +62,7 @@ namespace Client
         public void setActiveUser(Response activeUser)
         {
             ID = activeUser.user.ID;
+            Group = activeUser.user.Group;
             this.activeAs.Content = "Active as: ";
             this.loggedInLabel.Content = "Logout";
             this.usernameLabel.Content = activeUser.user.Name;

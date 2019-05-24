@@ -31,6 +31,7 @@ namespace Server.services
 
             //Create the response to be sent back
             Response rsp = new Response();
+            string[] part;
 
 
             //Switch on MessageType for easy handling
@@ -78,7 +79,7 @@ namespace Server.services
                 case MessageType.Register:
                     rsp.Type = MessageType.Register;
 
-                    string[] registerUser = this.Data.Split("\r\n"); 
+                    string[] registerUser = this.Data.Split("\r\n");
                     //try fo fetch user
                     rsp.user = db.GetUserBySSN(registerUser[1]); //does this work?, "split on other separator!!"
                     if (rsp.user != null)
@@ -104,7 +105,7 @@ namespace Server.services
                 case MessageType.Competition:
                     rsp.Type = MessageType.Competition;
                     //split string in case we want to know more
-                    string[] part = this.Data.Split("\r\n"); //correct separator use!
+                    part = this.Data.Split("\r\n"); //correct separator use!
                     List<CompetitionWithUser> comp;
 
 
@@ -140,12 +141,12 @@ namespace Server.services
 
                             CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
                             List<Jump> jumps = JsonConvert.DeserializeObject<List<Jump>>(part[2]);
-                            
+
 
                             if (CompInfo != null)
                             {
                                 db.CreateCompetition(CompInfo, jumps);
-                                rsp.Data = "Competition created"; 
+                                rsp.Data = "Competition created";
 
                             }
                             else
@@ -160,7 +161,7 @@ namespace Server.services
                     rsp.Type = MessageType.ScoreToJump;
 
                     Result ScoreInfo = JsonConvert.DeserializeObject<Result>(this.Data);
-                    if(ScoreInfo != null)
+                    if (ScoreInfo != null)
                     {
                         db.SetScoreToJump(ScoreInfo);
                         //rsp.Data = "Score set";
@@ -175,7 +176,7 @@ namespace Server.services
                 case MessageType.Judges:
                     rsp.Type = MessageType.Judges;
 
-                    List<User> AllJudges =  db.GetAllJudges();
+                    List<User> AllJudges = db.GetAllJudges();
                     rsp.Data = JsonConvert.SerializeObject(AllJudges);
 
                     break;
@@ -185,6 +186,18 @@ namespace Server.services
 
                     List<User> AllJumpers = db.GetAllJumpers();
                     rsp.Data = JsonConvert.SerializeObject(AllJumpers);
+
+                    break;
+                case MessageType.User:
+                    part = this.Data.Split("\r\n");
+                    switch (part[0])
+                    {
+                        case "Get All":
+                            rsp.Type = MessageType.User;
+                            List<User> AllUsers = db.GetAllUsers();
+                            rsp.Data = JsonConvert.SerializeObject(AllUsers);
+                            break;
+                    }
 
                     break;
 

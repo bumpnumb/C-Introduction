@@ -28,7 +28,7 @@ namespace Client.windows
 
             InitializeComponent();
             App.MainWindowRef.CenterWindowOnScreen();
-            
+
         }
 
         private void Edit_Create_Btn(object sender, RoutedEventArgs e)
@@ -62,7 +62,7 @@ namespace Client.windows
 
             App.Current.Dispatcher.Invoke((Action)delegate
             {
-                
+
                 AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
                 currentPage.competitionListBox.ItemsSource = competitions;
                 currentPage.competitionListBox.UnselectAll();
@@ -105,7 +105,8 @@ namespace Client.windows
 
         private void EditUsersBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.MainWindowRef.Main.Navigate(new EditUsers());
+            if (MainWindow.Group == GroupType.Admin)
+                App.MainWindowRef.Main.Navigate(new EditUsers());
         }
 
         private void EditContestBtn_Click(object sender, RoutedEventArgs e)
@@ -113,7 +114,7 @@ namespace Client.windows
             App.MainWindowRef.Main.Navigate(new EditContest());
         }
 
-       
+
     }
 }
 //            /*Fixa en snygg json grej här för ID och PW så det går att ha vilket namn som helst

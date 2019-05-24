@@ -15,7 +15,7 @@ using System.Windows.Controls;
 
 namespace Client.services
 {
-    public enum MessageType { NoType, Login, Register, Competition, ScoreToJump, Result, Judges, Jumpers }
+    public enum MessageType { NoType, Login, Register, Competition, ScoreToJump, Result, Judges, Jumpers, User }
     public enum GroupType { User, Judge, Admin }
 
 
