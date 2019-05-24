@@ -20,6 +20,7 @@ namespace Server.services
         /// <summary>
         /// Uses String Code and Height To fetch jump stats
         /// </summary>
+        /// 
         public static string GenerateJumpNameFromCode(string code)
         {
             //Jump j = ParseDifficulty(code, height);
@@ -27,6 +28,9 @@ namespace Server.services
             char last = code[code.Length - 1];          //take the last letter from string
             code = code.Substring(0, code.Length - 1);  //decrease the string so that it include only numbers
                                                         //at the end, add the last letter to the new string. 
+
+            //following code will keep adding text to the jump name for each number in the jump code
+            //according to appendix 2 and appendix 4
 
             string[] chars = code.Split(",");
             string CodeString = "";

@@ -20,28 +20,6 @@ namespace Server.services
                 context.Database.EnsureCreated();
                 Console.WriteLine("Connection to database has been made");
 
-
-                //User u = new User
-                //{
-                //    Name = "Daniel",
-                //    Salt = "salty salt",
-                //    Hash = "420",
-                //    Cookie = "nomNom",
-                //    CookieTime = DateTime.Now
-                //};
-
-                //context.Users.Add(u);
-
-                //Competition c = new Competition
-                //{
-                //    Name = "Första Tävlingen",
-                //    Start = DateTime.Now.AddHours(3),
-                //    Finished = 0
-                //};
-
-                //context.Competitions.Add(c);
-
-
                 context.SaveChanges();
             }
         }
@@ -51,6 +29,7 @@ namespace Server.services
         {
             using (var context = new DivingCompDbContext())
             {
+                //simply adds all users from the database to a list.
                 return context.Users.ToList();
             }
         }
@@ -59,8 +38,10 @@ namespace Server.services
         {
             using (var context = new DivingCompDbContext())
             {
+                //find a user in the database with the specific ID.
                 var u = context.Users.Where(x => x.ID == ID);
 
+                //for each user found, print all info of the user.
                 foreach (var user in u)
                 {
                     var data = new StringBuilder();
@@ -76,6 +57,7 @@ namespace Server.services
         {
             using (var context = new DivingCompDbContext())
             {
+                //returns the user with the specific name.
                 var u = context.Users.Where(x => x.Name == name).FirstOrDefault();
                 return u;
             }
@@ -84,18 +66,18 @@ namespace Server.services
         {
             using (var context = new DivingCompDbContext())
             {
+                //returns the user with the specific SSN.
                 var u = context.Users.FirstOrDefault(x => x.SSN == ssn);
                 return u;
             }
         }
 
-
-
         public void RegisterUser(string name,string ssn, string salt, string hash)
         {
-            var context = new DivingCompDbContext(); //är detta en ny "tabell" i databasen? i detta fall en ny user?
+            var context = new DivingCompDbContext();
             context.Database.EnsureCreated();
 
+            //create a new user with provided information.
             User u = new User
             {
                 Name = name,
@@ -105,6 +87,7 @@ namespace Server.services
                 Group = 0,
             };
 
+            //add the user in the database.
             context.Users.Add(u);
             context.SaveChanges();
         }
@@ -112,6 +95,7 @@ namespace Server.services
         {
             using (var context = new DivingCompDbContext())
             {
+                //returns salt with the specific ID
                 User u = context.Users.Where(x => x.ID == ID).FirstOrDefault();
                 return u.Salt;
             }
@@ -120,6 +104,7 @@ namespace Server.services
         {
             using (var context = new DivingCompDbContext())
             {
+                //returns salt from the specific ID
                 User u = context.Users.Where(x => x.ID == ID).FirstOrDefault();
                 return u.Hash;
             }
@@ -129,33 +114,37 @@ namespace Server.services
             var context = new DivingCompDbContext();
             context.Database.EnsureCreated();
 
+            //create a new competition object to later add tot the database.
             Competition c = new Competition();
 
-            //c.ID = CompInfo.ID;
+            //add provided info to the competition object.
             c.Name = CompInfo.Name;
             c.Start = CompInfo.Start;
-            //c.Finished = CompInfo.Finished
             c.Jumps = CompInfo.Jumps;
 
+            //add it to the database.
             context.Competitions.Add(c);
             context.SaveChanges();
 
-
             List<CompetitionUser> CUIDs = new List<CompetitionUser>();
 
+            //for each jumper in the provided information, add to the database and to the competition
             foreach (User userJumper in CompInfo.Users)
             {
                 CompetitionUser temp = new CompetitionUser();
                 temp.CID = c.ID;
                 temp.UID = userJumper.ID;
+
                 context.CompetitionUsers.Add(temp);
                 context.SaveChanges();
+
                 CompetitionUser tmp = new CompetitionUser();
                 tmp.ID = temp.ID;
                 tmp.UID = temp.UID;
                 CUIDs.Add(tmp);
             }
 
+            //for each judge in the provided information, add judge to the competition.
             foreach (User userJudge in CompInfo.Judges)
             {
                 CompetitionJudge temp = new CompetitionJudge();
@@ -164,8 +153,7 @@ namespace Server.services
                 context.CompetitionJudges.Add(temp);
             }
 
-
-
+            //aa...
             List<Jump> orderedJumps = jumps.OrderBy(o => o.CUID).ToList();
             int n = 0;
             for (int i = 0; i < orderedJumps.Count; i++)
@@ -174,10 +162,7 @@ namespace Server.services
                     n++;
 
                 orderedJumps[i].GlobalNumber = orderedJumps[i].Number * (orderedJumps.Count / c.Jumps) + n;
-
             }
-
-
 
             foreach (Jump j in orderedJumps)
             {
@@ -206,13 +191,15 @@ namespace Server.services
             context.SaveChanges();
         }
 
-
         public List<CompetitionWithUser> GetActiveCompetitions()
         {
             using (var context = new DivingCompDbContext())
             {
+                //create two lists, one to get all active competitions, and one for all users in those competitions
                 List<CompetitionWithUser> result = new List<CompetitionWithUser>();
                 List<Competition> c = context.Competitions.Where(x => x.Start <= DateTime.Now && !helper.IsFinished(x.Finished)).ToList<Competition>();
+
+                //for each active competition, add everything needed to the first list (result)
                 foreach (Competition comp in c)
                 {
                     CompetitionWithUser temp = new CompetitionWithUser();
@@ -238,8 +225,11 @@ namespace Server.services
         {
             using (var context = new DivingCompDbContext())
             {
+                //create two lists to, one for the result and one to acquire all info from the db.
                 List<CompetitionWithUser> result = new List<CompetitionWithUser>();
                 List<Competition> c = context.Competitions.ToList<Competition>();
+
+                //add each comp to the result
                 foreach (Competition comp in c)
                 {
                     CompetitionWithUser temp = new CompetitionWithUser();
@@ -256,13 +246,11 @@ namespace Server.services
                     temp.Judges = judges;
                     result.Add(temp);
                 }
-
                 return result;
-
-
             }
         }
 
+        //return a competition with the user ID that is provided. 
         public CompetitionWithUser GetCompetitionWithUserFromID(int ID)
         {
             using (var context = new DivingCompDbContext())
@@ -283,6 +271,7 @@ namespace Server.services
             }
         }
 
+        //return a competition with results from the user ID that is provided. 
         public CompetitionWithResult GetCompetitionWithResultFromID(int ID)
         {
             using (var context = new DivingCompDbContext())
@@ -301,14 +290,12 @@ namespace Server.services
                     j.CUID = temp.UID;
                 }
 
-
                 cwr.Results = context.Results.Where(res => cwr.Jumps.Any(jump => res.JumpID == jump.ID)).ToList();
-
-
                 return cwr;
             }
         }
 
+        //Add a score by a judge to a specific jump.
         public void SetScoreToJump(Result ScoreInfo)
         {
             var context = new DivingCompDbContext();
@@ -328,6 +315,7 @@ namespace Server.services
         {
             using (var context = new DivingCompDbContext())
             {
+                //returns all judes in a list.
                 return context.Users.Where(x => x.Group == 1).ToList();
             }
         }
@@ -336,11 +324,10 @@ namespace Server.services
         {
             using (var context = new DivingCompDbContext())
             {
+                //returns all judes in a list.
                 return context.Users.Where(x => x.Group == 0).ToList();
             }
         }
     }
 }
-
-
 
