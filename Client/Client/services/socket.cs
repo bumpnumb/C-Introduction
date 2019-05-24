@@ -145,8 +145,12 @@ namespace Client.services
                     break;
                 case MessageType.User:
                     List<User> users = JsonConvert.DeserializeObject<List<User>>(this.Data);
-
-                    switch (App.MainWindowRef.currentpage)
+                    string cp = "";
+                    App.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        cp = App.MainWindowRef.Main.Content.ToString();
+                    });
+                    switch (cp)
                     {
                         case "Client.windows.CreateContest":
                             App.Current.Dispatcher.Invoke((Action)delegate

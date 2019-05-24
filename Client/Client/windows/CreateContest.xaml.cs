@@ -28,10 +28,8 @@ namespace Client.windows
     public partial class CreateContest : Page
     {
         private string selectedHeigt;
-        CompetitionWithUser newCompetition = new CompetitionWithUser();
-        List<Jump> newJumps = new List<Jump>();
-        List<User> users = new List<User>();
-        List<User> judges = new List<User>();
+        static CompetitionWithUser newCompetition = new CompetitionWithUser();
+        static List<Jump> newJumps = new List<Jump>();
         static List<User> judgeDatabase = new List<User>();
         static List<string> judgeDatabaseName = new List<string>();
         static List<User> jumperDatabase = new List<User>();
@@ -52,20 +50,26 @@ namespace Client.windows
             InitializeComponent();
             this.DataContext = this;
             GetUsers();
-            newCompetition.Users = users;
-            newCompetition.Judges = judges;
+            newCompetition.Judges = new List<User>();
+            newCompetition.Users = new List<User>();
+            
+            App.MainWindowRef.currentpage = App.MainWindowRef.Main.Content.ToString();
         }
 
         private void GetUsers()
         {
             Message getUsers = new Message();
             getUsers.Type = MessageType.User;
-            getUsers.Data = "getAll";
+            getUsers.Data = "Get All";
             ClientControll.Send(getUsers);
         }
 
         public static void FillUserDatabase(List<User> users)
         {
+            jumperDatabase = new List<User>();
+            judgeDatabase = new List<User>();
+            jumperDatabaseName = new List<string>();
+            judgeDatabaseName = new List<string>();
             App.Current.Dispatcher.Invoke((Action)delegate
             {
                 foreach (User u in users)

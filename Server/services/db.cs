@@ -38,9 +38,12 @@ namespace Server.services
                 old.SSN = u.SSN.Split('%')[0];
                 old.Group = u.Group;
                 old.Name = u.Name;
-                User tempUser = crypto.GenerateSaltHash(u.Salt);
-                old.Salt = tempUser.Salt;
-                old.Hash = tempUser.Hash;
+                if (u.Salt != null)
+                {
+                    User tempUser = crypto.GenerateSaltHash(u.Salt);
+                    old.Salt = tempUser.Salt;
+                    old.Hash = tempUser.Hash;
+                }
 
                 context.SaveChanges();
             }

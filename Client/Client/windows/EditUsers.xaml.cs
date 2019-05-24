@@ -31,6 +31,7 @@ namespace Client.windows
         {
             InitializeComponent();
             GetUsers();
+            App.MainWindowRef.currentpage = App.MainWindowRef.Main.Content.ToString();
         }
 
         private void GetUsers()
@@ -43,6 +44,7 @@ namespace Client.windows
 
         public static void FillUserDatabase(List<User> users)
         {
+            AllUsers = new List<User>();
             AllUsers.AddRange(users);
         }
 
@@ -62,7 +64,7 @@ namespace Client.windows
                         //where in original this was found.
                         userNameDropDown.Items.Add(AllUsers[index].Name.ToString() + "    " + AllUsers[index].SSN.ToString());
                         userNameDropDown.Visibility = Visibility.Visible;
-                        int height = userNameDropDown.Items.Count * 21;
+                        int height = userNameDropDown.Items.Count * 22;
                         if (height > 200)
                             height = 200;
                         userNameDropDown.Height = height;
