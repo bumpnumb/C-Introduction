@@ -80,7 +80,7 @@ namespace Server.services
 
                     string[] registerUser = this.Data.Split("\r\n"); 
                     //try fo fetch user
-                    rsp.user = db.GetUserByName(registerUser[0]); //does this work?, "split on other separator!!"
+                    rsp.user = db.GetUserBySSN(registerUser[1]); //does this work?, "split on other separator!!"
                     if (rsp.user != null)
                     {
                         rsp.Data = "USER EXISTS!";
@@ -89,7 +89,7 @@ namespace Server.services
                     {
                         //Generate some salt and hash
                         User tempUser = crypto.GenerateSaltHash(registerUser[1]); //split on other separator!!
-                        db.RegisterUser(registerUser[0], tempUser.Salt, tempUser.Hash);
+                        db.RegisterUser(registerUser[0], registerUser[1], tempUser.Salt, tempUser.Hash);
 
                         //lets not be done here. as is now, we return nothing.
                         //from here, do a login atempt, and return thee user.
