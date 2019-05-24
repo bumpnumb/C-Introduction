@@ -21,8 +21,6 @@ namespace Client.windows
     /// </summary>
     public partial class SignInPage : Page
     {
-        string ID;
-        string PW;
         public SignInPage()
         {
             InitializeComponent();
@@ -56,7 +54,7 @@ namespace Client.windows
 
         private void IDBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (IDBox.Text == "Username")
+            if (IDBox.Text == "YYYY-MM-DD-XXXX")
                 IDBox.Text = "";
         }
 
@@ -64,7 +62,16 @@ namespace Client.windows
         {
             if (IDBox.Text == "")
             {
-                IDBox.Text = "Username";
+                IDBox.Text = "YYYY-MM-DD-XXXX";
+            }
+        }
+
+        private void IDBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (IDBox.Text.Length == 4 || IDBox.Text.Length == 7 || IDBox.Text.Length == 10)
+            {
+                IDBox.Text += '-';
+                IDBox.CaretIndex = IDBox.Text.Length;
             }
         }
 
@@ -74,8 +81,8 @@ namespace Client.windows
             {
                 if (PwBox.Password != "" && PwBox.Password != "Password")
                 {
-                    ID = IDBox.Text;
-                    PW = PwBox.Password;
+                    string ID = IDBox.Text;
+                    string PW = PwBox.Password;
                     login(ID, PW);
                 }
 
@@ -110,8 +117,8 @@ namespace Client.windows
                 {
                     if (e.Key == Key.Enter)
                     {
-                        ID = IDBox.Text;
-                        PW = PwBox.Password;
+                        string ID = IDBox.Text;
+                        string PW = PwBox.Password;
                         login(ID, PW);
                         
                     }

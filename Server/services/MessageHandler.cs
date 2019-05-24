@@ -48,7 +48,7 @@ namespace Server.services
 
                     string[] userString = this.Data.Split("\r\n"); //will this
                     //Try to find a user with same name
-                    rsp.user = db.GetUserByName(userString[0]); //and this work? for "change separator please!"
+                    rsp.user = db.GetUserBySSN(userString[0]); //and this work? for "change separator please!"
                     if (rsp.user != null) //this could be made into a one-liner, kept apart for ease of readability
                     {
                         //user was found, fetch salt and hash
