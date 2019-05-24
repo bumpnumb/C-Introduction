@@ -61,12 +61,18 @@ namespace Server.services
                         {
                             //return some message for client to continue
                             rsp.Data = "success";
+                            rsp.user.Hash = "***";
+                            rsp.user.Salt = "***";
+                            rsp.user.SSN = "YYYY-MM-DD-XXXX";
                         }
                         else
                         {
                             //don't tell the client it has a correct username but wrong password.
                             //this makes bruteforcing easier!
                             rsp.Data = "no user";
+                            rsp.user.Hash = "***";
+                            rsp.user.Salt = "***";
+                            rsp.user.SSN = "YYYY-MM-DD-XXXX";
                             //we use "no user" on both wrong username and wrong password
                         }
                     }
