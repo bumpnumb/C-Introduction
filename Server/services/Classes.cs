@@ -9,7 +9,7 @@ namespace Server.modules
     //These are a set of classes being used by different parts of the program.
     //Mostly used to parse messages and to retrieve data from db
     //Explains itself.
-    public enum MessageType { NoType, Login, Register, Competition, ScoreToJump, Result, Judges, Jumpers, User }
+    public enum MessageType { NoType, Login, Register, Competition, ScoreToJump, Result, Judges, Jumpers, User, ChangeUser }
     public class Response
     {
         public MessageType Type { get; set; }

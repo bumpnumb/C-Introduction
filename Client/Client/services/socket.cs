@@ -15,7 +15,7 @@ using System.Windows.Controls;
 
 namespace Client.services
 {
-    public enum MessageType { NoType, Login, Register, Competition, ScoreToJump, Result, Judges, Jumpers, User }
+    public enum MessageType { NoType, Login, Register, Competition, ScoreToJump, Result, Judges, Jumpers, User, ChangeUser }
     public enum GroupType { User, Judge, Admin }
 
 
@@ -145,11 +145,14 @@ namespace Client.services
                     break;
                 case MessageType.User:
                     List<User> users = JsonConvert.DeserializeObject<List<User>>(this.Data);
-                    EditUsers.AllUsers = users;
-                    foreach (User u in users)
+                    App.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        EditUsers.AllUserNames.Add(u.Name);
-                    }
+                        EditUsers.FillUserDatabase(users);
+                    });
+                    break;
+                case MessageType.ChangeUser:
+                    List<User> users2 = JsonConvert.DeserializeObject<List<User>>(this.Data); //change list<user> to top of project
+                    EditUsers.FillUserDatabase(users2);
 
                     break;
 

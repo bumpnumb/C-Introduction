@@ -10,6 +10,7 @@ using Server.modules;
 using Server.services;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
 namespace Server.services
 {
@@ -17,7 +18,6 @@ namespace Server.services
     {
         //Whenever we recieve a message from client, we parse it as a Message type
         //A message will have a User, Though is this needed? as we could set this in clienthandler...
-
 
         public MessageType Type { get; set; }
         public string Data { get; set; }
@@ -46,9 +46,9 @@ namespace Server.services
                     //Set the response type for parsing on other end.
                     rsp.Type = MessageType.Login;
 
-                    string[] userString = this.Data.Split("\r\n"); //will this
+                    string[] userString = this.Data.Split("\r\n");
                     //Try to find a user with same name
-                    rsp.user = db.GetUserBySSN(userString[0]); //and this work? for "change separator please!"
+                    rsp.user = db.GetUserBySSN(userString[0]);
                     if (rsp.user != null) //this could be made into a one-liner, kept apart for ease of readability
                     {
                         //user was found, fetch salt and hash
@@ -67,18 +67,21 @@ namespace Server.services
                         }
                         else
                         {
-                            //don't tell the client it has a correct username but wrong password.
-                            //this makes bruteforcing easier!
+
                             rsp.Data = "no user";
                             rsp.user.Hash = "***";
                             rsp.user.Salt = "***";
                             rsp.user.SSN = "YYYY-MM-DD-XXXX";
-                            //we use "no user" on both wrong username and wrong password
+                            //don't tell the client it has a correct username but wrong password.
+                            //this makes bruteforcing easier!
+                            //therefore we use "no user" on both wrong username and wrong password.
+                            //aswell as "hide" the hash, salt and SSN.
                         }
                     }
                     else
                     {
                         rsp.Data = "no user";
+                        //no user was found, alert the client.
                     }
                     break;
 
@@ -87,7 +90,7 @@ namespace Server.services
 
                     string[] registerUser = this.Data.Split("\r\n");
                     //try fo fetch user
-                    rsp.user = db.GetUserBySSN(registerUser[1]); //does this work?, "split on other separator!!"
+                    rsp.user = db.GetUserBySSN(registerUser[1]);
                     if (rsp.user != null)
                     {
                         rsp.Data = "USER EXISTS!";
@@ -98,25 +101,18 @@ namespace Server.services
                     else
                     {
                         //Generate some salt and hash
-                        User tempUser = crypto.GenerateSaltHash(registerUser[2]); //split on other separator!!
+                        User tempUser = crypto.GenerateSaltHash(registerUser[2]);
+                        //register user
                         db.RegisterUser(registerUser[0], registerUser[1], tempUser.Salt, tempUser.Hash);
 
-                        //lets not be done here. as is now, we return nothing.
-                        //from here, do a login atempt, and return thee user.
-                        //Why should I register then login?
-                        //process could be streamlined!
-
-                        //A login attempt would not work since we check the "Group" when we log in.
-                        //but the Group is assgined to each user, after some time, by an admin after the register...
                     }
                     break;
 
                 case MessageType.Competition:
                     rsp.Type = MessageType.Competition;
                     //split string in case we want to know more
-                    part = this.Data.Split("\r\n"); //correct separator use!
+                    part = this.Data.Split("\r\n");
                     List<CompetitionWithUser> comp;
-
 
                     //Competition messagetypes will be as following:
 
@@ -147,19 +143,20 @@ namespace Server.services
                         case "CreateCompetition":
                             rsp.Type = MessageType.Competition;
 
-
                             CompetitionWithUser CompInfo = JsonConvert.DeserializeObject<CompetitionWithUser>(part[1]);
                             List<Jump> jumps = JsonConvert.DeserializeObject<List<Jump>>(part[2]);
 
-
+                            //if the conversion did succeed. 
                             if (CompInfo != null)
                             {
+                                //create a competition and tell the client it succeeded.
                                 db.CreateCompetition(CompInfo, jumps);
                                 rsp.Data = "Competition created";
 
                             }
                             else
                             {
+                                //creation did not succeed. 
                                 rsp.Data = "Competition failed";
                             }
                             break;
@@ -169,7 +166,9 @@ namespace Server.services
                 case MessageType.ScoreToJump:
                     rsp.Type = MessageType.ScoreToJump;
 
+                    //Put info from the client to a new object to work with.
                     Result ScoreInfo = JsonConvert.DeserializeObject<Result>(this.Data);
+                    //done to be sure..
                     if (ScoreInfo != null)
                     {
                         db.SetScoreToJump(ScoreInfo);
@@ -185,6 +184,7 @@ namespace Server.services
                 case MessageType.Judges:
                     rsp.Type = MessageType.Judges;
 
+                    //returns all judges
                     List<User> AllJudges = db.GetAllJudges();
                     rsp.Data = JsonConvert.SerializeObject(AllJudges);
 
@@ -193,22 +193,33 @@ namespace Server.services
                 case MessageType.Jumpers:
                     rsp.Type = MessageType.Jumpers;
 
+                    //returns all jumpers.
                     List<User> AllJumpers = db.GetAllJumpers();
                     rsp.Data = JsonConvert.SerializeObject(AllJumpers);
 
                     break;
+
                 case MessageType.User:
                     part = this.Data.Split("\r\n");
                     switch (part[0])
                     {
                         case "Get All":
                             rsp.Type = MessageType.User;
+
+                            //return all Users.
                             List<User> AllUsers = db.GetAllUsers();
                             rsp.Data = JsonConvert.SerializeObject(AllUsers);
                             break;
                     }
-
                     break;
+                case MessageType.ChangeUser:
+                    User u = JsonConvert.DeserializeObject<User>(this.Data);
+
+                    db.EditUser(u);
+                    rsp.Type = MessageType.ChangeUser;
+                    rsp.Data = JsonConvert.SerializeObject(db.GetAllUsers());
+                    break;
+
 
                 default:
                     break;
