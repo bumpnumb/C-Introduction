@@ -87,10 +87,10 @@ namespace Client.services
                     var stringMessage = this.Data;
                     if (stringMessage == "Competition created")
                     {
-                        App.Current.Dispatcher.Invoke((Action) delegate
-                        {
-                            App.MainWindowRef.Main.Navigate(new CreateContest());
-                        });
+                        App.Current.Dispatcher.Invoke((Action)delegate
+                       {
+                           App.MainWindowRef.Main.Navigate(new CreateContest());
+                       });
                     }
                     else if (stringMessage == "GetAll")
                     {
@@ -140,7 +140,16 @@ namespace Client.services
                         CreateContest.FillUserDatabase(jumpers);
                     });
                     break;
-                
+                case MessageType.User:
+                    List<User> users = JsonConvert.DeserializeObject<List<User>>(this.Data);
+                    EditUsers.AllUsers = users;
+                    foreach (User u in users)
+                    {
+                        EditUsers.AllUserNames.Add(u.Name);
+                    }
+
+                    break;
+
                 default:
                     break;
             }

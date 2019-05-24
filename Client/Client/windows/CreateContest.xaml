@@ -30,7 +30,8 @@
                  VerticalAlignment="Top"
                  Width="194"
                  Visibility="Collapsed" 
-                 KeyDown="judgeNameDropdown_KeyDown"/>
+                 KeyDown="judgeNameDropdown_KeyDown"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
         <TextBox x:Name="jumperName" 
                  HorizontalAlignment="Left" 
                  Height="23" 
@@ -46,7 +47,8 @@
                  VerticalAlignment="Top"
                  Width="194"
                  Visibility="Collapsed" 
-                 KeyDown="jumperNameDropdown_KeyDown"/>
+                 KeyDown="jumperNameDropdown_KeyDown"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 
         <Button x:Name="cancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Click="CancelBtn_Click"/>
         <xctk:DateTimePicker x:Name="datePicker" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,68,0,0" Width="194"/>

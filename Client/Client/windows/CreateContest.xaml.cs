@@ -342,14 +342,15 @@ namespace Client.windows
             if (judgeName.Text.Trim() != "")
             {
                 string regexPattern = (judgeName.Text.ToString()) + "\\w*";
-                regexPattern = char.ToUpper(regexPattern[0]) + regexPattern.Substring(1); //prvo slovo veliko
+                regexPattern = regexPattern[0] + regexPattern.Substring(1); //prvo slovo veliko
+                        int index = 0; //where in original this was found.
                 foreach (User u in judgeDatabase)
                 {
                     Match match = Regex.Match(u.Name, regexPattern, RegexOptions.IgnoreCase);
                     if (match.Success && match.Value != "")
                     {
-                        int index = match.Index; //where in original this was found.
-                        judgeNameDropdown.Items.Add(match.Value.ToString() + "    " + judgeDatabase[index].SSN.ToString());
+                        judgeNameDropdown.Items.Add(judgeDatabase[index].Name.ToString() + "    " + judgeDatabase[index].SSN.ToString());
+
                         judgeNameDropdown.Visibility = Visibility.Visible;
                         int height = judgeNameDropdown.Items.Count * 21;
                         if (height > 200)
@@ -357,13 +358,15 @@ namespace Client.windows
                         judgeNameDropdown.Height = height;
                         judgeNameDropdown.SelectedItem = judgeNameDropdown.Items.GetItemAt(0);
                     }
+
+                    index++;
                 }
             }
 
-            if (judgeNameDropdown.Items.IsEmpty || judgeNameDropdown.Items.Count == judgeDatabase.Count)
+            if (judgeNameDropdown.Items.IsEmpty) //|| judgeNameDropdown.Items.Count == judgeDatabase.Count
             {
                 judgeNameDropdown.Visibility = Visibility.Collapsed;
-                if (judgeNameDropdown.Items.Count == judgeDatabase.Count) judgeNameDropdown.Items.Clear();
+               // if (judgeNameDropdown.Items.Count == judgeDatabase.Count) judgeNameDropdown.Items.Clear();
             }
         }
         private void judgeNameDropdown_KeyDown(object sender, KeyEventArgs e)
@@ -391,13 +394,14 @@ namespace Client.windows
             {
                 string regexPattern = (jumperName.Text.ToString()) + "\\w*";
                 regexPattern = char.ToUpper(regexPattern[0]) + regexPattern.Substring(1); //prvo slovo veliko
+                int index = 0;
                 foreach (User u in jumperDatabase)
                 {
                     Match match = Regex.Match(u.Name, regexPattern, RegexOptions.IgnoreCase);
                     if (match.Success && match.Value != "")
                     {
-                        int index = match.Index; //where in original this was found.
-                        jumperNameDropdown.Items.Add(match.Value.ToString() + "    " + jumperDatabase[index].SSN.ToString());
+                         //where in original this was found.
+                        jumperNameDropdown.Items.Add(jumperDatabase[index].Name.ToString() + "    " + jumperDatabase[index].SSN.ToString());
                         jumperNameDropdown.Visibility = Visibility.Visible;
                         int height = jumperNameDropdown.Items.Count * 21;
                         if (height > 200)
@@ -405,13 +409,15 @@ namespace Client.windows
                         jumperNameDropdown.Height = height;
                         jumperNameDropdown.SelectedItem = jumperNameDropdown.Items.GetItemAt(0);
                     }
+
+                    index++;
                 }
             }
 
-            if (jumperNameDropdown.Items.IsEmpty || jumperNameDropdown.Items.Count == jumperDatabase.Count)
+            if (jumperNameDropdown.Items.IsEmpty) //|| jumperNameDropdown.Items.Count == jumperDatabase.Count
             {
                 jumperNameDropdown.Visibility = Visibility.Collapsed;
-                if (jumperNameDropdown.Items.Count == jumperDatabase.Count) jumperNameDropdown.Items.Clear();
+                //if (jumperNameDropdown.Items.Count == jumperDatabase.Count) jumperNameDropdown.Items.Clear();
             }
         }
         private void jumperNameDropdown_KeyDown(object sender, KeyEventArgs e)
