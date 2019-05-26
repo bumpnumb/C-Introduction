@@ -147,14 +147,39 @@ namespace Client.services
                     break;
                 case MessageType.User:
                     List<User> users = JsonConvert.DeserializeObject<List<User>>(this.Data);
+                    string cp = "";
                     App.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        EditUsers.FillUserDatabase(users);
+                        cp = App.MainWindowRef.Main.Content.ToString();
                     });
+                    switch (cp)
+                    {
+                        case "Client.windows.CreateContest":
+                            App.Current.Dispatcher.Invoke((Action)delegate
+                            {
+                                CreateContest.FillUserDatabase(users);
+                            });
+                            break;
+                        case "Client.windows.EditUsers":
+                            App.Current.Dispatcher.Invoke((Action)delegate
+                            {
+                                EditUsers.FillUserDatabase(users);
+                            });
+                            break;
+                    }
+
                     break;
                 case MessageType.ChangeUser:
-                    List<User> users2 = JsonConvert.DeserializeObject<List<User>>(this.Data); //change list<user> to top of project
-                    EditUsers.FillUserDatabase(users2);
+                    if (this.Data == "Error Updating User")
+                    {
+                        //Fix some error handling here
+                    }
+                    else
+                    {
+                        List<User> users2 =
+                            JsonConvert.DeserializeObject<List<User>>(this.Data); //change list<user> to top of project
+                        EditUsers.FillUserDatabase(users2);
+                    }
 
                     break;
 
@@ -168,7 +193,6 @@ namespace Client.services
     {
         public MessageType Type { get; set; }
         public string Data { get; set; }
-        public string Cookie { get; set; }
     }
 
 
