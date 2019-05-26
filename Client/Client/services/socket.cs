@@ -118,6 +118,7 @@ namespace Client.services
                     }
                     else
                     {
+                        
                         CompetitionWithResult data = JsonConvert.DeserializeObject<CompetitionWithResult>(this.Data);
                         App.Current.Dispatcher.Invoke((Action)delegate
                         {

@@ -16,16 +16,19 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client.windows {
+namespace Client.windows
+{
     /// <summary>
     /// Interaction logic for Judge.xaml
     /// </summary>
-    public partial class JudgePage : Page {
+    public partial class JudgePage : Page
+    {
 
         CompetitionWithResult compdata = new CompetitionWithResult();
         public static int jumptracker = 0;
 
-        public JudgePage() {
+        public JudgePage()
+        {
             InitializeComponent();
             App.MainWindowRef.CenterWindowOnScreen();
             GetActiveCompetition();
@@ -53,9 +56,14 @@ namespace Client.windows {
         {
             App.Current.Dispatcher.Invoke((Action)delegate
             {
+                
                 JudgePage currentPage = App.MainWindowRef.Main.Content as JudgePage;
+                if (jumpnumber > currentPage.compdata.Jumps.Count)
+                {
+                    currentPage.CompOver.IsOpen = true;
+                }
                 Jump j = currentPage.compdata.Jumps.FirstOrDefault(x => x.GlobalNumber == jumpnumber);
-            User u = currentPage.compdata.Comp.Users.FirstOrDefault(x => x.ID == j.CUID);
+                User u = currentPage.compdata.Comp.Users.FirstOrDefault(x => x.ID == j.CUID);
                 currentPage.jumperNameHeader.Text = u.Name;
                 currentPage.jumpSpecificsHeader.Text = "Jump " + j.Number + " - " + j.Name + " " + j.Code + "Difficulty " + j.Difficulty;
                 currentPage.jumpIDSecretBox.Text = j.ID.ToString();
@@ -68,6 +76,7 @@ namespace Client.windows {
             jumptracker++;
 
             PagePainter(jumptracker);
+            scoreBox.Text = "";
         }
 
         private void SubmitScore()
@@ -80,7 +89,7 @@ namespace Client.windows {
             msg.Data = JsonConvert.SerializeObject(result);
             msg.Type = MessageType.ScoreToJump;
             ClientControll.Send(msg);
-            
+
         }
     }
 }
