@@ -24,28 +24,34 @@ namespace Server.services
             }
         }
 
-        public void EditUser(User u)
+        public bool EditUser(User u)
         {
 
             string oldSSN = u.SSN.Split('%')[1];
-
+            string newSSN = u.SSN.Split('%')[0];
 
             using (var context = new DivingCompDbContext())
             {
                 User old = context.Users.FirstOrDefault(x => x.SSN == oldSSN);
                 context.Update(old);
 
-                old.SSN = u.SSN.Split('%')[0];
-                old.Group = u.Group;
-                old.Name = u.Name;
-                if (u.Salt != null)
+                User testNewPw = context.Users.FirstOrDefault(x => x.SSN == newSSN);
+                if (testNewPw == null) //we can't update a user to have same ssn as another user.
                 {
-                    User tempUser = crypto.GenerateSaltHash(u.Salt);
-                    old.Salt = tempUser.Salt;
-                    old.Hash = tempUser.Hash;
-                }
+                    old.SSN = newSSN;
+                    old.Group = u.Group;
+                    old.Name = u.Name;
+                    if (u.Salt != null)
+                    {
+                        User tempUser = crypto.GenerateSaltHash(u.Salt);
+                        old.Salt = tempUser.Salt;
+                        old.Hash = tempUser.Hash;
+                    }
 
-                context.SaveChanges();
+                    context.SaveChanges();
+                    return true;
+                }
+                return false;
             }
         }
         public List<User> GetAllUsers()

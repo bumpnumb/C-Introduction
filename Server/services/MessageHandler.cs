@@ -214,10 +214,15 @@ namespace Server.services
                     break;
                 case MessageType.ChangeUser:
                     User u = JsonConvert.DeserializeObject<User>(this.Data);
-
-                    db.EditUser(u);
                     rsp.Type = MessageType.ChangeUser;
-                    rsp.Data = JsonConvert.SerializeObject(db.GetAllUsers());
+                    if (db.EditUser(u))
+                    {
+                        rsp.Data = JsonConvert.SerializeObject(db.GetAllUsers());
+                    }
+                    else
+                    {
+                        rsp.Data = "Error Updating User";
+                    }
                     break;
 
 

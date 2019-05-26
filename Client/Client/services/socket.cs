@@ -168,8 +168,16 @@ namespace Client.services
 
                     break;
                 case MessageType.ChangeUser:
-                    List<User> users2 = JsonConvert.DeserializeObject<List<User>>(this.Data); //change list<user> to top of project
-                    EditUsers.FillUserDatabase(users2);
+                    if (this.Data == "Error Updating User")
+                    {
+                        //Fix some error handling here
+                    }
+                    else
+                    {
+                        List<User> users2 =
+                            JsonConvert.DeserializeObject<List<User>>(this.Data); //change list<user> to top of project
+                        EditUsers.FillUserDatabase(users2);
+                    }
 
                     break;
 
