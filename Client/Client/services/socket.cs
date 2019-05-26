@@ -113,6 +113,7 @@ namespace Client.services
                        {
                            string currentpage = App.MainWindowRef.Main.Content.ToString();
                            AdminMainPage.FillCompetitionListBox(competitions);
+                           
                        });
                     }
                     else
@@ -122,6 +123,7 @@ namespace Client.services
                         {
                             string currentpage = App.MainWindowRef.Main.Content.ToString();
                             JudgePage.CompetitionData(data);
+                            JudgePage.PagePainter(JudgePage.jumptracker);
                         });
                     }
 

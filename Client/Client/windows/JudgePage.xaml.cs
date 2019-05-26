@@ -23,13 +23,13 @@ namespace Client.windows {
     public partial class JudgePage : Page {
 
         CompetitionWithResult compdata = new CompetitionWithResult();
-        int jumptracker = 0;
+        public static int jumptracker = 0;
 
         public JudgePage() {
             InitializeComponent();
             App.MainWindowRef.CenterWindowOnScreen();
             GetActiveCompetition();
-            PagePainter(jumptracker);
+            //PagePainter(jumptracker);
         }
 
         public void GetActiveCompetition()
@@ -49,15 +49,17 @@ namespace Client.windows {
             });
         }
 
-        public void PagePainter(int jumpnumber)
+        public static void PagePainter(int jumpnumber)
         {
-            
-            Jump j = compdata.Jumps.FirstOrDefault(x => x.GlobalNumber == jumpnumber);
-            User u = compdata.Comp.Users.FirstOrDefault(x => x.ID == j.CUID);
-            jumperNameHeader.Text = u.Name;
-            jumpSpecificsHeader.Text = "Jump " + j.Number + " - " + j.Name + " " + j.Code + "Difficulty " + j.Difficulty;
-            jumpIDSecretBox.Text = j.ID.ToString();
-
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                JudgePage currentPage = App.MainWindowRef.Main.Content as JudgePage;
+                Jump j = currentPage.compdata.Jumps.FirstOrDefault(x => x.GlobalNumber == jumpnumber);
+            User u = currentPage.compdata.Comp.Users.FirstOrDefault(x => x.ID == j.CUID);
+                currentPage.jumperNameHeader.Text = u.Name;
+                currentPage.jumpSpecificsHeader.Text = "Jump " + j.Number + " - " + j.Name + " " + j.Code + "Difficulty " + j.Difficulty;
+                currentPage.jumpIDSecretBox.Text = j.ID.ToString();
+            });
         }
 
         private void SubmitBtn_Click(object sender, RoutedEventArgs e)
