@@ -769,7 +769,7 @@ namespace Server.services
             D = CalculateD(position, letter2, somersaults, height, twists);
             E = CalculateE(position, letter2, somersaults, height, twists);
 
-            j.Difficulty = A + B + C + D + E;
+            j.Difficulty = (float)Math.Round((A + B + C + D + E), 1);
             return j;
         }
 

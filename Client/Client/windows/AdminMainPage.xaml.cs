@@ -35,7 +35,9 @@ namespace Client.windows
                 App.MainWindowRef.currentpage = "Client.windows.AdminMainPage";
             });
 
-            refreshTimer = new Timer(Refresh,null, 0, 5000);
+            refreshTimer = new Timer(Refresh,null, 1000, 5000);
+
+            
         }
 
         private void Refresh(Object source)
@@ -48,6 +50,7 @@ namespace Client.windows
 
         private void Edit_Create_Btn(object sender, RoutedEventArgs e)
         {
+            refreshTimer.Dispose();
             App.MainWindowRef.Main.Navigate(new CreateContest());
         }
 
@@ -80,7 +83,6 @@ namespace Client.windows
 
         public static void FillJudgesListBox(List<User> judges)
         {
-
             App.Current.Dispatcher.Invoke((Action)delegate
             {
                 AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
@@ -89,7 +91,6 @@ namespace Client.windows
         }
         public static void FillUsersListBox(List<User> jumpers)
         {
-
             App.Current.Dispatcher.Invoke((Action)delegate
             {
                 AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
@@ -99,6 +100,7 @@ namespace Client.windows
 
         private void EditUsersBtn_Click(object sender, RoutedEventArgs e)
         {
+            refreshTimer.Dispose();
             App.Current.Dispatcher.Invoke((Action)delegate
             {
                 App.MainWindowRef.pageSwitcher(new EditUsers(), 380, 250);
@@ -109,6 +111,7 @@ namespace Client.windows
 
         private void EditContestBtn_Click(object sender, RoutedEventArgs e)
         {
+            refreshTimer.Dispose();
             App.Current.Dispatcher.Invoke((Action)delegate
             {
                 App.MainWindowRef.pageSwitcher(new EditContest(), 850, 1050);
@@ -118,10 +121,3 @@ namespace Client.windows
 
     }
 }
-//            /*Fixa en snygg json grej här för ID och PW så det går att ha vilket namn som helst
-//            "{
-//                'ID': id,
-//                'PW': pw
-//        }
-//    }
-//}
