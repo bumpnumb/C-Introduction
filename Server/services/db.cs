@@ -101,7 +101,7 @@ namespace Server.services
             }
         }
 
-        public void RegisterUser(string name,string ssn, string salt, string hash)
+        public void RegisterUser(string name, string ssn, string salt, string hash)
         {
             var context = new DivingCompDbContext();
             context.Database.EnsureCreated();
@@ -210,7 +210,7 @@ namespace Server.services
 
                         temp.GlobalNumber = j.GlobalNumber;
 
-                        Jump t = JumpHelper.ParseDifficulty(j.Code, j.Height);  
+                        Jump t = JumpHelper.ParseDifficulty(j.Code, j.Height);
                         temp.Name = t.Name;
                         temp.Difficulty = t.Difficulty;
                         context.Jumps.Add(temp);
@@ -220,33 +220,38 @@ namespace Server.services
             context.SaveChanges();
         }
 
-        public List<CompetitionWithUser> GetActiveCompetitions()
+        public CompetitionWithResult GetActiveCompetitions() //CompetitionWithUser innan
         {
             using (var context = new DivingCompDbContext())
             {
                 //create two lists, one to get all active competitions, and one for all users in those competitions
-                List<CompetitionWithUser> result = new List<CompetitionWithUser>();
-                List<Competition> c = context.Competitions.Where(x => x.Start <= DateTime.Now && !helper.IsFinished(x.Finished)).ToList<Competition>();
-
+                List<CompetitionWithResult> result = new List<CompetitionWithResult>(); //War CompetitionWithUser här förut
+                Competition c = context.Competitions.OrderBy(x => x.Start <= DateTime.Now && !helper.IsFinished(x.Finished)).First(); //ändrare to orderby och tar första istället för att ta alla osm inte är klara
+                //.OrderBy(a => a.dStart).First();
                 //for each active competition, add everything needed to the first list (result)
-                foreach (Competition comp in c)
-                {
-                    CompetitionWithUser temp = new CompetitionWithUser();
-                    temp.ID = comp.ID;
-                    temp.Name = comp.Name;
-                    temp.Start = comp.Start;
-                    temp.Finished = comp.Finished;
-                    temp.Jumps = comp.Jumps;
+                CompetitionWithResult cwr = GetCompetitionWithResultFromID(c.ID);
 
-                    List<User> users = context.Users.Where(u => context.CompetitionUsers.Any(cu => u.ID == cu.UID & cu.CID == comp.ID)).ToList();
-                    List<User> judges = context.Users.Where(j => context.CompetitionJudges.Any(cj => j.ID == cj.UID & cj.CID == comp.ID)).ToList();
+                //CompetitionWithResult temp = new CompetitionWithResult(); //Här var förut en CompetitionWithUser, underliggande tilldelningar hade ej.Comp innan ändring
+                //temp.Comp = new CompetitionWithUser();
+                //temp.Comp.ID = c.ID;
+                //temp.Comp.Name = c.Name;
+                //temp.Comp.Start = c.Start;
+                //temp.Comp.Finished = c.Finished;
+                //temp.Comp.Jumps = c.Jumps;
 
-                    temp.Users = users;
-                    temp.Judges = judges;
-                    result.Add(temp);
-                }
+                //List<User> users = context.Users.Where(u => context.CompetitionUsers.Any(cu => u.ID == cu.UID & cu.CID == c.ID)).ToList();
+                //List<User> judges = context.Users.Where(j => context.CompetitionJudges.Any(cj => j.ID == cj.UID & cj.CID == c.ID)).ToList();
+                //List<Jump> jumps = cwr.Jumps = context.Jumps.Where(jump =>
+                //    context.CompetitionUsers.Any(cu => jump.CUID == cu.ID && cu.CID == cwr.Comp.ID)).ToList();
 
-                return result;
+                //temp.Comp.Users = users;
+                //temp.Comp.Judges = judges;
+                //temp.Jumps = 
+                //temp.Results = new List<Result>();
+                //result.Add(temp);
+
+
+                return cwr;
             }
         }
 

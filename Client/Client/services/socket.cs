@@ -112,15 +112,18 @@ namespace Client.services
                        {
                            string currentpage = App.MainWindowRef.Main.Content.ToString();
                            AdminMainPage.FillCompetitionListBox(competitions);
+                           
                        });
                     }
                     else
                     {
+                        
                         CompetitionWithResult data = JsonConvert.DeserializeObject<CompetitionWithResult>(this.Data);
                         App.Current.Dispatcher.Invoke((Action)delegate
                         {
                             string currentpage = App.MainWindowRef.Main.Content.ToString();
                             JudgePage.CompetitionData(data);
+                            JudgePage.PagePainter(JudgePage.jumptracker);
                         });
                     }
 

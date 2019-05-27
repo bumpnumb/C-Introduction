@@ -63,7 +63,6 @@ namespace Server.services
                             rsp.Data = "success";
                             rsp.user.Hash = "***";
                             rsp.user.Salt = "***";
-                            rsp.user.SSN = "YYYY-MM-DD-XXXX";
                         }
                         else
                         {
@@ -71,7 +70,6 @@ namespace Server.services
                             rsp.Data = "no user";
                             rsp.user.Hash = "***";
                             rsp.user.Salt = "***";
-                            rsp.user.SSN = "YYYY-MM-DD-XXXX";
                             //don't tell the client it has a correct username but wrong password.
                             //this makes bruteforcing easier!
                             //therefore we use "no user" on both wrong username and wrong password.
@@ -96,7 +94,6 @@ namespace Server.services
                         rsp.Data = "USER EXISTS!";
                         rsp.user.Hash = "***";
                         rsp.user.Salt = "***";
-                        rsp.user.SSN = "YYYY-MM-DD-XXXX";
                     }
                     else
                     {
@@ -113,6 +110,7 @@ namespace Server.services
                     //split string in case we want to know more
                     part = this.Data.Split("\r\n");
                     List<CompetitionWithUser> comp;
+                    CompetitionWithResult compresult;
 
                     //Competition messagetypes will be as following:
 
@@ -135,9 +133,9 @@ namespace Server.services
                         case "GetActive":
                             //Fetch all competitions which are started but not ended
                             rsp.Type = MessageType.Competition;
-                            comp = db.GetActiveCompetitions();
+                            compresult = db.GetActiveCompetitions();  //db.GetActiveCompetitions(); <- detta stod här innan jag va här o pilla /Thomas
 
-                            rsp.Data = JsonConvert.SerializeObject(comp);
+                            rsp.Data = JsonConvert.SerializeObject(compresult);
                             break;
 
                         case "CreateCompetition":
