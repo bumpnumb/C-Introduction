@@ -48,7 +48,9 @@
                  Width="194"
                  Visibility="Collapsed" 
                  KeyDown="jumperNameDropdown_KeyDown"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 Background="White"
+                 />
 
         <Button x:Name="cancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Click="CancelBtn_Click"/>
         <xctk:DateTimePicker x:Name="datePicker" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,68,0,0" Width="194"/>
@@ -85,5 +87,7 @@
         <TextBox x:Name="jump9Height" HorizontalAlignment="Left" Height="23" Margin="24,618,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Hidden"  KeyDown="AddJumps"/>
         <TextBox x:Name="jump10Height" HorizontalAlignment="Left" Height="23" Margin="24,646,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="44" Visibility="Hidden" KeyDown="AddJumps" />
         <Label x:Name="jumpHeightLable" Content="Height" HorizontalAlignment="Left" Margin="24,368,0,0" VerticalAlignment="Top" Width="49" Visibility="Hidden"/>
+
+
     </Grid>
 </Page>

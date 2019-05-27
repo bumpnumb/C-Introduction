@@ -48,16 +48,17 @@ namespace Client
             this.Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
-        public void pageSwitcher(Page pg)
+        public void pageSwitcher(Page pg, int height, int width)
         {
-
-            //App.MainWindowRef.Height = 850;
-            //App.MainWindowRef.Width = 1050;
             App.MainWindowRef.Main.Navigate(pg);
-            App.MainWindowRef.MinHeight = 850;
-            App.MainWindowRef.MinWidth = 1050;
+            App.MainWindowRef.MinHeight = height;
+            App.MainWindowRef.MinWidth = width;
+
+            App.MainWindowRef.Height = height;
+            App.MainWindowRef.Width = width;
+
+
             App.MainWindowRef.CenterWindowOnScreen();
-            
         }
 
         public void setActiveUser(Response activeUser)

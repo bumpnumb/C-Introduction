@@ -41,8 +41,7 @@ namespace Client.services
                             case GroupType.Admin:
                                 App.Current.Dispatcher.Invoke((Action)delegate
                                 {
-                                    App.MainWindowRef.pageSwitcher(new AdminMainPage());
-                                    
+                                    App.MainWindowRef.pageSwitcher(new AdminMainPage(),  850, 1050);
                                     App.MainWindowRef.setActiveUser(this);
                                     
 
@@ -52,7 +51,7 @@ namespace Client.services
                             case GroupType.Judge:
                                 App.Current.Dispatcher.Invoke((Action)delegate
                                 {
-                                    App.MainWindowRef.pageSwitcher(new JudgePage());
+                                    App.MainWindowRef.pageSwitcher(new JudgePage(), 850, 1050);
                                     App.MainWindowRef.setActiveUser(this);
                                 });
                                 break;

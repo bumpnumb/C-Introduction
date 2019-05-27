@@ -109,13 +109,20 @@ namespace Client.windows
 
         private void EditUsersBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.Group == GroupType.Admin)
-                App.MainWindowRef.Main.Navigate(new EditUsers());
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                App.MainWindowRef.pageSwitcher(new EditUsers(), 380, 250);
+            });
+
+
         }
 
         private void EditContestBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.MainWindowRef.Main.Navigate(new EditContest());
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                App.MainWindowRef.pageSwitcher(new EditContest(), 850, 1050);
+            });
         }
 
 
