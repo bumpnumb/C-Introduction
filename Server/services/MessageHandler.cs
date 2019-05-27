@@ -63,7 +63,6 @@ namespace Server.services
                             rsp.Data = "success";
                             rsp.user.Hash = "***";
                             rsp.user.Salt = "***";
-                            rsp.user.SSN = "YYYY-MM-DD-XXXX";
                         }
                         else
                         {
@@ -71,7 +70,6 @@ namespace Server.services
                             rsp.Data = "no user";
                             rsp.user.Hash = "***";
                             rsp.user.Salt = "***";
-                            rsp.user.SSN = "YYYY-MM-DD-XXXX";
                             //don't tell the client it has a correct username but wrong password.
                             //this makes bruteforcing easier!
                             //therefore we use "no user" on both wrong username and wrong password.
@@ -96,7 +94,6 @@ namespace Server.services
                         rsp.Data = "USER EXISTS!";
                         rsp.user.Hash = "***";
                         rsp.user.Salt = "***";
-                        rsp.user.SSN = "YYYY-MM-DD-XXXX";
                     }
                     else
                     {
