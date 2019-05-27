@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.modules
 {
@@ -35,10 +36,15 @@ namespace Server.modules
         public int Number { get; set; }
         public int GlobalNumber { get; set; }
         public int Height { get; set; }
+        public List<Result> Results { get; set; }
+
     }
     public class Result
     {
         public int JumpID { get; set; }
+        [ForeignKey("JumpID")]
+        public Jump Jump { get; set; }
+
         public int JudgeID { get; set; }
         public float Score { get; set; }
     }
@@ -51,13 +57,8 @@ namespace Server.modules
         public int Jumps { get; set; }
     }
 
-    public class CompetitionWithUser
+    public class CompetitionWithUser : Competition
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public DateTime Start { get; set; }
-        public DateTime Finished { get; set; }
-        public int Jumps { get; set; }
         public List<User> Users { get; set; }
         public List<User> Judges { get; set; }
 

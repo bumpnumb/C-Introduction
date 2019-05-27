@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
-using MySql.Data.EntityFrameworkCore;
-using MySql.Data.EntityFrameworkCore.Extensions;
-
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Server.modules
 {
@@ -18,11 +17,19 @@ namespace Server.modules
         public DbSet<CompetitionUser> CompetitionUsers { get; set; }
         public DbSet<Jump> Jumps { get; set; }
         public DbSet<Result> Results { get; set; }
-        public object CompetitionWithUser { get; internal set; }
+
+
+        public static readonly Microsoft.Extensions.Logging.LoggerFactory _myLoggerFactory =
+            new LoggerFactory(new[] {
+                new Microsoft.Extensions.Logging.Debug.DebugLoggerProvider()
+            });
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Override OnModelCreating to fetch our data from db.
+
+
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>(entity =>
@@ -65,16 +72,25 @@ namespace Server.modules
                 entity.Property(e => e.Number).IsRequired();
                 entity.Property(e => e.GlobalNumber).IsRequired();
                 entity.Property(e => e.Height).IsRequired();
+                entity.HasMany(e => e.Results);
             });
             modelBuilder.Entity<Result>(entity =>
             {
                 entity.HasKey(e => e.JumpID);
                 entity.Property(e => e.Score).IsRequired();
                 entity.HasKey(e => e.JudgeID);
+                entity.HasOne(e => e.Jump).WithMany(j => j.Results);
             });
+
+
+            //modelBuilder.Entity<Result>().HasRequired(e => e.OldStep).WithMany().HasForeignKey(e => e.OldStepId);
+
+
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+
+            optionsBuilder.UseLoggerFactory(_myLoggerFactory);
             //db info is in gitignore file.
             //fetch file and read connectionstring.
             config c = new config();

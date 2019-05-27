@@ -318,29 +318,8 @@ namespace Server.services
                 //users = context.Users.Where(u => context.CompetitionUsers.Any(cu => u.ID == cu.UID & cu.CID == comp.ID)).ToList();
                 //users where id = ( in competition users where cu.UID <-- and cu.cid == comp.id)
                 cwr.Jumps = context.Jumps.Where(jump =>
-                    context.CompetitionUsers.Any(cu => jump.CUID == cu.ID && cu.CID == cwr.Comp.ID)).ToList();
-
-                int jumpnumber = 0;
-                for (int i = 0; i < cwr.Jumps.Count; i++)
-                {
-
-                    CompetitionUser temp = context.CompetitionUsers.FirstOrDefault(x => x.ID == cwr.Jumps[i].CUID);
-                    cwr.Jumps[i].CUID = temp.UID;
-                    jumpnumber = cwr.Jumps[i].ID;
-
-
-                    List<Result> resss = context.Results.Where(r => r.JumpID == 196).ToList();
-                    List<Result> resss2 = context.Results.Where(r => r.JumpID == 197).ToList();
-
-
-                    // context.Jumps.Any(jump => result.JumpID == jump.ID && jump.ID == ThisJumpNumber)
-
-
-                    //Ge mig alla Resultat för detta jump
-
-
-                    //cwr.Results.AddRange(a);
-                }
+                context.CompetitionUsers.Any(cu => jump.CUID == cu.ID && cu.CID == cwr.Comp.ID)).Include(j => j.Results).ToList();
+                
                 return cwr;
             }
         }
