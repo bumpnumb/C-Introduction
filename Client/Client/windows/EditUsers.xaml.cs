@@ -121,7 +121,7 @@ namespace Client.windows
 
         private void ChangeButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
             User n = new User();
             n.SSN = ssn.Text + '%' + CurrentUser.SSN;
             n.Name = username.Text;
@@ -140,6 +140,14 @@ namespace Client.windows
 
 
             ClearBoxes();
+        }
+
+        private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                App.MainWindowRef.pageSwitcher(new AdminMainPage(), 850, 1050);
+            });
         }
     }
 }

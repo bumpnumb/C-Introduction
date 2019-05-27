@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,43 +24,32 @@ namespace Client.windows
     /// </summary>
     public partial class AdminMainPage : Page
     {
+        private static Timer refreshTimer;
         public AdminMainPage()
         {
 
             InitializeComponent();
-            
-        }
 
-        private void Edit_Create_Btn(object sender, RoutedEventArgs e)
-        {
-
-            App.MainWindowRef.Main.Navigate(new CreateContest());
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            App.Current.Dispatcher.Invoke((Action)delegate {
-                App.MainWindowRef.currentpage = App.MainWindowRef.Main.Content.ToString();
-                App.MainWindowRef.CenterWindowOnScreen();
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                App.MainWindowRef.currentpage = "Client.windows.AdminMainPage";
             });
-            //Gets all copmetitions from the database via the server
+
+            refreshTimer = new Timer(Refresh,null, 0, 5000);
+        }
+
+        private void Refresh(Object source)
+        {
             Message getCompetitions = new Message();
             getCompetitions.Type = MessageType.Competition;
             getCompetitions.Data = "GetAll";
             ClientControll.Send(getCompetitions);
-            
         }
 
-        //public static void FillCompetitionDataBox(string data)
-        //{
-        //    App.Current.Dispatcher.Invoke((Action)delegate
-        //    {
-        //        AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
-
-        //        currentPage.competitionDataBox.Text = data;
-
-        //    });
-        //}
+        private void Edit_Create_Btn(object sender, RoutedEventArgs e)
+        {
+            App.MainWindowRef.Main.Navigate(new CreateContest());
+        }
 
         public static void FillCompetitionListBox(List<CompetitionWithUser> competitions)
         {

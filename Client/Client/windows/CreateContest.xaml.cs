@@ -91,7 +91,10 @@ namespace Client.windows
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.MainWindowRef.Main.Navigate(new AdminMainPage());
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                App.MainWindowRef.pageSwitcher(new AdminMainPage(), 850, 1050);
+            });
         }
 
         public IEnumerable Items
