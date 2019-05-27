@@ -35,9 +35,9 @@ namespace Client.windows
                 App.MainWindowRef.currentpage = "Client.windows.AdminMainPage";
             });
 
-            refreshTimer = new Timer(Refresh,null, 1000, 5000);
+            refreshTimer = new Timer(Refresh, null, 1000, 5000);
 
-            
+
         }
 
         private void Refresh(Object source)
@@ -72,12 +72,14 @@ namespace Client.windows
             {
                 AdminMainPage currentPage = App.MainWindowRef.Main.Content as AdminMainPage;
                 dynamic data = currentPage.competitionListBox.SelectedItem as dynamic;
-                int id = data.ID;
-                List<User> jumpers = data.Users;
-                List<User> judges = data.Judges;
-                Console.WriteLine(id);
-                FillUsersListBox(jumpers);
-                FillJudgesListBox(judges);
+                if (data != null){
+                    int id = data.ID;
+                    List<User> jumpers = data.Users;
+                    List<User> judges = data.Judges;
+                    Console.WriteLine(id);
+                    FillUsersListBox(jumpers);
+                    FillJudgesListBox(judges);
+                }
             });
         }
 
