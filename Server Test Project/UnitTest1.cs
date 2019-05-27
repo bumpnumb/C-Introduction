@@ -18,7 +18,7 @@ namespace Server_Test_Project
             j = Server.services.JumpHelper.ParseDifficulty(JumpCode, JumpHeight);
 
             Assert.AreEqual(j.Name , "Back 3 1/2 Somersaults C");
-            Assert.AreEqual((j.Difficulty , 3.6f);
+            Assert.AreEqual(j.Difficulty , 3.6f);
 
         }
     }

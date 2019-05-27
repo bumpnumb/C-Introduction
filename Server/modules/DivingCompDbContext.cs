@@ -19,7 +19,7 @@ namespace Server.modules
         public DbSet<Jump> Jumps { get; set; }
         public DbSet<Result> Results { get; set; }
         public object CompetitionWithUser { get; internal set; }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Override OnModelCreating to fetch our data from db.
