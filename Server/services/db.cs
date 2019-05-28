@@ -323,6 +323,9 @@ namespace Server.services
 
                 foreach (Jump j in cwr.Jumps)
                 {
+                    CompetitionUser tmp = context.CompetitionUsers.FirstOrDefault(u => u.ID == j.CUID);
+                    j.CUID = tmp.UID;
+
                     foreach (Result r in j.Results)
                     {
                         r.Jump = null;

@@ -3,13 +3,13 @@
 
 .center_holder {
     height: auto;
-    width: 600px;
+    width: 1200px;
     min-height: 200px;
     background-color: #d0d0d0;
     position: fixed;
     top: 15%;
     left: 50%;
-    margin-left: -300px;
+    margin-left: -600px;
 }
 
 .title {

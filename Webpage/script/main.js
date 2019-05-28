@@ -75,12 +75,12 @@ function switchWindow(window) {
 function clearCompetition() {
     var main = document.getElementById("single_competition_holder");
     var firstChilds = main.getElementsByClassName("jump_holder");
-    for (var j = firstChilds.length-1; j > 0; j--) {
+    for (var j = firstChilds.length - 1; j > 0; j--) {
 
         main.removeChild(firstChilds[j]);
     }
     var firstChildsInner = firstChilds[0].getElementsByClassName("jump_data_holder");
-    for (var k = firstChildsInner.length -1; k > 0; k--) {
+    for (var k = firstChildsInner.length - 1; k > 0; k--) {
         firstChildsInner[k].parentNode.removeChild(firstChildsInner[k]);
     }
 }
@@ -120,12 +120,102 @@ function viewCompetition(data) {
         var B = 0;
         for (var k = 0; k < data.Jumps.length; k++) {
             if (data.Jumps[k].CUID === data.Comp.Users[j].ID) {
-                clone.getElementsByClassName("jump_data_holder")[B + 1].innerHTML = data.Jumps[k].Name;
-                clone.getElementsByClassName("jump_data_holder")[B + 1].style.breakInside = "avoid";
+                clone.getElementsByClassName("jump_data_holder")[k + 1].innerHTML = data.Jumps[k].Name;
+                clone.getElementsByClassName("jump_data_holder")[k + 1].style.breakInside = "avoid";
                 B++;
+
+                var result = 0;
+                switch (data.Jumps[k].Results.length) {
+                    case 1:
+                        result += data.Jumps[k].Results[0].Score;
+                        break;
+                    case 2:
+                        result += data.Jumps[k].Results[0].Score;
+                        result += data.Jumps[k].Results[1].Score;
+                        result = result / 2;
+                        break;
+                    case 3:
+                        //result += data.Jumps[k].Result[0].Score;
+                        result += data.Jumps[k].Results[1].Score;
+                        //result += data.Jumps[k].Result[2].Score;
+                        break;
+                    case 4:
+                        //result += data.Jumps[k].Result[0].Score;
+                        result += data.Jumps[k].Results[1].Score;
+                        result += data.Jumps[k].Results[2].Score;
+                        //result += data.Jumps[k].Result[3].Score;
+                        result = result / 2;
+                        break;
+                    case 5:
+                        //result += data.Jumps[k].Result[0].Score;
+                        result += data.Jumps[k].Results[1].Score;
+                        result += data.Jumps[k].Results[2].Score;
+                        result += data.Jumps[k].Results[3].Score;
+                        //result += data.Jumps[k].Result[4].Score;
+                        result = result / 3;
+                        break;
+                    case 6:
+                        //result += data.Jumps[k].Result[0].Score;
+                        result += data.Jumps[k].Results[1].Score;
+                        result += data.Jumps[k].Results[2].Score;
+                        result += data.Jumps[k].Results[3].Score;
+                        result += data.Jumps[k].Results[4].Score;
+                        //result += data.Jumps[k].Result[5].Score;
+                        result = result / 4;
+                        break;
+                    case 7:
+                        //result += data.Jumps[k].Result[0].Score;
+                        //result += data.Jumps[k].Result[1].Score;
+                        result += data.Jumps[k].Results[2].Score;
+                        result += data.Jumps[k].Results[3].Score;
+                        result += data.Jumps[k].Results[4].Score;
+                        //result += data.Jumps[k].Result[5].Score;
+                        //result += data.Jumps[k].Result[6].Score;
+                        result = result / 3;
+                        break;
+                    case 8:
+                        //result += data.Jumps[k].Result[0].Score;
+                        //result += data.Jumps[k].Result[1].Score;
+                        result += data.Jumps[k].Results[2].Score;
+                        result += data.Jumps[k].Results[3].Score;
+                        result += data.Jumps[k].Results[4].Score;
+                        result += data.Jumps[k].Results[5].Score;
+                        //result += data.Jumps[k].Result[6].Score;
+                        //result += data.Jumps[k].Result[7].Score;
+                        result = result / 4;
+                        break;
+                    case 9:
+                        //result += data.Jumps[k].Result[0].Score;
+                        //result += data.Jumps[k].Result[1].Score;
+                        result += data.Jumps[k].Results[2].Score;
+                        result += data.Jumps[k].Results[3].Score;
+                        result += data.Jumps[k].Results[4].Score;
+                        result += data.Jumps[k].Results[5].Score;
+                        result += data.Jumps[k].Results[6].Score;
+                        //result += data.Jumps[k].Result[7].Score;
+                        //result += data.Jumps[k].Result[8].Score;
+                        result = result / 5;
+                        break;
+                    case 10:
+                        //result += data.Jumps[k].Result[0].Score;
+                        //result += data.Jumps[k].Result[1].Score;
+                        result += data.Jumps[k].Results[2].Score;
+                        result += data.Jumps[k].Results[3].Score;
+                        result += data.Jumps[k].Results[4].Score;
+                        result += data.Jumps[k].Results[5].Score;
+                        result += data.Jumps[k].Results[6].Score;
+                        result += data.Jumps[k].Results[7].Score;
+                        //result += data.Jumps[k].Result[8].Score;
+                        //result += data.Jumps[k].Result[9].Score;
+                        result = result / 6;
+                        break;
+
+                    default:
+                }
+
+                clone.getElementsByClassName("jump_data_holder")[k + 1].innerHTML = data.Jumps[k].Name + " [" + result + "]";
+
             }
-            //clone.getElementsByClassName("jump_data_holder")[k + 1].innerHTML = getScoreByID(data.Comp.Users[j].ID, k , data.Results, data.Comp.Jumps);
-            //vi behöver hoppnummer också
         }
         dest.appendChild(clone);
     }
@@ -169,14 +259,14 @@ function generateCompetitions(num, data) {
 
 
         clone.value = data[i].ID;
-            
+
         clone.onmousedown = function () { watch(this.value), sendTextMessage("GET COMPETITION\r\n" + this.value); };
 
         dest.appendChild(clone);
     }
 }
 
-document.getElementsByClassName("backButton")[0].onmousedown = function () { stopWatching()};
+document.getElementsByClassName("backButton")[0].onmousedown = function () { stopWatching() };
 
 
 function hexDecode(hex) {
