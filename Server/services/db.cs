@@ -313,13 +313,25 @@ namespace Server.services
                 CompetitionWithResult cwr = new CompetitionWithResult();
                 cwr.Comp = GetCompetitionWithUserFromID(ID);
 
-                cwr.Results = new List<Result>();
+                //cwr.Results = new List<Result>();
 
                 //users = context.Users.Where(u => context.CompetitionUsers.Any(cu => u.ID == cu.UID & cu.CID == comp.ID)).ToList();
                 //users where id = ( in competition users where cu.UID <-- and cu.cid == comp.id)
                 cwr.Jumps = context.Jumps.Where(jump =>
                 context.CompetitionUsers.Any(cu => jump.CUID == cu.ID && cu.CID == cwr.Comp.ID)).Include(j => j.Results).ToList();
-                
+
+
+                foreach (Jump j in cwr.Jumps)
+                {
+                    foreach (Result r in j.Results)
+                    {
+                        r.Jump = null;
+                    }
+                }
+
+
+
+
                 return cwr;
             }
         }
