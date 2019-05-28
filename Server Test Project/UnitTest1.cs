@@ -1,6 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Server.modules;
+using Server.services;
 
 namespace Server_Test_Project
 {
@@ -21,5 +22,22 @@ namespace Server_Test_Project
             Assert.AreEqual(j.Difficulty , 3.6f);
 
         }
+
+
+        [TestMethod]
+        public void TestCryptoService()
+        {
+            string Password = "EdgeIsAGoodBrowser";
+
+            User user1 = crypto.GenerateSaltHash(Password);
+            User user2 = crypto.GenerateSaltHash(Password);
+
+
+            Assert.AreNotEqual(user1.Salt, user2.Salt);
+            Assert.AreNotEqual(user1.Hash, user2.Hash);
+        }
+
+
+
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Server.services
 {
-    static class crypto
+    public static class crypto
     {
         //Instantiate rng service
         private static RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
